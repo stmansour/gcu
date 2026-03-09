@@ -1,0 +1,9 @@
+TARGET FILE: portal-art-studio.png
+SIZE: 400x500px (3:4 portrait ratio)
+
+PROMPT:
+A portal window view into Grandpa's Art Studio. A bright, warm art studio with large windows letting in golden afternoon light. Colorful paint splatters on the floor, an easel with a vibrant swirling painting in progress, jars of paint brushes, and a wooden palette covered in rich mixed colors — red, yellow, blue blending into vivid secondary colors. The atmosphere is cheerful, creative, and slightly magical — colors seem to glow and mix in the air like living things. No characters, no text, no UI.
+
+STYLE: Pixar 3D render, warm golden light, saturated vibrant colors, cheerful mood
+USAGE: Portal card preview image for Art Studio game
+NOTES: The painting on the easel should show color-mixing (primaries blending to secondaries). Keep main focus in upper 75%.

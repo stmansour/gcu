@@ -1,0 +1,23 @@
+{
+    "width": 388,
+    "height": 96,
+    "type": "resistor_h",
+    "terminal_left": {
+        "position": {
+            "x": 0,
+            "y": 48
+        }
+    },
+    "terminal_right": {
+        "type": "terminal",
+        "name": "right",
+        "position": {
+            "x": 387,
+            "y": 48
+        }
+    },
+    "wire_path": {
+        "y": 48,
+        "thickness": 12
+    }
+}

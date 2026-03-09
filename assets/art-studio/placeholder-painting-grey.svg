@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#e8e4dc"/>
+  <text x="200" y="140" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#6b6b6b">Placeholder: Grandpa's painting</text>
+  <text x="200" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#999">(Replace with greyscale painting asset)</text>
+  <rect x="80" y="60" width="80" height="60" fill="#ccc" rx="4"/>
+  <rect x="240" y="60" width="80" height="60" fill="#bbb" rx="4"/>
+  <rect x="160" y="180" width="80" height="50" fill="#aaa" rx="4"/>
+</svg>

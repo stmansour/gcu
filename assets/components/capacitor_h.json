@@ -1,0 +1,23 @@
+{
+    "width": 284,
+    "height": 118,
+    "type": "inductor_h",
+    "terminal_left": {
+        "position": {
+            "x": 0,
+            "y": 68
+        }
+    },
+    "terminal_right": {
+        "type": "terminal",
+        "name": "right",
+        "position": {
+            "x": 359,
+            "y": 68
+        }
+    },
+    "wire_path": {
+        "y": 68,
+        "thickness": 12
+    }
+}

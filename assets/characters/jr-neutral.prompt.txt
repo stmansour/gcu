@@ -1,0 +1,11 @@
+TARGET FILE: CharacterSheets/JR/avatars/jr-neutral.png
+SIZE: 600x900px, transparent background preferred (PNG)
+
+PROMPT:
+Pixar-style 3D rendered boy, age 10, blonde hair, bright confident eyes, wearing a blue and white Argentina-style soccer jersey (V-neck, horizontal blue and white stripes) with black shorts and bright green cleats. Casual relaxed standing pose, arms comfortably at sides, slight confident smile, looking forward at viewer. Soft neutral light grey gradient background. Full body visible from head to toe, centered in frame. Warm studio lighting from slightly above. High detail Pixar render quality.
+
+STYLE: Exactly matching the existing JR character style — Pixar 3D render, same face/body proportions as existing jr_hero.png but without the stadium background and action pose
+USAGE: Avatar picker card and corner companion badge for JR
+NOTES: This is a neutral "portrait mode" version of the jr_hero.png character. Must match his existing face and character design exactly. Neutral background for clean compositing.
+
+EXISTING REFERENCE: CharacterSheets/JR/avatars/jr_hero.png

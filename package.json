@@ -1,0 +1,26 @@
+{
+  "name": "grandpas-creative-universe",
+  "version": "0.1.0",
+  "description": "Multi-game educational platform for children — iPad, iPhone, desktop",
+  "type": "module",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -c-1",
+    "cap:sync": "npx cap sync ios",
+    "cap:open": "npx cap open ios",
+    "ios": "npx cap sync ios && npx cap open ios"
+  },
+  "capacitor": {
+    "platforms": ["ios"]
+  },
+  "dependencies": {
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/ios": "^5.0.0",
+    "@capacitor/preferences": "^5.0.0",
+    "@capacitor/status-bar": "^5.0.0",
+    "@capacitor/screen-orientation": "^5.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^5.0.0"
+  },
+  "private": true
+}

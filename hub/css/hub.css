@@ -1,0 +1,667 @@
+/* =============================================================================
+   GCU Hub — Dark Workshop Theme
+   Palette: deep navy bg, warm golden accents, wood browns, glowing portals
+   ============================================================================= */
+
+/* =============================================================================
+   HUB SCENE — Workshop layout
+   ============================================================================= */
+
+.hub {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Starfield + warm lamp-glow background */
+.hub__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 20%, rgba(212, 169, 89, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(107, 68, 35, 0.35) 0%, transparent 55%),
+    url('../../assets/images/hub/hub-bg.png') center / cover no-repeat,
+    #0D1B2A;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Rotating gear decorations */
+.hub__gear {
+  position: absolute;
+  font-size: 9rem;
+  color: rgba(212, 169, 89, 0.055);
+  animation: hub-gear-spin 24s linear infinite;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+.hub__gear--1 { top: -3rem;  left: -2rem;  font-size: 11rem; animation-duration: 28s; }
+.hub__gear--2 { top: -2rem;  right: -2rem; font-size: 9rem;  animation-duration: 18s; animation-direction: reverse; }
+.hub__gear--3 { bottom: 4rem; left:  1rem; font-size: 7rem;  animation-duration: 34s; }
+.hub__gear--4 { bottom: 2rem; right: 0rem; font-size: 12rem; animation-duration: 22s; animation-direction: reverse; }
+
+@keyframes hub-gear-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Main layout column — sits above the background */
+.hub__layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--space-xl);
+}
+
+/* ── Wooden Sign ──────────────────────────────────────────────────────────── */
+.hub__sign {
+  flex-shrink: 0;
+  margin-top: clamp(var(--space-md), 2vh, var(--space-lg));
+  background: linear-gradient(175deg, #9B6B35 0%, #7A4F22 55%, #5E3B18 100%);
+  border: 3px solid #4A2C12;
+  border-bottom: 5px solid #3A2010;
+  border-radius: 10px;
+  padding: clamp(6px, 1.2vh, 10px) clamp(var(--space-lg), 5vw, var(--space-xl));
+  box-shadow:
+    0 5px 0 #3A2010,
+    0 8px 24px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  /* Two decorative chain-hang dots */
+  position: relative;
+}
+.hub__sign::before,
+.hub__sign::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.hub__sign::before { left: 10px; }
+.hub__sign::after  { right: 10px; }
+
+.hub__sign-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.hub__sign-line1 {
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(0.9rem, 2.2vw, 1.4rem);
+  font-weight: 700;
+  color: #F0C866;
+  text-shadow: 0 0 18px rgba(240, 200, 102, 0.55), 0 1px 3px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.hub__sign-line2 {
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(1.3rem, 3.5vw, 2.1rem);
+  font-weight: 800;
+  color: #F0C866;
+  text-shadow: 0 0 22px rgba(240, 200, 102, 0.6), 0 1px 3px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+}
+
+/* ── Portal Cards Row ─────────────────────────────────────────────────────── */
+.hub__portals {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-lg);
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md) 0;
+  width: 100%;
+  max-width: 860px;
+}
+
+.hub-portal {
+  flex: 1;
+  min-width: 0;
+  max-width: 185px;
+  /* aspect-ratio gives a computable height from width — avoids Safari's
+     known failure to resolve % heights on flex children in a non-stretch row */
+  aspect-ratio: 9 / 13;
+  max-height: 260px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: rgba(6, 16, 32, 0.72);
+  border: 2px solid rgba(212, 169, 89, 0.55);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: default;
+  touch-action: manipulation;
+  box-shadow:
+    0 0 0 1px rgba(212, 169, 89, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.hub-portal--available {
+  cursor: pointer;
+  border-color: rgba(212, 169, 89, 0.88);
+  box-shadow:
+    0 0 0 1px rgba(212, 169, 89, 0.22),
+    0 0 28px rgba(212, 169, 89, 0.28),
+    0 8px 32px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.hub-portal--locked {
+  opacity: 0.85;
+}
+
+.hub-portal--available:active {
+  transform: scale(0.95);
+}
+
+@media (hover: hover) {
+  .hub-portal--available:hover {
+    transform: scale(1.05);
+    border-color: #F0C866;
+    box-shadow:
+      0 0 34px rgba(240, 200, 102, 0.38),
+      0 8px 24px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Portal preview area (scene image or icon placeholder) */
+.hub-portal__preview {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+
+.hub-portal__icon {
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  filter: drop-shadow(0 0 18px rgba(212, 169, 89, 0.7));
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+.hub-portal__icon--hidden {
+  display: none;
+}
+
+.hub-portal__coming-soon {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 20, 38, 0.72);
+  border: 1px solid rgba(212, 169, 89, 0.4);
+  border-radius: 20px;
+  padding: 3px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  white-space: nowrap;
+}
+.hub-portal__coming-soon span {
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  font-weight: 700;
+  color: rgba(240, 200, 102, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Portal name label bar */
+.hub-portal__label {
+  flex-shrink: 0;
+  padding: clamp(5px, 1vh, 8px) var(--space-sm);
+  text-align: center;
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(0.65rem, 1.6vw, 0.9rem);
+  font-weight: 800;
+  color: #F0C866;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(240, 200, 102, 0.4);
+  background: transparent;
+  border-top: 1px solid rgba(212, 169, 89, 0.28);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Workbench + SWIRL-E ──────────────────────────────────────────────────── */
+.hub__floor {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* CSS-only SWIRL-E placeholder ─ replace with an <img> when asset is ready.
+   Asset prompt: gcu/assets/images/hub/swirl-e-workbench.prompt.txt          */
+.hub__swirle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: -6px; /* overlap slightly with workbench top */
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+}
+
+.hub__swirle-head {
+  width: clamp(28px, 5vw, 40px);
+  height: clamp(24px, 4vw, 34px);
+  background: linear-gradient(160deg, #C8B098 0%, #9E8070 60%, #7A6050 100%);
+  border-radius: 50% 50% 40% 40%;
+  border: 2px solid #6A5040;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+/* Little antenna */
+.hub__swirle-head::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 8px;
+  background: #8A7060;
+  border-radius: 2px;
+}
+.hub__swirle-head::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(212, 169, 89, 0.9);
+  box-shadow: 0 0 6px rgba(212, 169, 89, 0.8);
+}
+
+.hub__swirle-body {
+  width: clamp(32px, 6vw, 50px);
+  height: clamp(28px, 5vw, 42px);
+  background: linear-gradient(160deg, #B8A090 0%, #8A7060 60%, #6A5040 100%);
+  border-radius: 6px;
+  border: 2px solid #5A4030;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  position: relative;
+}
+
+.hub__swirle-eye {
+  position: absolute;
+  top: 6px;
+  width: clamp(6px, 1.2vw, 9px);
+  height: clamp(6px, 1.2vw, 9px);
+  border-radius: 50%;
+  background: #D4E8F0;
+  box-shadow:
+    0 0 4px rgba(100, 200, 240, 0.8),
+    0 0 8px rgba(100, 200, 240, 0.4);
+  animation: swirle-blink 4s ease-in-out infinite;
+}
+.hub__swirle-eye--l { left: 20%; }
+.hub__swirle-eye--r { right: 20%; }
+
+@keyframes swirle-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  93%           { transform: scaleY(0.1); }
+}
+
+.hub__swirle-label {
+  font-size: clamp(0.35rem, 0.8vw, 0.5rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.08em;
+  margin-top: auto;
+  padding-bottom: 3px;
+}
+
+/* Workbench wood surface */
+.hub__workbench {
+  width: 100%;
+  height: clamp(50px, 8vh, 80px);
+  background: linear-gradient(180deg, #8B5E34 0%, #6B4423 40%, #4A2F18 100%);
+  border-top: 3px solid #A07848;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 -3px 16px rgba(0, 0, 0, 0.4);
+}
+/* Wood grain lines */
+.hub__workbench::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 40px,
+    rgba(0, 0, 0, 0.04) 40px,
+    rgba(0, 0, 0, 0.04) 41px
+  );
+}
+
+/* ── Player badge ─────────────────────────────────────────────────────────── */
+.hub__player {
+  position: absolute;
+  top: calc(var(--safe-top) + var(--space-sm));
+  right: calc(var(--safe-right) + var(--space-md));
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: rgba(8, 20, 38, 0.82);
+  border: 1.5px solid rgba(var(--avatar-color, 212, 169, 89), 0.45);
+  border-color: rgba(212, 169, 89, 0.45); /* fallback; JS sets --avatar-color */
+  border-radius: 40px;
+  padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.hub__player-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 15%;
+  border: 2px solid rgba(212, 169, 89, 0.5);
+  flex-shrink: 0;
+}
+
+.hub__player-img--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 169, 89, 0.2);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.hub__player-name {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #F0C866;
+  white-space: nowrap;
+}
+
+.hub__player-change {
+  min-height: 28px;
+  padding: 3px var(--space-sm);
+  background: rgba(212, 169, 89, 0.18);
+  border: 1px solid rgba(212, 169, 89, 0.38);
+  border-radius: 20px;
+  color: rgba(240, 200, 102, 0.8);
+  font-size: 0.75rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.hub__player-change:active {
+  background: rgba(212, 169, 89, 0.38);
+}
+
+@media (hover: hover) {
+  .hub__player-change:hover {
+    background: rgba(212, 169, 89, 0.3);
+    border-color: rgba(240, 200, 102, 0.6);
+  }
+}
+
+/* ── Phone portrait: 2×2 portal grid ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hub__portals {
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+  }
+  .hub-portal {
+    flex-basis: calc(50% - var(--space-md));
+    max-width: none;
+    max-height: 180px;
+  }
+}
+
+
+/* =============================================================================
+   AVATAR SELECT SCENE
+   ============================================================================= */
+
+.avatar-select {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Avatar select background */
+.avatar-select__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 35%, rgba(212, 169, 89, 0.08) 0%, transparent 68%),
+    url('../../assets/images/hub/avatar-select-bg.png') center / cover no-repeat,
+    #0D1B2A;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.avatar-select__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-lg), 3vh, var(--space-xl));
+  width: 100%;
+  height: 100%;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.avatar-select__title {
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #F0C866;
+  text-shadow: 0 0 26px rgba(240, 200, 102, 0.5), 0 1px 3px rgba(0, 0, 0, 0.6);
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* Groups grid + button, centered together */
+.avatar-select__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(var(--space-lg), 3vh, var(--space-xl));
+  width: 100%;
+}
+
+/* ── Avatar card grid ─────────────────────────────────────────────────────── */
+.avatar-select__grid {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(var(--space-sm), 2vw, var(--space-lg));
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 920px;
+}
+
+.avatar-card {
+  flex: 1;
+  min-width: 0;
+  max-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-sm) var(--space-md);
+  background: rgba(8, 20, 38, 0.82);
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.avatar-card--selected {
+  border-color: var(--avatar-color, #D4A959);
+  box-shadow:
+    0 0 0 2px var(--avatar-color, #D4A959),
+    0 0 28px color-mix(in srgb, var(--avatar-color, #D4A959) 50%, transparent),
+    0 4px 18px rgba(0, 0, 0, 0.45);
+  transform: scale(1.07) translateY(-3px);
+}
+
+/* Pop-in animation on tap */
+.avatar-card--pop {
+  animation: avatar-pop 0.28s ease-out;
+}
+@keyframes avatar-pop {
+  0%   { transform: scale(1.07) translateY(-3px); }
+  40%  { transform: scale(1.13) translateY(-5px); }
+  100% { transform: scale(1.07) translateY(-3px); }
+}
+
+.avatar-card:active {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) {
+  .avatar-card:not(.avatar-card--selected):hover {
+    border-color: rgba(240, 200, 102, 0.35);
+    transform: scale(1.04) translateY(-2px);
+  }
+}
+
+.avatar-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.avatar-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Show face/upper body — characters are full-body shots */
+  object-position: center 12%;
+  display: block;
+  pointer-events: none;
+}
+
+.avatar-card__name {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: clamp(0.82rem, 2vw, 1.05rem);
+  font-weight: 800;
+  color: #F0C866;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.avatar-card__age {
+  font-size: 0.72rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  color: rgba(255, 255, 255, 0.38);
+  white-space: nowrap;
+}
+
+/* ── Let's Go button ──────────────────────────────────────────────────────── */
+.avatar-select__go {
+  min-height: var(--touch-min);
+  min-width: clamp(180px, 40vw, 280px);
+  padding: var(--space-sm) var(--space-xl);
+  background: linear-gradient(135deg, #C49A42 0%, #F0C866 45%, #C49A42 100%);
+  background-size: 200% 100%;
+  color: #3A2510;
+  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+  font-weight: 800;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow:
+    0 4px 22px rgba(212, 169, 89, 0.42),
+    0 2px 0 rgba(0, 0, 0, 0.28);
+  transition: opacity 0.2s ease, transform 0.14s ease, background-position 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.avatar-select__go:disabled {
+  opacity: 0.28;
+  cursor: default;
+  box-shadow: none;
+}
+
+.avatar-select__go:not(:disabled):active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 10px rgba(212, 169, 89, 0.28);
+}
+
+@media (hover: hover) {
+  .avatar-select__go:not(:disabled):hover {
+    background-position: 100% 0;
+    box-shadow: 0 6px 30px rgba(212, 169, 89, 0.6), 0 2px 0 rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* ── Phone portrait: scrollable row ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .avatar-select__grid {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  .avatar-card {
+    flex-basis: calc(33% - var(--space-sm));
+    max-width: none;
+  }
+}

@@ -1,0 +1,9 @@
+TARGET FILE: portal-robot-lab.png
+SIZE: 400x500px (3:4 portrait ratio)
+
+PROMPT:
+A portal window view into Grandpa's Robot Lab. A cozy, dimly lit workshop interior with warm amber and teal lighting. An unfinished robot (SWIRL-E) sits on a cluttered workbench surrounded by glowing circuit boards, copper wires, small tools, and gears. A single warm incandescent bulb hangs from above. Soft blue-green glow from electronic components. An open hand-drawn notebook lies open showing circuit sketches. The mood is inviting, magical, slightly mysterious — like something amazing is about to be built. No text, no UI.
+
+STYLE: Pixar 3D render, warm workshop lighting with teal electronics glow, deep shadows
+USAGE: Portal card preview image for Robot Lab game
+NOTES: Should work as a 3:4 portrait card with golden label bar below. Keep main focus in upper 75%.

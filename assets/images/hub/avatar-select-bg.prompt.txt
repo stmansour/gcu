@@ -1,0 +1,9 @@
+TARGET FILE: avatar-select-bg.png
+SIZE: 1366x1024px landscape
+
+PROMPT:
+A breathtaking wide Pixar-quality magical universe background. Deep cosmic space with rich swirling nebulae in deep blues, purples, and warm amber/gold tones. Thousands of soft glowing stars scattered across the scene. In the mid-distance, enormous translucent brass gears and clockwork mechanisms float gently, glowing from within with warm amber light. Soft golden light emanates from the center of the scene, creating a warm magical glow without any hard spotlights or directional beams. The overall feel is vast, magical, warm, and inviting — like standing at the entrance to another universe. No characters, no text, no UI elements, no spotlights, no desk, no floor. Pure atmospheric background that works with characters placed anywhere on top of it.
+
+STYLE: Pixar/DreamWorks quality 3D render, cosmic nebula palette (deep navy, purple, gold), warm magical atmosphere
+USAGE: Full-bleed background for the "Who's playing today?" avatar selection screen
+NOTES: Must be beautiful on its own with NO focal point — the 5 character cards will be centered on top of it. No spotlights. No desk. Nothing that implies characters should be in a specific location.

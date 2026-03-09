@@ -1,0 +1,9 @@
+TARGET FILE: hub-background.png
+SIZE: 1366x1024px (iPad landscape, also used scaled for other sizes)
+
+PROMPT:
+A wide cinematic establishing shot of Grandpa's magical workshop at night. Deep navy blue starfield background with subtle twinkling stars and faint nebula haze. Large antique brass and copper gear mechanisms float and rotate slowly in the mid-distance, partially transparent, catching warm amber light. A warm golden glow emanates from an off-screen hanging lamp, casting soft workshop-light from the top center. The workshop walls are deep dark wood with faint tool silhouettes. Bottom third is darker, suggesting a workbench surface. The overall mood is cozy, magical, slightly steampunk, Pixar quality. No characters, no text, no UI elements. Horizontal landscape orientation.
+
+STYLE: Pixar/DreamWorks 3D render quality, warm workshop lighting, deep navy and amber palette
+USAGE: Full-bleed background for the Hub scene (behind all UI elements)
+NOTES: Should be dark enough that golden text (#F0C866) reads clearly on top of it.

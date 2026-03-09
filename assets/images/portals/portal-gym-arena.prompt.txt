@@ -1,0 +1,9 @@
+TARGET FILE: portal-gym-arena.png
+SIZE: 400x500px (3:4 portrait ratio)
+
+PROMPT:
+A portal window view into Grandpa's Gym Arena. A stunning futuristic gymnastics arena with dramatic theatrical lighting — bright spotlights illuminate a blue spring floor mat, balance beams gleam, colorful ribbons hang in mid-air from a previous routine. The ceiling is high with stars visible through skylights. Colorful streamers and confetti hang frozen in the air. The mood is exciting, celebratory, full of energy and possibility. No characters, no text, no UI.
+
+STYLE: Pixar 3D render, dramatic stage lighting, saturated jewel-tone colors, cinematic feel
+USAGE: Portal card preview image for Gym Arena game
+NOTES: Should feel energetic and celebratory. Keep main focus in upper 75%.

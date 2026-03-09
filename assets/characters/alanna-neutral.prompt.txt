@@ -1,0 +1,11 @@
+TARGET FILE: CharacterSheets/Alanna/avatars/alanna-neutral.png
+SIZE: 600x900px, transparent background preferred (PNG)
+
+PROMPT:
+Pixar-style 3D rendered girl, age 4, shoulder-length wavy blonde hair, bright happy green eyes, wearing a purple sparkly gymnastics leotard. Casual relaxed standing pose, arms comfortably at sides, big bright happy smile, looking forward at viewer. Soft neutral light grey gradient background. Full body visible from head to toe, centered in frame. Warm studio lighting from slightly above. High detail Pixar render quality. NO watermarks, NO logos, NO copyright symbols.
+
+STYLE: Exactly matching the existing Alanna character style — Pixar 3D render, same face/body proportions as existing alanna_hero1.png but without the gymnasium background and crawling pose
+USAGE: Avatar picker card and corner companion badge for Alanna
+NOTES: This is a neutral "portrait mode" version of alanna_hero1.png. Must match her existing face and character design exactly. Neutral background for clean compositing. The existing image has a watermark — this new version must NOT have any watermark.
+
+EXISTING REFERENCE: CharacterSheets/Alanna/avatars/alanna_hero1.png

@@ -1,0 +1,9 @@
+TARGET FILE: swirl-e-workbench.png
+SIZE: 300x400px, transparent background (PNG with alpha)
+
+PROMPT:
+A small cute robot named SWIRL-E standing upright on a wooden workbench surface, full body visible from feet to top of head. The robot is compact and round-headed, about the size of a toddler, with large expressive circular eyes that glow soft blue-white, a rounded metallic body in warm copper/bronze tones, the word "SWIRL-E" embossed on its chest plate, small rounded arms at its sides, and sturdy little legs. The robot has a cheerful, curious, slightly wondering expression — like it just woke up and is looking around. One small antenna on top of head with a tiny glowing amber tip. Warm workshop lighting from above-left. Transparent background — the robot only, no floor, no scene elements.
+
+STYLE: Pixar 3D render, warm incandescent lighting, copper and bronze tones, big expressive eyes (Wall-E inspired but original)
+USAGE: Placed centered at the bottom of the Hub scene, appearing to stand on the workbench
+NOTES: Eyes should glow softly. Body should be copper/bronze/metallic warm tones matching the workshop palette.

@@ -1,0 +1,9 @@
+TARGET FILE: portal-puzzle-forest.png
+SIZE: 400x500px (3:4 portrait ratio)
+
+PROMPT:
+A portal window view into the Puzzle Forest. A magical enchanted forest at dusk with giant glowing puzzle pieces embedded in ancient trees and scattered along a winding mossy path. Fireflies and soft magical light particles float through the air. The trees are massive and friendly-looking, with faces suggested in the bark. Colorful puzzle pieces glow with their own inner light — red, yellow, green, blue. The path ahead winds deeper into the warm mysterious forest. The mood is adventurous, cozy, and full of wonder. No characters, no text, no UI.
+
+STYLE: Pixar 3D render, magical forest lighting, warm amber and deep forest greens, firefly particles
+USAGE: Portal card preview image for Puzzle Forest game
+NOTES: Should feel inviting and slightly magical, not scary. Keep main focus in upper 75%.

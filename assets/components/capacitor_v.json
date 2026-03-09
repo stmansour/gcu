@@ -1,0 +1,23 @@
+{
+    "width": 108,
+    "height": 288,
+    "type": "capacitor_v",
+    "terminal_left": {
+        "position": {
+            "x": 54,
+            "y": 0
+        }
+    },
+    "terminal_right": {
+        "type": "terminal",
+        "name": "right",
+        "position": {
+            "x": 54,
+            "y": 287
+        }
+    },
+    "wire_path": {
+        "x": 54,
+        "thickness": 12
+    }
+}

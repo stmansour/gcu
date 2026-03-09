@@ -1,0 +1,11 @@
+TARGET FILE: CharacterSheets/Kaila/avatars/kaila-neutral.png
+SIZE: 600x900px, transparent background preferred (PNG)
+
+PROMPT:
+Pixar-style 3D rendered girl, age 9, long straight brown hair, bright curious green eyes, wearing a light grey artist smock over a simple white long-sleeve shirt and black leggings, comfortable sneakers. Casual relaxed standing pose, arms comfortably at sides, warm friendly smile, looking forward at viewer. Soft neutral light grey gradient background. Full body visible from head to toe, centered in frame. Warm studio lighting from slightly above. High detail Pixar render quality.
+
+STYLE: Exactly matching the existing Kaila character style — Pixar 3D render, same face/body proportions as existing kaila-artist.png but without the art studio background and painting pose
+USAGE: Avatar picker card and corner companion badge for Kaila
+NOTES: This is a neutral "portrait mode" version of kaila-artist.png. Must match her existing face and character design exactly. Neutral background for clean compositing.
+
+EXISTING REFERENCE: CharacterSheets/Kaila/avatars/kaila-artist.png
