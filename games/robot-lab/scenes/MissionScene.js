@@ -16,6 +16,7 @@ import { Scene }               from '../../../core/scene/index.js';
 import { GameStorage }         from '../../../core/storage/index.js';
 import { AVATAR_META, AVATAR_IMAGES } from '../../../core/avatar/avatarManifest.js';
 import { celebrate }           from '../../../core/rewards/index.js';
+import { LineDragManager }     from '../../../core/input/index.js';
 import { CircuitEngine }       from '../engine/CircuitEngine.js';
 import { SchematicRenderer }   from '../renderer/SchematicRenderer.js';
 import { ParticleSystem }      from '../animation/ParticleSystem.js';
@@ -52,7 +53,7 @@ export class MissionScene extends Scene {
     this._slotAssignments = [];     // [{type,label,sublabel,color,engineType}, ...]
     this._termPositions   = new Map(); // termId → {x, y} in SVG units
 
-    this._drawing              = null;   // {termId} while dragging
+    this._wireDrag             = null;   // LineDragManager instance
     this._placedEngWires       = [];     // engine wire ids
     this._placedRenWires       = [];     // renderer wire ids
     this._playerWireEndpoints  = [];     // [{from, to}] for circuit detection
@@ -70,8 +71,7 @@ export class MissionScene extends Scene {
     this._board     = null;
     this._svg       = null;
     this._container = null;
-    this._docListeners = [];
-    this._avatarId         = null;
+    this._avatarId  = null;
     this._completedChapters = new Set();
   }
 
@@ -97,7 +97,6 @@ export class MissionScene extends Scene {
     this._container = container;
     this._solved    = false;
     this._blown     = false;
-    this._drawing   = null;
 
     container.className = 'rl-mission';
     this._buildDOM(container);
@@ -108,14 +107,13 @@ export class MissionScene extends Scene {
   exit(container) {
     if (this._animRaf) { cancelAnimationFrame(this._animRaf); this._animRaf = null; }
     this._particles?.stop();
-    for (const { type, fn } of this._docListeners) document.removeEventListener(type, fn);
-    this._docListeners  = [];
-    this._drawing       = null;
-    this._board         = null;
-    this._svg           = null;
-    this._container     = null;
-    this._renderer      = null;
-    this._particles     = null;
+    this._wireDrag?.destroy();
+    this._wireDrag  = null;
+    this._board     = null;
+    this._svg       = null;
+    this._container = null;
+    this._renderer  = null;
+    this._particles = null;
     container.innerHTML = '';
   }
 
@@ -181,6 +179,14 @@ export class MissionScene extends Scene {
 
     this._board = container.querySelector('#rl-board');
     this._svg   = container.querySelector('#rl-svg');
+
+    // Wiring tip — floats at the top of the circuit board where eyes land first
+    if (m.tip) {
+      const tipEl = document.createElement('div');
+      tipEl.className = 'rl-board__tip';
+      tipEl.textContent = m.tip;
+      this._board.appendChild(tipEl);
+    }
 
     // ── Mission briefing overlay ──────────────────────────────────────────
     const kidMeta    = this._avatarId ? AVATAR_META[this._avatarId] : null;
@@ -272,52 +278,21 @@ export class MissionScene extends Scene {
   // ── Event handling ────────────────────────────────────────────────────────
 
   _attachEvents() {
-    const board = this._board;
-
-    const onDown = (e) => {
-      if (!this._audioUnlocked) { this._audioUnlocked = true; unlockAudio(); }
-      if (this._solved || this._blown) return;
-      e.preventDefault();
-      const { x, y } = this._screenPos(e);
-      const termId = this._hitTest(x, y);
-      if (!termId || this._connectedTerms.has(termId)) return;
-      this._drawing = { termId };
-      this._renderer.startPreview(termId);
-    };
-
-    const onMove = (e) => {
-      if (!this._drawing) return;
-      e.preventDefault();
-      const { x, y } = this._screenPos(e);
-      const svgPt = this._screenToSVG(x, y);
-      this._renderer.updatePreview(svgPt.x, svgPt.y);
-    };
-
-    const onUp = (e) => {
-      if (!this._drawing) return;
-      e.preventDefault();
-      const { x, y } = this._screenPos(e);
-      const targetId = this._hitTest(x, y);
-      this._renderer.clearPreview();
-      if (targetId && targetId !== this._drawing.termId) {
-        this._tryConnect(this._drawing.termId, targetId);
-      }
-      this._drawing = null;
-    };
-
-    board.addEventListener('touchstart', onDown, { passive: false });
-    board.addEventListener('touchmove',  onMove, { passive: false });
-    board.addEventListener('touchend',   onUp,   { passive: false });
-    board.addEventListener('mousedown',  onDown);
-
-    const onMouseMove = (e) => onMove(e);
-    const onMouseUp   = (e) => onUp(e);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup',   onMouseUp);
-    this._docListeners = [
-      { type: 'mousemove', fn: onMouseMove },
-      { type: 'mouseup',   fn: onMouseUp   },
-    ];
+    // Wire drawing — delegated to LineDragManager (core/input).
+    // canStartFrom guards prevent drawing when solved/blown or terminal is already used.
+    this._wireDrag = new LineDragManager(this._board, {
+      svgEl:        this._svg,
+      points:       this._termPositions,
+      hitRadius:    44,
+      canStartFrom: (id) => {
+        if (!this._audioUnlocked) { this._audioUnlocked = true; unlockAudio(); }
+        return !this._solved && !this._blown && !this._connectedTerms.has(id);
+      },
+      onDragStart:  (id)         => this._renderer.startPreview(id),
+      onDragMove:   (svgX, svgY) => this._renderer.updatePreview(svgX, svgY),
+      onDrop:       (from, to)   => this._tryConnect(from, to),
+      onCancel:     ()           => this._renderer.clearPreview(),
+    });
 
     this._container.querySelector('#rl-back').addEventListener('click',
       () => this.sceneManager.go('hub'));
@@ -339,28 +314,6 @@ export class MissionScene extends Scene {
     const screenPt  = this._renderer.svgToScreen(svgX, svgY);
     const boardRect = this._board.getBoundingClientRect();
     return { left: screenPt.x - boardRect.left, top: screenPt.y - boardRect.top };
-  }
-
-  _screenPos(e) {
-    if (e.changedTouches?.length) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-    if (e.touches?.length)        return { x: e.touches[0].clientX,        y: e.touches[0].clientY };
-    return { x: e.clientX, y: e.clientY };
-  }
-
-  _screenToSVG(screenX, screenY) {
-    return this._renderer.screenToSVG(screenX, screenY);
-  }
-
-  /** Returns the closest terminal ID within HIT_R SVG units, or null. */
-  _hitTest(screenX, screenY) {
-    const svgPt   = this._screenToSVG(screenX, screenY);
-    const HIT_R   = 44; // SVG units
-    let best = null, bestDist = Infinity;
-    for (const [termId, pos] of this._termPositions) {
-      const d = Math.hypot(svgPt.x - pos.x, svgPt.y - pos.y);
-      if (d <= HIT_R && d < bestDist) { best = termId; bestDist = d; }
-    }
-    return best;
   }
 
   // ── Wire placement ────────────────────────────────────────────────────────
@@ -397,6 +350,42 @@ export class MissionScene extends Scene {
 
   _checkCircuit() {
     const wires = this._playerWireEndpoints;
+
+    // ── Bypass check ─────────────────────────────────────────────────────────
+    // Player connected battery:plus directly to a passive component (top terminal),
+    // bypassing the eye module. The bottom bus already connects passive-X:b to
+    // battery:minus, so this is a complete circuit — just the wrong topology.
+    const bypassWire = wires.find(w => {
+      const fBat = w.from === 'battery:plus', tBat = w.to === 'battery:plus';
+      const fPas = /^passive-\d+:a$/.test(w.from), tPas = /^passive-\d+:a$/.test(w.to);
+      return (fBat && tPas) || (tBat && fPas);
+    });
+    if (bypassWire) {
+      const passiveTermId = bypassWire.from === 'battery:plus' ? bypassWire.to : bypassWire.from;
+      const passiveId     = passiveTermId.replace(':a', '');
+      const comp          = this._engine.components.get(passiveId);
+      if (!comp) return;
+      if      (comp.type === 'resistor')  this._doBypassResistor(passiveId);
+      else if (comp.type === 'capacitor') this._doBypassCapacitor(passiveId);
+      else if (comp.type === 'inductor')  this._doBypassInductor(passiveId);
+      return;
+    }
+
+    // ── Reversed polarity check ──────────────────────────────────────────────
+    // Player wired battery:plus → eye:minus AND battery:minus → eye:plus.
+    // Both wires required to complete the circuit; one alone is just incomplete.
+    const hasFwdBatToEyeBack = wires.some(w =>
+      (w.from === 'battery:plus' && w.to === 'eye:minus') ||
+      (w.from === 'eye:minus'    && w.to === 'battery:plus')
+    );
+    const hasFwdGndToEyeFront = wires.some(w =>
+      (w.from === 'battery:minus' && w.to === 'eye:plus') ||
+      (w.from === 'eye:plus'      && w.to === 'battery:minus')
+    );
+    if (hasFwdBatToEyeBack && hasFwdGndToEyeFront) {
+      this._doReversedPolarity();
+      return;
+    }
 
     const hasPowerWire = wires.some(w =>
       (w.from === 'battery:plus' && w.to === 'eye:plus') ||
@@ -611,6 +600,152 @@ export class MissionScene extends Scene {
     runAnimation();
   }
 
+  // ── Outcome: Bypass — battery:plus wired directly to passive, skipping eye ─
+
+  _doBypassResistor(passiveId) {
+    this._blown = true;
+    const waypoints = this._buildBypassWaypoints(passiveId);
+    this._replayFn = () => {
+      this._particles.stop();
+      this._particles.start(waypoints, {
+        count:     8,
+        speed:     140,
+        direction: this._currentParticleDir,
+      });
+    };
+    this._replayFn();
+
+    const probEl = this._container.querySelector('#rl-problem');
+    if (probEl) probEl.innerHTML = `
+      <p class="rl-msg rl-msg--fail">1mA flows — but SWIRL-E's eyes aren't in this circuit!</p>
+      <p class="rl-msg rl-msg--detail">The eye module needs to be wired between the battery and the resistor.</p>
+    `;
+    this._showDirectionToggle();
+    this._showReplayButton();
+    setTimeout(() => this._showResetButton(), 600);
+    setTimeout(() => this._showOutcomeSummary('bypass-resistor'), 2500);
+  }
+
+  _doBypassCapacitor(passiveId) {
+    this._blown = true;
+    const waypoints = this._buildBypassWaypoints(passiveId);
+    const TOTAL_MS  = 3200;
+    let   firstRun  = true;
+
+    const runAnimation = () => {
+      if (this._animRaf) { cancelAnimationFrame(this._animRaf); this._animRaf = null; }
+      this._particles.stop();
+      this._renderer.setCapacitorCharge(passiveId, 0);
+
+      this._particles.start(waypoints, {
+        count:     8,
+        speed:     140,
+        direction: this._currentParticleDir,
+        speedFn:   (elapsed) => Math.max(0, 1 - elapsed / TOTAL_MS),
+      });
+
+      const startTime = performance.now();
+      const animCap = (now) => {
+        const t = Math.min(1, (now - startTime) / TOTAL_MS);
+        this._renderer.setCapacitorCharge(passiveId, t);
+        if (t < 1) {
+          this._animRaf = requestAnimationFrame(animCap);
+        } else {
+          this._particles.stop();
+          if (firstRun) {
+            firstRun = false;
+            const probEl = this._container.querySelector('#rl-problem');
+            if (probEl) probEl.innerHTML = `
+              <p class="rl-msg rl-msg--fail">The capacitor charged up and blocked the current!</p>
+              <p class="rl-msg rl-msg--detail">And SWIRL-E's eyes were never in this circuit at all.</p>
+            `;
+            this._showDirectionToggle();
+            this._showReplayButton();
+            setTimeout(() => this._showResetButton(), 600);
+            setTimeout(() => this._showOutcomeSummary('bypass-capacitor'), 1400);
+          }
+        }
+      };
+      this._animRaf = requestAnimationFrame(animCap);
+    };
+
+    this._replayFn = runAnimation;
+    runAnimation();
+  }
+
+  _doBypassInductor(passiveId) {
+    this._blown = true;
+    const waypoints = this._buildBypassWaypoints(passiveId);
+    const RAMP_MS   = 4000;
+    const DRAIN_MS  = 2000;
+    let   firstRun  = true;
+
+    const runAnimation = () => {
+      if (this._animRaf) { cancelAnimationFrame(this._animRaf); this._animRaf = null; }
+      this._particles.stop();
+      this._renderer.setInductorField(passiveId, 0);
+
+      this._particles.start(waypoints, {
+        count:     8,
+        speed:     180,
+        direction: this._currentParticleDir,
+        speedFn:   (elapsed) => {
+          const t = Math.min(1, elapsed / RAMP_MS);
+          return t * t;  // ease-in: inductor resists then yields
+        },
+      });
+
+      const startTime = performance.now();
+      const animInd = (now) => {
+        const t = Math.min(1, (now - startTime) / RAMP_MS);
+        this._renderer.setInductorField(passiveId, t);
+        if (t < 1) {
+          this._animRaf = requestAnimationFrame(animInd);
+        } else {
+          // Full current — battery drains for DRAIN_MS then dies
+          setTimeout(() => {
+            this._particles.stop();
+            if (firstRun) {
+              firstRun = false;
+              const probEl = this._container.querySelector('#rl-problem');
+              if (probEl) probEl.innerHTML = `
+                <p class="rl-msg rl-msg--fail">Full current, no resistance — the battery drained fast!</p>
+                <p class="rl-msg rl-msg--detail">And SWIRL-E's eyes were never in this circuit. They never powered on.</p>
+              `;
+              this._showDirectionToggle();
+              this._showReplayButton();
+              setTimeout(() => this._showResetButton(), 600);
+              setTimeout(() => this._showOutcomeSummary('bypass-inductor'), 1400);
+            }
+          }, DRAIN_MS);
+        }
+      };
+      this._animRaf = requestAnimationFrame(animInd);
+    };
+
+    this._replayFn = runAnimation;
+    runAnimation();
+  }
+
+  // ── Outcome: Reversed polarity ───────────────────────────────────────────
+
+  _doReversedPolarity() {
+    // Brief "backwards" particle flow before the explosion sells the story
+    const waypoints = this._buildReversedWaypoints();
+    this._renderer.setPowered(true);
+    this._particles.start(waypoints, {
+      count:     8,
+      speed:     160,
+      direction: this._currentParticleDir,
+    });
+    setTimeout(() => {
+      this._particles.stop();
+      this._renderer.setPowered(false);
+      this._doExplosion('⚡ Reversed polarity! The battery is wired backwards — the eye module is fried!');
+      setTimeout(() => this._showOutcomeSummary('reversed'), 3800);
+    }, 1200);
+  }
+
   // ── Outcome: Explosion ────────────────────────────────────────────────────
 
   _doExplosion(message) {
@@ -755,7 +890,7 @@ export class MissionScene extends Scene {
           "The resistor did exactly what it's supposed to — it limited the current to a safe level.",
           "Ohm's Law tells us how much current flows:",
         ],
-        math: '9V  ÷  9,000Ω  =  0.001A  =  1mA  ✓',
+        math: `<span class="rl-fraction"><span class="rl-fraction__num">9V</span><span class="rl-fraction__denom">9,000Ω</span></span><span>= 0.001A = 1mA</span><span class="rl-math__badge rl-math__badge--ok">✓</span>`,
         mathClass: 'rl-math--good',
       },
       capacitor: {
@@ -766,7 +901,7 @@ export class MissionScene extends Scene {
           "A capacitor is like a tiny bucket — it fills up with charge, then stops the flow completely.",
           "DC current can't pass through a fully-charged capacitor. SWIRL-E gets a quick flash, then nothing.",
         ],
-        math: 'Capacitor full  →  Current = 0A  ✗',
+        math: `<span>Capacitor full → Current = 0A</span><span class="rl-math__badge rl-math__badge--fail">✗</span>`,
         mathClass: 'rl-math--bad',
       },
       inductor: {
@@ -777,7 +912,7 @@ export class MissionScene extends Scene {
           "An inductor resists changes in current — but once it \"charges up\", it acts like a plain wire.",
           "With nothing to actually limit steady current, it built up until it exceeded the safe limit.",
         ],
-        math: 'Steady state:  9V  ÷  ~0Ω  =  way too many Amps  💥',
+        math: `<span>Steady state:</span><span class="rl-fraction"><span class="rl-fraction__num">9V</span><span class="rl-fraction__denom">~0Ω</span></span><span>= way too many Amps</span><span class="rl-math__badge rl-math__badge--boom">💥</span>`,
         mathClass: 'rl-math--bad',
       },
       short: {
@@ -788,7 +923,51 @@ export class MissionScene extends Scene {
           "No component at all — you connected the battery terminals straight to each other.",
           "Zero resistance means nothing limits the current. It rushed straight through.",
         ],
-        math: '9V  ÷  0Ω  =  ∞ Amps  💥',
+        math: `<span class="rl-fraction"><span class="rl-fraction__num">9V</span><span class="rl-fraction__denom">0Ω</span></span><span>= ∞ Amps</span><span class="rl-math__badge rl-math__badge--boom">💥</span>`,
+        mathClass: 'rl-math--bad',
+      },
+      reversed: {
+        badge: '⚡ Reversed Polarity', badgeClass: 'rl-briefing__badge--fail',
+        title: 'Wired Backwards!',     titleClass: 'rl-briefing__title--fail',
+        eyeState: 'fried',
+        lines: [
+          "The positive battery terminal was connected to the negative side of the eye module — and the negative to the positive.",
+          "Polarized components like LEDs only work in one direction. Reversed polarity burns them out instantly.",
+        ],
+        math: `<span>+ to − and − to + = instant failure</span><span class="rl-math__badge rl-math__badge--boom">💥</span>`,
+        mathClass: 'rl-math--bad',
+      },
+      'bypass-resistor': {
+        badge: '⚡ Wrong Path',       badgeClass: 'rl-briefing__badge--fail',
+        title: 'Eyes Bypassed!',      titleClass: 'rl-briefing__title--fail',
+        eyeState: 'sleeping',
+        lines: [
+          "The resistor is doing its job — 1mA is flowing. But SWIRL-E's eyes are not in this circuit.",
+          "You connected the battery directly to the resistor, leaving the eye module completely unpowered.",
+        ],
+        math: `<span class="rl-fraction"><span class="rl-fraction__num">9V</span><span class="rl-fraction__denom">9,000Ω</span></span><span>= 1mA (not through the eyes)</span><span class="rl-math__badge rl-math__badge--fail">✗</span>`,
+        mathClass: 'rl-math--bad',
+      },
+      'bypass-capacitor': {
+        badge: '✗ Wrong Path',        badgeClass: 'rl-briefing__badge--fail',
+        title: 'Eyes Bypassed!',      titleClass: 'rl-briefing__title--fail',
+        eyeState: 'sleeping',
+        lines: [
+          "The capacitor charged up and blocked the current — just like when it's in series with the eyes.",
+          "But SWIRL-E's eyes were never in this circuit at all. They're wired in a completely separate path.",
+        ],
+        math: `<span>Capacitor charged → Current = 0A</span><span class="rl-math__badge rl-math__badge--fail">✗</span>`,
+        mathClass: 'rl-math--bad',
+      },
+      'bypass-inductor': {
+        badge: '🔋 Battery Drained',  badgeClass: 'rl-briefing__badge--fail',
+        title: 'Battery Drained!',    titleClass: 'rl-briefing__title--fail',
+        eyeState: 'sleeping',
+        lines: [
+          "The inductor reached full current, then acted like a plain wire with no resistance. The battery drained fast.",
+          "And SWIRL-E's eyes weren't even in this circuit. They never powered on.",
+        ],
+        math: `<span>Steady state:</span><span class="rl-fraction"><span class="rl-fraction__num">9V</span><span class="rl-fraction__denom">~0Ω</span></span><span>= max current → battery dead</span><span class="rl-math__badge rl-math__badge--boom">💥</span>`,
         mathClass: 'rl-math--bad',
       },
     };
@@ -913,12 +1092,14 @@ export class MissionScene extends Scene {
 
     this._solved             = false;
     this._blown              = false;
-    this._drawing            = null;
     this._replayFn           = null;
     this._currentParticleDir = 'electron';
 
     // Re-shuffle and rebuild everything in the SVG
     this._shuffleAndBuild();
+
+    // Terminal positions change after each shuffle — keep LineDragManager in sync
+    this._wireDrag?.setPoints(this._termPositions);
 
     // Restore problem text
     const probEl = this._container.querySelector('#rl-problem');
@@ -979,6 +1160,49 @@ export class MissionScene extends Scene {
       [em.x, em.y],
       [bm.x, bm.y],
       [bp.x, bp.y],
+    ];
+  }
+
+  /**
+   * Waypoints for reversed polarity: battery:plus → eye:minus → eye:plus → battery:minus.
+   * Traces the backwards path through the eye module before the explosion.
+   */
+  _buildReversedWaypoints() {
+    const layout = this._mission.layout;
+    const bp = layout.battery.plus;   // (55, 570)
+    const bm = layout.battery.minus;  // (315, 570)
+    const ep = layout.eyeModule.plus; // (55, 160)
+    const em = layout.eyeModule.minus;// (315, 160)
+    return [
+      [bp.x, bp.y],  // battery:plus  (55, 570)
+      [bp.x, ep.y],  // up left side  (55, 160)
+      [em.x, em.y],  // right to eye:minus (315, 160) — enters wrong end
+      [ep.x, ep.y],  // left through eye backwards to eye:plus (55, 160)
+      [ep.x, bm.y],  // down left side (55, 570)
+      [bm.x, bm.y],  // right to battery:minus (315, 570)
+      [bp.x, bp.y],  // close loop
+    ];
+  }
+
+  /**
+   * Waypoints for the bypass path: battery:plus → passive-X:a → passive-X:b → bus → battery:minus.
+   * Used when the player wires battery:plus directly to a component, bypassing the eye module.
+   * @param {string} passiveId  — e.g. 'passive-1'
+   */
+  _buildBypassWaypoints(passiveId) {
+    const layout  = this._mission.layout;
+    const bp      = layout.battery.plus;
+    const bm      = layout.battery.minus;
+    const slotIdx = parseInt(passiveId.split('-')[1], 10);
+    const slot    = layout.componentSlots[slotIdx];
+    return [
+      [bp.x,    bp.y],           // battery:plus  (55, 570)
+      [bp.x,    slot.topY],      // elbow: straight up to component height (55, 270)
+      [slot.cx, slot.topY],      // passive-X:a   (cx, 270) — right along top rail
+      [slot.cx, slot.bottomY],   // passive-X:b   (cx, 460) — through component
+      [slot.cx, bm.y],           // bottom bus    (cx, 570) — stub down to bus
+      [bm.x,    bm.y],           // battery:minus (315, 570) — left along bus
+      [bp.x,    bp.y],           // close loop through battery
     ];
   }
 }

@@ -1,7 +1,6 @@
 /**
  * HubScene — Grandpa's Creative Universe workshop launcher.
- * Shows the wooden sign, 4 game portal cards, SWIRL-E on the workbench,
- * and the selected player badge in the corner.
+ * Shows the wooden sign, game portal cards, and the selected player badge.
  */
 
 import { Scene } from '../../core/scene/index.js';
@@ -40,17 +39,9 @@ export class HubScene extends Scene {
   _render(container) {
     container.className = 'hub';
 
-    // ── Background layer (stars + warm glow) ──────────────────────────────
+    // ── Background layer ───────────────────────────────────────────────────
     const bg = document.createElement('div');
     bg.className = 'hub__bg';
-    const gearClasses = ['hub__gear--1', 'hub__gear--2', 'hub__gear--3', 'hub__gear--4'];
-    for (const cls of gearClasses) {
-      const gear = document.createElement('span');
-      gear.className = `hub__gear ${cls}`;
-      gear.setAttribute('aria-hidden', 'true');
-      gear.textContent = '⚙';
-      bg.appendChild(gear);
-    }
     container.appendChild(bg);
 
     // ── Main layout column ─────────────────────────────────────────────────
@@ -82,31 +73,6 @@ export class HubScene extends Scene {
     }
     layout.appendChild(portals);
 
-    // Workbench + SWIRL-E
-    const floor = document.createElement('div');
-    floor.className = 'hub__floor';
-
-    const swirle = document.createElement('div');
-    swirle.className = 'hub__swirle';
-    swirle.setAttribute('aria-hidden', 'true');
-    // CSS-only SWIRL-E placeholder — replaced with an image when asset is ready.
-    // Drop asset at: gcu/assets/images/hub/swirl-e-workbench.png
-    swirle.innerHTML = `
-      <div class="hub__swirle-head"></div>
-      <div class="hub__swirle-body">
-        <div class="hub__swirle-eye hub__swirle-eye--l"></div>
-        <div class="hub__swirle-eye hub__swirle-eye--r"></div>
-        <div class="hub__swirle-label">SWIRL-E</div>
-      </div>
-    `;
-    floor.appendChild(swirle);
-
-    const workbench = document.createElement('div');
-    workbench.className = 'hub__workbench';
-    floor.appendChild(workbench);
-
-    layout.appendChild(floor);
-
     // ── Player badge (top-right corner) ───────────────────────────────────
     container.appendChild(this._makePlayerBadge());
   }
@@ -128,7 +94,7 @@ export class HubScene extends Scene {
         `linear-gradient(to top, rgba(0,8,18,0.92) 0%, rgba(0,8,18,0.35) 40%, transparent 70%),` +
         `url('${game.previewImage}')`;
       card.style.backgroundSize = '100% 100%, cover';
-      card.style.backgroundPosition = 'center, center top';
+      card.style.backgroundPosition = 'center, center 40%';
       card.style.backgroundColor = 'rgba(6, 16, 32, 0.15)';
     }
 

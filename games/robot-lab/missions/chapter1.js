@@ -32,6 +32,8 @@ export const CHAPTER_1 = {
   chapterNumber: 1,
   title:         'SWIRL-E Visual System',
 
+  tip: "Touch any white circle and drag to another white circle to draw a wire.",
+
   problem: [
     "SWIRL-E's head is almost fully functional. His eye module just needs power. Your mission is to properly wire the eye module power.",
     "SWIRL-E's Eye Module burns up if it gets more than 1 milliamp (1mA) of current.",
@@ -43,7 +45,7 @@ export const CHAPTER_1 = {
     "The battery pushes 9 volts through the circuit.",
     "Ohm's Law: Current = Voltage ÷ Resistance",
     "9V ÷ 9,000Ω = 0.001A = 1mA — exactly the limit!",
-    "A capacitor stores charge then stops current. DC can't flow through it.",
+    "In a DC circuit, a capacitor stores charge then stops current. DC can't flow through it after it's fully charged.",
     "An inductor resists changing current... but once it's 'charged up' it acts like a plain wire.",
     "Only the resistor limits DC current to a safe steady value.",
     "— Grandpa",
@@ -102,8 +104,10 @@ export const CHAPTER_1 = {
     viewBox: '0 0 1000 720',
 
     eyeModule: {
-      // Wire stubs extend from the box to the open-circle terminals
-      box:   { x: 75, y: 115, w: 220, h: 90 },
+      // Wire stubs extend from the box to the open-circle terminals.
+      // Box is square to match the swirle-vpa.png aspect ratio (1622×1641 ≈ 1:1).
+      // Terminals remain on the horizontal centre line (y=160) of the box.
+      box:   { x: 75, y: 50, w: 220, h: 220 },
       plus:  { id: 'eye:plus',  x: 55,  y: 160 },
       minus: { id: 'eye:minus', x: 315, y: 160 },
       label: 'SWIRL-E\nEYE MODULE',

@@ -324,7 +324,7 @@ Accessible via the 📓 button in the topbar. A slide-in overlay with a handwrit
 The battery pushes 9 volts through the circuit.
 Ohm's Law: Current = Voltage ÷ Resistance
 9V ÷ 9,000Ω = 0.001A = 1mA — exactly the limit!
-A capacitor stores charge then stops current. DC can't flow through it.
+In a DC circuit, a capacitor stores charge then stops current. DC can't flow through it after it's fully charged.
 An inductor resists changing current... but once it's "charged up" it acts like a plain wire.
 Only the resistor limits DC current to a safe steady value.
 — Grandpa

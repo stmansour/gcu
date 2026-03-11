@@ -255,7 +255,7 @@ export class SchematicRenderer {
    */
   startEyeAnimation() {
     if (this._eyeAnimRaf) return;
-    const TRAVEL = 8;        // max pupil displacement (SVG units)
+    const TRAVEL = 12;       // max pupil displacement (SVG units)
     const BLINK_PERIOD = 4;  // seconds between blinks
     this._lastBlink = -1;
     const start = performance.now();
@@ -451,14 +451,14 @@ export class SchematicRenderer {
       class: 'rl-comp-box rl-comp-box--eye',
     }));
 
-    // VPA circuit board image — washed out, clipped to box
+    // VPA circuit board image — full opacity, fills the square box
     compG.appendChild(el('image', {
       href:                'games/robot-lab/assets/images/swirle-vpa.png',
       x:                   box.x,
       y:                   box.y,
       width:               box.w,
       height:              box.h,
-      preserveAspectRatio: 'xMidYMid slice',
+      preserveAspectRatio: 'xMidYMid meet',
       'clip-path':         `url(#${clipId})`,
       class:               'rl-eyemod__vpa',
     }));
@@ -473,18 +473,21 @@ export class SchematicRenderer {
       class: 'rl-comp-lead',
     }));
 
-    // Eyes — pupils and highlights get IDs so the animation can move them
-    const eyeY   = boxCy + 6;
-    const eyeGap = 32;
-    const eyeR   = 20;
+    // Eyes — pupils and highlights get IDs so the animation can move them.
+    // Positioned at the vertical centre of the box, spread proportionally to box width.
+    const eyeY   = boxCy + 8;
+    const eyeGap = Math.round(box.w * 0.27);  // ~60 on a 220-wide box
+    const eyeR   = Math.round(box.w * 0.13);  // ~28 on a 220-wide box
     this._eyeCenters = [];
     for (const [ex, eid, pupilId, hlId] of [
       [boxCx - eyeGap / 2, 'schema-eye-l', 'schema-pupil-l', 'schema-hl-l'],
       [boxCx + eyeGap / 2, 'schema-eye-r', 'schema-pupil-r', 'schema-hl-r'],
     ]) {
-      compG.appendChild(el('circle', { cx: ex, cy: eyeY, r: eyeR, class: 'rl-eyemod__iris', id: eid }));
-      compG.appendChild(el('circle', { cx: ex, cy: eyeY, r: 8,    class: 'rl-eyemod__pupil',    id: pupilId }));
-      compG.appendChild(el('circle', { cx: ex - 5, cy: eyeY - 5, r: 4, class: 'rl-eyemod__highlight', id: hlId }));
+      const pupilR = Math.round(eyeR * 0.38);
+      const hlR    = Math.round(eyeR * 0.20);
+      compG.appendChild(el('circle', { cx: ex, cy: eyeY, r: eyeR,  class: 'rl-eyemod__iris',      id: eid }));
+      compG.appendChild(el('circle', { cx: ex, cy: eyeY, r: pupilR, class: 'rl-eyemod__pupil',     id: pupilId }));
+      compG.appendChild(el('circle', { cx: ex - hlR, cy: eyeY - hlR, r: hlR, class: 'rl-eyemod__highlight', id: hlId }));
       this._eyeCenters.push({ x: ex, y: eyeY, eid, pupilId, hlId });
     }
 
@@ -514,6 +517,13 @@ export class SchematicRenderer {
       height: rect.h,
       class:  'rl-comp-image',
     }));
+
+    // "BATTERY" name label — centred above the image
+    this._layers.components.appendChild(el('text', {
+      x:     (bat.plus.x + bat.minus.x) / 2,
+      y:     rect.y - 10,
+      class: 'rl-comp-label rl-comp-label--type',
+    }, [txt('BATTERY')]));
 
     // Voltage label — centred below the image
     this._layers.components.appendChild(el('text', {

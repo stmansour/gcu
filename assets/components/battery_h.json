@@ -1,23 +1,23 @@
 {
-    "width": 251,
-    "height": 152,
+    "width": 252,
+    "height": 144,
     "type": "battery_h",
     "terminal_left": {
         "position": {
             "x": 0,
-            "y": 76
+            "y": 72
         }
     },
     "terminal_right": {
         "type": "terminal",
         "name": "right",
         "position": {
-            "x": 250,
-            "y": 76
+            "x": 251,
+            "y": 72
         }
     },
     "wire_path": {
-        "y": 76,
+        "y": 72,
         "thickness": 12
     }
 }
