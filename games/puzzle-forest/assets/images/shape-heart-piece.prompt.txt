@@ -1,0 +1,11 @@
+TARGET FILE: shape-heart-piece.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A heart-shaped wooden puzzle piece, painted a solid cheerful color, rounded lobes, visible thickness suggesting a physical piece, centered, isolated object.
+
+
+NOTES:
+Must look like a physical toy piece, not a flat graphic heart.

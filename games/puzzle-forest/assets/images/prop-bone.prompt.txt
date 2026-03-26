@@ -1,0 +1,11 @@
+TARGET FILE: prop-bone.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single dog bone, ivory color, rounded bulbous ends, horizontal orientation, centered, isolated object.
+
+
+NOTES:
+Rounded ends, no gritty or realistic texture.

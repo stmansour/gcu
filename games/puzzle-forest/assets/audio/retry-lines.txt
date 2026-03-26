@@ -1,0 +1,6 @@
+retry_01|Let's try another one.
+retry_02|Almost. Try again.
+retry_03|Not this one. Try a different piece.
+retry_04|Good try. Let's keep going.
+retry_05|Oops. Let's find the right one.
+retry_06|Try another piece.

@@ -1,0 +1,11 @@
+TARGET FILE: feed-bear.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A bear facing slightly toward camera, three-quarter view, brown fur, rounded muzzle, open or smiling mouth clearly visible, sitting or standing in a relaxed upright posture, no scenery, no props, isolated object.
+
+
+NOTES:
+Keep the bear small in apparent scale — rounded, not imposing.

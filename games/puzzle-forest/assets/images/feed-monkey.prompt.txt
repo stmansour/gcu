@@ -1,0 +1,11 @@
+TARGET FILE: feed-monkey.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A monkey facing slightly toward camera, three-quarter view, brown fur with cream face and muzzle, large round eyes, open smiling mouth clearly visible, hands relaxed near the chest, upright seated posture, no scenery, no props, isolated object.
+
+
+NOTES:
+Expression must read as gentle and happy, not mischievous.

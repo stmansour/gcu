@@ -1,0 +1,11 @@
+TARGET FILE: nutty-guide.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+Nutty the squirrel guide character. Full-body squirrel in a slight three-quarter view, one paw raised and open as if waving or inviting, large eyes, fluffy tail, chestnut and cream fur, no props, no scenery, isolated object.
+
+
+NOTES:
+Avoid hyper detail or stiff mascot poses. Must be recognizable as Nutty across all scenes.

@@ -1,0 +1,11 @@
+TARGET FILE: prop-berry-cluster.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A small cluster of round red berries with tiny green leaves, grouped tightly together, centered, isolated object.
+
+
+NOTES:
+Must read as one single draggable item, not a scattered collection.

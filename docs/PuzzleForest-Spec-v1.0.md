@@ -1,5 +1,5 @@
 # Puzzle Forest
-## Product & Build Specification v1.0
+## Product & Build Specification v1.1
 
 **Project:** Grandpa's Creative Universe (GCU)
 **Module:** Puzzle Forest
@@ -145,9 +145,29 @@ Children match baby animals to their parents (lamb → sheep, calf → cow, chic
 
 # 7. Session Flow
 
-A typical play session contains **3–5 puzzles**. After all puzzles complete, the child receives a small celebration: fireflies appear, animals dance, stars appear, forest lights glow.
+Puzzle Forest should open to an **activity picker**, not a fixed linear campaign. Young children often prefer to repeat the same kind of play rather than move through a long arc of varied levels.
 
-**Standard puzzle flow:**
+The child first chooses the kind of puzzle they want to play:
+
+- Feed the Animal
+- Color Sorting
+- Shape Matching
+- Build the Animal
+
+After choosing a category, the child plays a short **mission run** of that same puzzle type. A mission run should usually contain **6–8 micro-puzzles**. When the run ends, the child gets a bigger celebration and returns to the activity picker so they can choose the same activity again or switch to another one.
+
+**Overall flow:**
+
+```
+enter Puzzle Forest
+show activity picker
+child chooses activity
+play 6–8 short puzzles in that category
+show big celebration
+return to activity picker
+```
+
+**Standard puzzle flow inside a mission:**
 
 ```
 load puzzle
@@ -156,7 +176,7 @@ child drags object
 snap to target
 check result
 show reward / gentle fail
-load next puzzle
+load next puzzle in same category
 ```
 
 ---
@@ -196,8 +216,8 @@ Puzzle Forest reuses the **GCU Core Engine**. It does not duplicate any system t
 games/puzzle-forest/
 ├── index.js               # Entry point — registers scenes
 ├── scenes/
-│   ├── PuzzleScene.js     # Main gameplay scene
-│   └── TitleScene.js      # Intro scene
+│   ├── PuzzleScene.js     # Main gameplay scene for a selected category mission
+│   └── TitleScene.js      # Activity picker / intro scene
 ├── engine/
 │   ├── PuzzleManager.js   # Puzzle state machine
 │   ├── SnapManager.js     # Proximity detection + snap
@@ -226,9 +246,11 @@ games/puzzle-forest/
 Controls puzzle logic.
 
 ```javascript
-loadPuzzle(id)          // load puzzle definition, play voice prompt
+startMission(categoryId)    // prepare a short mission run for the chosen category
+loadPuzzle(id)              // load puzzle definition, play voice prompt
 checkPlacement(object, target)  // returns true/false
-puzzleComplete()        // trigger reward, queue next puzzle
+puzzleComplete()            // trigger reward, queue next puzzle
+missionComplete()           // trigger end-of-run celebration and return data
 ```
 
 ## 10.3 Snap Manager
@@ -270,14 +292,16 @@ This allows many puzzles to be created quickly without writing new code.
 
 # 12. Initial Content Plan
 
-**Launch target: 20 puzzles**
+**Launch target: 4 playable categories with 6+ puzzles each**
 
-| Category | Count |
-|----------|-------|
-| Feed the Animal | 6 |
-| Color Sorting | 6 |
-| Shape Matching | 4 |
-| Build the Animal | 4 |
+| Category | Suggested Count |
+|----------|-----------------|
+| Feed the Animal | 6–8 |
+| Color Sorting | 6–8 |
+| Shape Matching | 6–8 |
+| Build the Animal | 6–8 |
+
+The child does not need to complete categories in a fixed order. Categories are repeatable and selectable from the activity picker every time they enter Puzzle Forest.
 
 ---
 
@@ -289,9 +313,9 @@ Build in this order:
 2. Implement `SnapManager.js` — proximity detection and snap animation
 3. Implement `PuzzleManager.js` — state machine (load → prompt → drag → check → reward → next)
 4. Implement `PuzzleLoader.js` — reads `puzzles.json`
-5. Create `PuzzleScene.js` — wires all systems together, renders puzzle UI
-6. Create `TitleScene.js` — intro with Nutty the Squirrel
-7. Create `puzzles.json` with initial 20 puzzles across all four categories
+5. Create `PuzzleScene.js` — wires all systems together, renders one category mission run
+6. Create `TitleScene.js` — activity picker with Nutty the Squirrel
+7. Create `puzzles.json` with category-grouped puzzle content across all four launch activities
 8. Add assets — animal images, food images, shape images, audio prompts
 9. Register game in `hub/scenes/HubScene.js`
 
@@ -333,6 +357,7 @@ Puzzle Forest should feel like part of the larger GCU world:
 Puzzle Forest succeeds if:
 
 - Toddlers can play independently without adult explanation
+- Children can easily choose a favorite activity and repeat it
 - Puzzles require no reading or fine motor precision
 - Drag interactions feel natural and forgiving
 - Puzzle cycles complete in 3–8 seconds

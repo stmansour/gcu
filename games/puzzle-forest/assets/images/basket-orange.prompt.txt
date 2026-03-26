@@ -1,0 +1,11 @@
+TARGET FILE: basket-orange.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A woven basket with orange accents, rounded handles, large open top, slight three-quarter angle, centered, isolated object.
+
+
+NOTES:
+Single object only, no extra objects.

@@ -1,0 +1,11 @@
+TARGET FILE: shape-circle-slot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A carved wooden board or stump plaque with one large circle-shaped cutout in the center, moss accents on the wood edges, isolated object.
+
+
+NOTES:
+This is a drop target, not the draggable piece. The circle cutout must be very obvious.

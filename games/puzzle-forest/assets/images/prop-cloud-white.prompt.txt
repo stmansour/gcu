@@ -1,0 +1,11 @@
+TARGET FILE: prop-cloud-white.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A puffy cloud shape, white with subtle gray-lavender edge definition, multiple rounded bumps across the top, centered, isolated object.
+
+
+NOTES:
+Must read clearly against both light and dark backgrounds.

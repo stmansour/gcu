@@ -1,0 +1,11 @@
+TARGET FILE: feed-squirrel.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A squirrel facing slightly toward camera, three-quarter view, chestnut fur with cream belly, large fluffy tail, small paws close to the chest, open mouth clearly visible, upright seated posture, no scenery, no props, isolated object.
+
+
+NOTES:
+Can be simpler than the Nutty guide character. Face must be clearly readable at small size.

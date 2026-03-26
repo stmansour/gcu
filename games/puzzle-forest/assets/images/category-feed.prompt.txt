@@ -1,0 +1,12 @@
+TARGET FILE: category-feed.png
+SIZE: 1024x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A forest clearing with a bunny, duck, squirrel, and bear gathered together. Snack items — carrots, berries, acorns, honey jar, and seeds — are visible nearby. Curving trees, mossy ground, no text, no UI.
+
+
+NOTES:
+Animals must have large readable silhouettes and friendly faces. Compose for a square card with a clear center of interest.

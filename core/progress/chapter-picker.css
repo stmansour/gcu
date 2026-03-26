@@ -1,0 +1,178 @@
+/**
+ * ChapterPicker — shared modal overlay styles.
+ *
+ * Dark-panel aesthetic that works on top of any game's title screen.
+ * Class prefix: cp-
+ */
+
+/* ── Overlay backdrop ──────────────────────────────────────────────────────── */
+
+.cp-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+/* ── Dialog panel ─────────────────────────────────────────────────────────── */
+
+.cp-dialog {
+  background: linear-gradient(160deg, #0d1b2a 0%, #0a1520 100%);
+  border: 1.5px solid rgba(100, 180, 255, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  padding: 28px 24px 20px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cp-dialog__title {
+  margin: 0;
+  font-family: 'Orbitron', 'Baloo 2', sans-serif;
+  font-size: clamp(16px, 3vw, 22px);
+  font-weight: 700;
+  color: #c8dfff;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Chapter list ─────────────────────────────────────────────────────────── */
+
+.cp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cp-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: clamp(13px, 2.2vw, 16px);
+  transition: background 0.12s, border-color 0.12s;
+  cursor: default;
+}
+
+/* Completed chapter */
+.cp-item--done {
+  background: rgba(40, 160, 80, 0.15);
+  border-color: rgba(40, 200, 80, 0.3);
+  color: #b0e8c0;
+  cursor: pointer;
+}
+.cp-item--done:hover,
+.cp-item--done:focus-visible {
+  background: rgba(40, 160, 80, 0.28);
+  border-color: rgba(40, 200, 80, 0.55);
+  outline: none;
+}
+
+/* Current (in-progress) chapter */
+.cp-item--current {
+  background: rgba(60, 140, 220, 0.18);
+  border-color: rgba(100, 180, 255, 0.4);
+  color: #d0e8ff;
+  cursor: pointer;
+}
+.cp-item--current:hover,
+.cp-item--current:focus-visible {
+  background: rgba(60, 140, 220, 0.32);
+  border-color: rgba(100, 180, 255, 0.65);
+  outline: none;
+}
+
+/* Locked chapter */
+.cp-item--locked {
+  color: rgba(160, 180, 200, 0.4);
+  pointer-events: none;
+}
+
+.cp-item__icon {
+  font-size: 1em;
+  width: 1.4em;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cp-item__num {
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 3.2em;
+}
+
+.cp-item__label {
+  flex: 1;
+}
+
+/* ── Footer buttons ───────────────────────────────────────────────────────── */
+
+.cp-dialog__footer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cp-btn {
+  padding: 11px 20px;
+  border-radius: 22px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: #c8dfff;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s, transform 0.1s;
+  flex: 1;
+}
+.cp-btn:hover   { background: rgba(255,255,255,0.14); }
+.cp-btn:active  { transform: scale(0.96); }
+
+.cp-btn--begin {
+  background: rgba(240, 200, 102, 0.15);
+  border-color: rgba(240, 200, 102, 0.4);
+  color: #f0e0a0;
+}
+.cp-btn--begin:hover { background: rgba(240, 200, 102, 0.26); }
+
+.cp-btn--clear {
+  background: rgba(220, 60, 60, 0.12);
+  border-color: rgba(220, 80, 80, 0.3);
+  color: #e8a0a0;
+}
+.cp-btn--clear:hover       { background: rgba(220, 60, 60, 0.22); }
+.cp-btn--clear.cp-btn--confirm {
+  background: rgba(220, 60, 60, 0.32);
+  border-color: rgba(220, 80, 80, 0.7);
+  color: #ffcccc;
+}
+
+.cp-btn--back {
+  background: transparent;
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(200, 220, 255, 0.6);
+  font-size: clamp(12px, 1.8vw, 14px);
+  text-align: center;
+}
+.cp-btn--back:hover { color: #c8dfff; background: rgba(255,255,255,0.06); }

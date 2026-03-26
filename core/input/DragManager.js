@@ -94,17 +94,27 @@ export class DragManager {
     if (!item) return;
     e.preventDefault();
     const point = getPoint(e);
+    const rect = item.getBoundingClientRect();
     this._activeItem = item;
     this._clone = item.cloneNode(true);
     this._clone.classList.add('dragging');
     this._clone.style.position = 'fixed';
     this._clone.style.left = '0';
     this._clone.style.top = '0';
+    this._clone.style.width = `${rect.width}px`;
+    this._clone.style.height = `${rect.height}px`;
+    this._clone.style.minWidth = `${rect.width}px`;
+    this._clone.style.maxWidth = `${rect.width}px`;
+    this._clone.style.minHeight = `${rect.height}px`;
+    this._clone.style.maxHeight = `${rect.height}px`;
+    this._clone.style.margin = '0';
+    this._clone.style.boxSizing = 'border-box';
     this._clone.style.zIndex = String(this.cloneStyle.zIndex ?? 9999);
     this._clone.style.pointerEvents = 'none';
+    this._clone.style.transformOrigin = 'center center';
     this._clone.style.transform = `scale(${this.cloneStyle.scale ?? 1.1})`;
-    this._updateClonePosition(point);
     document.body.appendChild(this._clone);
+    this._updateClonePosition(point);
     this.onDragStart(item, point);
   }
 
@@ -126,11 +136,13 @@ export class DragManager {
     } else {
       this.onDropMiss(this._activeItem, point);
     }
-    this._clone.style.transition = 'opacity 0.2s';
-    this._clone.style.opacity = '0';
+    if (!this._clone) return;
+    const clone = this._clone;
+    clone.style.transition = 'opacity 0.2s';
+    clone.style.opacity = '0';
     setTimeout(() => {
-      if (this._clone?.parentNode) this._clone.parentNode.removeChild(this._clone);
-      this._clone = null;
+      if (clone.parentNode) clone.parentNode.removeChild(clone);
+      if (this._clone === clone) this._clone = null;
       this._activeItem = null;
     }, 220);
   }

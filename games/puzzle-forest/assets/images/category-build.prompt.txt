@@ -1,0 +1,12 @@
+TARGET FILE: category-build.png
+SIZE: 1024x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A forest workshop clearing with carved wooden tables. Chunky rounded puzzle segments arranged into partial builds of a bear, fox, owl, rabbit, duck, and squirrel. Moss-covered ground, no text, no UI.
+
+
+NOTES:
+The assembled animals should read clearly as puzzle-building, not jigsaw chaos. Keep the scene simple enough for a square activity card.

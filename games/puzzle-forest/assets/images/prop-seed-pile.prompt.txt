@@ -1,0 +1,11 @@
+TARGET FILE: prop-seed-pile.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A small neat mound of golden-brown seeds, oval shapes grouped into a compact pile, centered, isolated object.
+
+
+NOTES:
+Must read as a cohesive single object at small size.

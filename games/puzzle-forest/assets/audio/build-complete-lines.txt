@@ -1,0 +1,5 @@
+build_complete_01|You built it!
+build_complete_02|Your animal is all together!
+build_complete_03|Look at that. You finished it!
+build_complete_04|That animal looks great!
+build_complete_05|Nice building!

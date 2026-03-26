@@ -1,20 +1,29 @@
 /**
  * Robot Lab — Title scene.
  * Introduces SWIRL-E and Chapter 1.
+ *
+ * If the player has saved progress, "Let's Build!" opens the ChapterPicker
+ * so they can jump to any unlocked chapter.  Otherwise it goes straight to ch1.
  */
 
-import { Scene } from '../../../core/scene/index.js';
-import { AudioManager } from '../../../core/audio/index.js';
+import { Scene }                            from '../../../core/scene/index.js';
+import { AudioManager }                     from '../../../core/audio/index.js';
+import { ProgressManager, ChapterPicker }   from '../../../core/progress/index.js';
+import { ROBOT_LAB_CHAPTERS, CHAPTER_SCENES } from '../data/chapters.js';
 
 export class TitleScene extends Scene {
   constructor({ sceneManager }) {
     super();
     this.sceneManager = sceneManager;
-    this._listeners = [];
+    this._listeners   = [];
+    this._container   = null;
+    this._avatarId    = null;
+    this._pm          = new ProgressManager('robot-lab');
   }
 
   enter(container, data = {}) {
-    this._avatarId = data.avatarId ?? null;
+    this._avatarId  = data.avatarId ?? null;
+    this._container = container;
     container.className = 'rl-title';
 
     container.innerHTML = `
@@ -57,10 +66,34 @@ export class TitleScene extends Scene {
       </div>
     `;
 
-    const onStart = () => {
+    const onStart = async () => {
       AudioManager.getInstance().unlock();
-      this.sceneManager.go('robot-lab-mission', { missionId: 'ch1-power', avatarId: this._avatarId });
+      const completed = await this._pm.getCompletedChapters();
+
+      if (completed.size === 0) {
+        // No progress — jump straight to chapter 1.
+        this._goToChapter('ch1-power');
+        return;
+      }
+
+      // Progress exists — show the chapter picker.
+      const result = await ChapterPicker.show(this._container, {
+        chapters:           ROBOT_LAB_CHAPTERS,
+        completedChapters:  completed,
+      });
+
+      if (result.action === 'cancel') return;
+
+      if (result.action === 'clear') {
+        await this._pm.clearProgress();
+        this._goToChapter('ch1-power');
+        return;
+      }
+
+      // 'select' — jump to the chosen chapter.
+      this._goToChapter(result.chapterId);
     };
+
     const onBack = () => this.sceneManager.go('hub');
 
     const startBtn = container.querySelector('#rl-start');
@@ -77,5 +110,18 @@ export class TitleScene extends Scene {
     for (const { el, type, fn } of this._listeners) el.removeEventListener(type, fn);
     this._listeners = [];
     container.innerHTML = '';
+    this._container = null;
+  }
+
+  // ── Private ─────────────────────────────────────────────────────────────────
+
+  _goToChapter(chapterId) {
+    const route = CHAPTER_SCENES[chapterId]
+      ?? { scene: 'robot-lab-circuit', missionId: chapterId };
+
+    const data = { avatarId: this._avatarId };
+    if (route.missionId) data.missionId = route.missionId;
+
+    this.sceneManager.go(route.scene, data);
   }
 }

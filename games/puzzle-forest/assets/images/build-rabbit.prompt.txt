@@ -1,0 +1,11 @@
+TARGET FILE: build-rabbit.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body rabbit facing right, side profile, white or light gray fur, long upright ears, pink nose, rounded feet, standing upright, no scenery, no props, isolated object.
+
+
+NOTES:
+Keep the rabbit centered with room around it. It must slice cleanly into front, middle, and back thirds.

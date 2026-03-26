@@ -1,0 +1,6 @@
+choose_activity|Choose what you want to play.
+hear_it_again|Hear it again.
+play_again|Play again.
+choose_another_activity|Choose another activity.
+move_the_pieces|Move the pieces.
+forest_celebration|Forest celebration.

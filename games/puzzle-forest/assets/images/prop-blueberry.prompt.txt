@@ -1,0 +1,11 @@
+TARGET FILE: prop-blueberry.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single blueberry, oversized and rounded, blue-purple color with a small white bloom spot on top, centered, isolated object.
+
+
+NOTES:
+Must be large and readable at small size, not tiny or realistic.

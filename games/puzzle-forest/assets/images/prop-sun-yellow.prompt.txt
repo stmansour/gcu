@@ -1,0 +1,11 @@
+TARGET FILE: prop-sun-yellow.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A round yellow disc with short rounded rays radiating outward, smiling face on the disc, yellow color, centered, isolated object.
+
+
+NOTES:
+This is a toy object, not a sky background element. Compact and self-contained.

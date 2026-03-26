@@ -1,0 +1,11 @@
+TARGET FILE: feed-bunny.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A bunny facing slightly toward camera, three-quarter view, white or light gray fur, long ears, rounded cheeks, mouth visible and open, upright seated posture, no scenery, no props, isolated object.
+
+
+NOTES:
+This is the feeding target, not the build puzzle. Face must be clearly readable at small size.

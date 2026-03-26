@@ -1,0 +1,11 @@
+TARGET FILE: prop-acorn.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single acorn, warm brown body with a textured cap, rounded proportions, centered, isolated object.
+
+
+NOTES:
+Must be bold and simple enough to read at small size.

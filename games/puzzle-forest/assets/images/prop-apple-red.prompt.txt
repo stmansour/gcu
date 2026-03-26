@@ -1,0 +1,11 @@
+TARGET FILE: prop-apple-red.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single red apple with one green leaf, rounded shape, centered, isolated object.
+
+
+NOTES:
+The red color must be unmistakable.

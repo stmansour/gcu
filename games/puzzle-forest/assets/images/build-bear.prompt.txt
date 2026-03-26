@@ -1,0 +1,11 @@
+TARGET FILE: build-bear.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body brown bear facing right, side profile, honey-colored belly, rounded shapes, standing upright in a relaxed pose, no scenery, no props, no text, isolated object.
+
+
+NOTES:
+Keep the entire bear centered with generous padding. The body must slice cleanly into front, middle, and back thirds without losing readability.

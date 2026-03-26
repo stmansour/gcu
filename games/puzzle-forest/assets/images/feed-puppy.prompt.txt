@@ -1,0 +1,11 @@
+TARGET FILE: feed-puppy.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A puppy facing slightly toward camera, three-quarter view, floppy ears, rounded snout, open mouth clearly visible, compact upright posture, no scenery, no props, isolated object.
+
+
+NOTES:
+Body should be front-weighted so the mouth area is prominent and the snack interaction reads clearly.

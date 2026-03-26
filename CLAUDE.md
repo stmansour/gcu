@@ -42,7 +42,8 @@ The project is created by a grandfather (Steve) for his five grandchildren: JR (
 │
 ├── core/                      # Shared engine — used by ALL games
 │   ├── input/
-│   │   ├── DragManager.js     # iOS-safe drag and drop
+│   │   ├── DragManager.js     # iOS-safe drag and drop (HTML elements)
+│   │   ├── LineDragManager.js # Draw a line between named SVG points (wiring, connections)
 │   │   ├── TapManager.js      # Tap handling with debounce
 │   │   └── index.js
 │   ├── audio/
@@ -66,6 +67,10 @@ The project is created by a grandfather (Steve) for his five grandchildren: JR (
 │   │   └── index.js
 │   ├── rewards/
 │   │   ├── celebrate.js       # Celebration effects (small/medium/large)
+│   │   └── index.js
+│   ├── progress/
+│   │   ├── ProgressManager.js # Per-game chapter/level progress persistence
+│   │   ├── ChapterPicker.js   # Chapter-select overlay UI (reusable across games)
 │   │   └── index.js
 │   ├── avatar/
 │   │   ├── AvatarDisplay.js   # Character video/image display
@@ -219,10 +224,91 @@ These are non-negotiable. Violating any of these will cause bugs on iPad/iPhone.
 - Game-specific code NEVER imports from another game — only from `core/`
 - Assets are co-located with their game module, not in a global bucket (except truly shared assets like fonts and avatar videos)
 
+### Scene & File Naming Conventions
+
+Every game that has more than one mission/gameplay scene must use **concept-specific names** — never generic ones like `MissionScene.js`.
+
+**File names:** `[Concept]MissionScene.js`
+- `CircuitMissionScene.js` — Robot Lab Ch1 (electricity / circuit wiring)
+- `OpticsMissionScene.js` — Robot Lab Ch2 (lens / optics)
+- Future: `ColorMissionScene.js`, `MotorMissionScene.js`, etc.
+
+**Class names:** Match the file name exactly.
+```javascript
+export class CircuitMissionScene extends Scene { ... }
+export class OpticsMissionScene  extends Scene { ... }
+```
+
+**Scene IDs** registered with `SceneManager` use the pattern `[game]-[concept]`:
+```javascript
+sceneManager.register('robot-lab-title',   new TitleScene(...));
+sceneManager.register('robot-lab-circuit', new CircuitMissionScene(...));
+sceneManager.register('robot-lab-optics',  new OpticsMissionScene(...));
+// future: 'robot-lab-color', 'robot-lab-motors', etc.
+```
+
+**Game chapter routing tables** (`data/chapters.js` per game) are the single source of truth for scene IDs. Every scene that needs to navigate to another chapter imports from there — never hardcodes a scene ID string.
+
+**Single-scene games** (Art Studio currently has one mission type) may keep the name `MissionScene.js` until a second mission type is added, at which point both should be renamed to concept-specific names.
+
 ### Error Handling
 - Storage operations always have try/catch with fallback defaults
 - Audio failures are silent (game works without sound)
 - Never let an error crash the game — catch at system boundaries, log, continue
+
+---
+
+## Code Organization Guardrails
+
+These rules prevent the most common structural mistakes. They are **non-negotiable**.
+
+### The Golden Rule: core/ vs games/
+
+```
+core/    — code that any game could use today or in the future
+games/   — code that is exclusively used by one specific game
+```
+
+**If you write something that could be useful to more than one game, it goes in `core/` — period.**
+
+Before placing any new file under `games/[game]/`, ask: *"Is there any other game that could ever use this?"*
+
+- Yes → put it in `core/` under the appropriate subdirectory
+- No → put it under `games/[game]/`
+
+### What belongs in core/
+
+| Capability | Directory |
+|---|---|
+| Touch input — drag, tap, line-drawing | `core/input/` |
+| Audio playback, iOS unlock | `core/audio/` |
+| Save / load game state | `core/storage/` |
+| Scene transitions | `core/scene/` |
+| Particles, spring physics, animation helpers | `core/animation/` |
+| Safe areas, responsive layout | `core/layout/` |
+| Celebration effects | `core/rewards/` |
+| Chapter/level progress persistence | `core/progress/` |
+| Avatar display | `core/avatar/` |
+| Grandpa's journal / hint UI | `core/journal/` |
+| EventBus, color math, easing, device detection | `core/utils/` |
+
+### What belongs in games/[game]/
+
+| Capability | Directory |
+|---|---|
+| Game-specific simulation logic | `games/[game]/engine/` |
+| Game-specific SVG/canvas rendering | `games/[game]/renderer/` |
+| Game scenes (title, gameplay, results) | `games/[game]/scenes/` |
+| Chapter/level data definitions | `games/[game]/missions/` or `games/[game]/data/` |
+| Game-specific assets | `games/[game]/assets/` |
+| Game-specific CSS | `games/[game]/css/` |
+| Procedural audio specific to one game | `games/[game]/audio/` |
+
+### No duplication of shared data
+
+If a piece of data (like a chapter list) is used by more than one file, it must live in **one canonical location** and be imported everywhere else. Never copy-paste constants across files.
+
+Robot Lab pattern to follow: `games/robot-lab/data/chapters.js` is the single source of truth for the chapter list and scene routing. All scenes import from it.
 
 ---
 

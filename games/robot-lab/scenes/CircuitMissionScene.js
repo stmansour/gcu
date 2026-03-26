@@ -1,5 +1,5 @@
 /**
- * Robot Lab — Mission Scene (SVG Schematic Edition)
+ * Robot Lab — Chapter 1: Circuit Mission Scene (SVG Schematic Edition)
  *
  * Four circuit outcomes:
  *   1. Incomplete  — not enough wires yet, waiting.
@@ -22,24 +22,11 @@ import { SchematicRenderer }   from '../renderer/SchematicRenderer.js';
 import { ParticleSystem }      from '../animation/ParticleSystem.js';
 import { playCanBurst, unlockAudio } from '../audio/ExplosionSFX.js';
 import { CHAPTER_1 }           from '../missions/chapter1.js';
+import { ROBOT_LAB_CHAPTERS, CHAPTER_SCENES } from '../data/chapters.js';
 
 const MISSIONS = { 'ch1-power': CHAPTER_1 };
 
-/** Full chapter list — drives the progress checklist on the success card. */
-const ROBOT_LAB_CHAPTERS = [
-  { id: 'ch1-power',       label: 'Electricity'     },
-  { id: 'ch2-optics',      label: 'Optics'          },
-  { id: 'ch3-color',       label: 'Color Sensing'   },
-  { id: 'ch4-motors',      label: 'Motors'          },
-  { id: 'ch5-control',     label: 'Control'         },
-  { id: 'ch6-sound',       label: 'Sound'           },
-  { id: 'ch7-logic',       label: 'Logic'           },
-  { id: 'ch8-navigation',  label: 'Navigation'      },
-  { id: 'ch9-power-mgmt',  label: 'Power'           },
-  { id: 'ch10-integration',label: 'Integration'     },
-];
-
-export class MissionScene extends Scene {
+export class CircuitMissionScene extends Scene {
   constructor({ sceneManager }) {
     super();
     this.sceneManager = sceneManager;
@@ -848,11 +835,13 @@ export class MissionScene extends Scene {
     btn.className = 'rl-btn rl-btn--next-chapter';
     btn.textContent = 'Next Chapter →';
     btn.addEventListener('click', () => {
-      if (MISSIONS[nextChapter.id]) {
-        this.sceneManager.go('robot-lab-mission',
-          { missionId: nextChapter.id, avatarId: this._avatarId });
+      const route = CHAPTER_SCENES[nextChapter.id];
+      if (route) {
+        const routeData = { avatarId: this._avatarId };
+        if (route.missionId) routeData.missionId = route.missionId;
+        this.sceneManager.go(route.scene, routeData);
       } else {
-        this.sceneManager.go('hub');
+        this.sceneManager.go('hub', { avatarId: this._avatarId });
       }
     });
     actionsEl.appendChild(btn);
@@ -1071,9 +1060,11 @@ export class MissionScene extends Scene {
 
     overlayEl.querySelector('#rl-oc-next')?.addEventListener('click', () => {
       dismiss(() => {
-        if (nextChapter && MISSIONS[nextChapter.id]) {
-          this.sceneManager.go('robot-lab-mission',
-            { missionId: nextChapter.id, avatarId: this._avatarId });
+        const route = nextChapter ? CHAPTER_SCENES[nextChapter.id] : null;
+        if (route) {
+          const routeData = { avatarId: this._avatarId };
+          if (route.missionId) routeData.missionId = route.missionId;
+          this.sceneManager.go(route.scene, routeData);
         } else {
           // Chapter not yet built — return to hub
           this.sceneManager.go('hub', { avatarId: this._avatarId });

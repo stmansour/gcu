@@ -11,6 +11,7 @@ import { AvatarSelectScene } from './scenes/AvatarSelectScene.js';
 import { HubScene } from './scenes/HubScene.js';
 import { initArtStudio } from '../games/art-studio/index.js';
 import { initRobotLab }  from '../games/robot-lab/index.js';
+import { initPuzzleForest } from '../games/puzzle-forest/index.js';
 
 const app = document.getElementById('app');
 if (!app) throw new Error('[GCU] #app element not found');
@@ -56,7 +57,7 @@ const games = [
     id: 'puzzle-forest',
     name: 'Puzzle Forest',
     icon: '🌲',
-    available: false,
+    available: true,
     sceneId: 'puzzle-forest-title',
     previewImage: 'assets/images/portals/portal-puzzle-forest.png',
   },
@@ -69,6 +70,7 @@ sceneManager.register('hub', new HubScene({ sceneManager, games }));
 // Register game scenes
 await initArtStudio(sceneManager);
 initRobotLab(sceneManager);
+await initPuzzleForest(sceneManager);
 
 // Start: skip avatar select if a player is already saved
 const storage = new GameStorage('global');

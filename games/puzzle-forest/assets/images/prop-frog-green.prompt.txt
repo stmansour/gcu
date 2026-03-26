@@ -1,0 +1,11 @@
+TARGET FILE: prop-frog-green.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A small frog in a seated pose, bright green body, rounded shapes, large eyes, front-facing, centered, isolated object.
+
+
+NOTES:
+Used as a sortable green object — the green color must be unmistakable.

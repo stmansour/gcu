@@ -1,0 +1,11 @@
+TARGET FILE: build-duck.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body duck facing right, side profile, golden-yellow feathers, orange beak and feet, rounded body, one wing slightly lifted, no scenery, no props, isolated object.
+
+
+NOTES:
+Keep centered and easy to slice into front, middle, and back thirds.

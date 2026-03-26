@@ -1,0 +1,11 @@
+TARGET FILE: build-owl.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body owl facing right, side profile, earthy brown feathers with cream chest accents, large round eyes, rounded wings, upright perched posture, no scenery, no props, isolated object.
+
+
+NOTES:
+The owl should slice cleanly into front, middle, and back thirds while staying recognizable.

@@ -1,0 +1,11 @@
+TARGET FILE: build-squirrel.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body squirrel facing right, side profile, chestnut and cream fur, large fluffy tail, small paws, upright alert stance, no scenery, no props, isolated object.
+
+
+NOTES:
+Keep the squirrel centered and easy to slice into front, middle, and back thirds.

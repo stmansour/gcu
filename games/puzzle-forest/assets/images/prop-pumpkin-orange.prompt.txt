@@ -1,0 +1,11 @@
+TARGET FILE: prop-pumpkin-orange.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A round orange pumpkin with soft vertical ridges, short green stem on top, no face carved into it, centered, isolated object.
+
+
+NOTES:
+No face, no Halloween-style carving. Plain pumpkin only.

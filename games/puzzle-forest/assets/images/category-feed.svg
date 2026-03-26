@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="36" fill="#FFE7AC"/>
+  <circle cx="108" cy="124" r="58" fill="#FFF7DD"/>
+  <circle cx="206" cy="178" r="64" fill="#D7F2B7"/>
+  <text x="94" y="148" font-size="76">🐰</text>
+  <text x="184" y="206" font-size="80">🥕</text>
+</svg>

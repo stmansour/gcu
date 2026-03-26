@@ -1,0 +1,11 @@
+TARGET FILE: shape-star-piece.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A five-pointed star wooden puzzle piece, painted a solid cheerful color, rounded points, visible thickness suggesting a physical piece, centered, isolated object.
+
+
+NOTES:
+All star points must be rounded, not sharp.

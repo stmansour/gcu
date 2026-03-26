@@ -1,0 +1,11 @@
+TARGET FILE: shape-heart-slot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A carved wooden board or stump plaque with one large heart-shaped cutout in the center, rounded lobes, moss accents on the wood edges, isolated object.
+
+
+NOTES:
+Heart cutout must have rounded lobes, not sharp or graphic. Drop target, not the draggable piece.

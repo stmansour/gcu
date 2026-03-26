@@ -1,0 +1,11 @@
+TARGET FILE: feed-duck.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A duck facing slightly toward camera, three-quarter view, yellow feathers, orange beak open, rounded body, upright posture, no scenery, no props, isolated object.
+
+
+NOTES:
+Must be readable at small size. Beak must be clearly visible.

@@ -1,0 +1,11 @@
+TARGET FILE: prop-leaf-green.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single broad leaf, green color, simple central vein, rounded shape, centered, isolated object.
+
+
+NOTES:
+Green must be unmistakable and not drift toward yellow.

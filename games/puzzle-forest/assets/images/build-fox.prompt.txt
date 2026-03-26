@@ -1,0 +1,11 @@
+TARGET FILE: build-fox.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A full-body fox facing right, side profile, bright orange fur, cream-white chest and tail tip, rounded paws, upright alert stance, no scenery, no props, isolated object.
+
+
+NOTES:
+Center the fox and leave padding. The image must slice cleanly into front, middle, and back thirds.

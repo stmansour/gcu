@@ -1,0 +1,11 @@
+TARGET FILE: prop-carrot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single carrot, bright orange body tapering to a point, leafy green top, slightly rounded and stylized, centered, no scenery, isolated object.
+
+
+NOTES:
+Must be readable at small size. No dirt or rough texture.

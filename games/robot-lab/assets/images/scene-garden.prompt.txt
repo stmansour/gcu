@@ -1,0 +1,12 @@
+TARGET FILE: scene-garden.png
+SIZE: 800x600
+BACKGROUND_MODE: scene
+BACKGROUND: bright blue sky with fluffy white clouds
+
+STYLE_NAME: rl_scene
+
+PROMPT:
+A sunny garden scene. Upper half: vivid BLUE sky with bright WHITE clouds and a large YELLOW sun. Lower half: lush GREEN grass and GREEN leaves. Scattered RED tulips and RED roses in the middle ground. A BLUE bird sitting on a fence post. Wide landscape view with strong color separation between sky (blue), plants (green), and flowers (red).
+
+NOTES:
+Color regions must be strongly separated: blue sky occupies the upper half, green grass and leaves fill the lower ground, red flowers dot the midground. Each region must be a distinct dominant hue so that filtering individual RGB channels produces obviously different results.

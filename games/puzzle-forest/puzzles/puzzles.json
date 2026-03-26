@@ -1,0 +1,413 @@
+{
+  "categories": [
+    {
+      "id": "feed-the-animal",
+      "name": "Feed the Animal",
+      "icon": "🥕",
+      "description": "Bring the right snack to each forest friend.",
+      "missionLength": 6,
+      "image": "games/puzzle-forest/assets/images/category-feed.png"
+    },
+    {
+      "id": "color-sorting",
+      "name": "Color Sorting",
+      "icon": "🧺",
+      "description": "Sort bright things into matching color baskets.",
+      "missionLength": 6,
+      "image": "games/puzzle-forest/assets/images/category-color.png"
+    },
+    {
+      "id": "shape-matching",
+      "name": "Shape Matching",
+      "icon": "⭐",
+      "description": "Match each shape to the right forest hole.",
+      "missionLength": 6,
+      "image": "games/puzzle-forest/assets/images/category-shape.png"
+    },
+    {
+      "id": "build-the-animal",
+      "name": "Build the Animal",
+      "icon": "🧩",
+      "description": "Put the animal parts in the right places.",
+      "missionLength": 6,
+      "image": "games/puzzle-forest/assets/images/category-build.png"
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "feed-bunny",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🐰",
+      "promptText": "Can you feed the bunny?",
+      "targets": [
+        { "id": "bunny", "label": "Bunny", "icon": "🐰", "image": "games/puzzle-forest/assets/images/feed-bunny-transparent.png", "slotLabel": "Yummy snack", "accepts": ["carrot"] }
+      ],
+      "objects": [
+        { "id": "carrot", "label": "Carrot", "icon": "🥕", "image": "games/puzzle-forest/assets/images/prop-carrot-transparent.png" },
+        { "id": "bone", "label": "Bone", "icon": "🦴", "image": "games/puzzle-forest/assets/images/prop-bone-transparent.png" },
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" }
+      ]
+    },
+    {
+      "id": "feed-dog",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🐶",
+      "promptText": "Can you feed the puppy?",
+      "targets": [
+        { "id": "dog", "label": "Puppy", "icon": "🐶", "image": "games/puzzle-forest/assets/images/feed-puppy-transparent.png", "slotLabel": "Tasty snack", "accepts": ["bone"] }
+      ],
+      "objects": [
+        { "id": "bone", "label": "Bone", "icon": "🦴", "image": "games/puzzle-forest/assets/images/prop-bone-transparent.png" },
+        { "id": "berry", "label": "Berry", "icon": "🍓", "image": "games/puzzle-forest/assets/images/prop-berry-cluster-transparent.png" },
+        { "id": "carrot", "label": "Carrot", "icon": "🥕", "image": "games/puzzle-forest/assets/images/prop-carrot-transparent.png" }
+      ]
+    },
+    {
+      "id": "feed-monkey",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🐵",
+      "promptText": "Can you feed the monkey?",
+      "targets": [
+        { "id": "monkey", "label": "Monkey", "icon": "🐵", "image": "games/puzzle-forest/assets/images/feed-monkey-transparent.png", "slotLabel": "Sweet snack", "accepts": ["banana"] }
+      ],
+      "objects": [
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" },
+        { "id": "seed", "label": "Seed", "icon": "🌰", "image": "games/puzzle-forest/assets/images/prop-seed-pile-transparent.png" },
+        { "id": "bone", "label": "Bone", "icon": "🦴", "image": "games/puzzle-forest/assets/images/prop-bone-transparent.png" }
+      ]
+    },
+    {
+      "id": "feed-bear",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🐻",
+      "promptText": "Can you feed the bear?",
+      "targets": [
+        { "id": "bear", "label": "Bear", "icon": "🐻", "image": "games/puzzle-forest/assets/images/feed-bear-transparent.png", "slotLabel": "Sticky treat", "accepts": ["honey"] }
+      ],
+      "objects": [
+        { "id": "honey", "label": "Honey", "icon": "🍯", "image": "games/puzzle-forest/assets/images/prop-honey-jar-transparent.png" },
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" },
+        { "id": "berry", "label": "Berry", "icon": "🍓", "image": "games/puzzle-forest/assets/images/prop-berry-cluster-transparent.png" }
+      ]
+    },
+    {
+      "id": "feed-duck",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🦆",
+      "promptText": "Can you feed the duck?",
+      "targets": [
+        { "id": "duck", "label": "Duck", "icon": "🦆", "image": "games/puzzle-forest/assets/images/feed-duck-transparent.png", "slotLabel": "Crunchy bite", "accepts": ["seed"] }
+      ],
+      "objects": [
+        { "id": "seed", "label": "Seed", "icon": "🌰", "image": "games/puzzle-forest/assets/images/prop-seed-pile-transparent.png" },
+        { "id": "carrot", "label": "Carrot", "icon": "🥕", "image": "games/puzzle-forest/assets/images/prop-carrot-transparent.png" },
+        { "id": "honey", "label": "Honey", "icon": "🍯", "image": "games/puzzle-forest/assets/images/prop-honey-jar-transparent.png" }
+      ]
+    },
+    {
+      "id": "feed-squirrel",
+      "categoryId": "feed-the-animal",
+      "promptIcon": "🐿️",
+      "promptText": "Can you feed the squirrel?",
+      "targets": [
+        { "id": "squirrel", "label": "Squirrel", "icon": "🐿️", "image": "games/puzzle-forest/assets/images/feed-squirrel-transparent.png", "slotLabel": "Nutty snack", "accepts": ["acorn"] }
+      ],
+      "objects": [
+        { "id": "acorn", "label": "Acorn", "icon": "🌰", "image": "games/puzzle-forest/assets/images/prop-acorn-transparent.png" },
+        { "id": "bone", "label": "Bone", "icon": "🦴", "image": "games/puzzle-forest/assets/images/prop-bone-transparent.png" },
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-red",
+      "categoryId": "color-sorting",
+      "promptIcon": "🔴",
+      "promptText": "Put the red thing in the red basket.",
+      "targets": [
+        { "id": "red-basket", "label": "Red Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-red-transparent.png", "slotLabel": "Red goes here", "accepts": ["apple"] }
+      ],
+      "objects": [
+        { "id": "apple", "label": "Apple", "icon": "🍎", "image": "games/puzzle-forest/assets/images/prop-apple-red-transparent.png" },
+        { "id": "leaf", "label": "Leaf", "icon": "🍃", "image": "games/puzzle-forest/assets/images/prop-leaf-green-transparent.png" },
+        { "id": "blueberry", "label": "Blueberry", "icon": "🫐", "image": "games/puzzle-forest/assets/images/prop-blueberry-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-green",
+      "categoryId": "color-sorting",
+      "promptIcon": "🟢",
+      "promptText": "Put the green thing in the green basket.",
+      "targets": [
+        { "id": "green-basket", "label": "Green Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-green-transparent.png", "slotLabel": "Green goes here", "accepts": ["frog"] }
+      ],
+      "objects": [
+        { "id": "frog", "label": "Frog", "icon": "🐸", "image": "games/puzzle-forest/assets/images/prop-frog-green-transparent.png" },
+        { "id": "sun", "label": "Sun", "icon": "🌞", "image": "games/puzzle-forest/assets/images/prop-sun-yellow-transparent.png" },
+        { "id": "apple", "label": "Apple", "icon": "🍎", "image": "games/puzzle-forest/assets/images/prop-apple-red-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-blue",
+      "categoryId": "color-sorting",
+      "promptIcon": "🔵",
+      "promptText": "Put the blue thing in the blue basket.",
+      "targets": [
+        { "id": "blue-basket", "label": "Blue Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-blue-transparent.png", "slotLabel": "Blue goes here", "accepts": ["blueberry"] }
+      ],
+      "objects": [
+        { "id": "blueberry", "label": "Blueberry", "icon": "🫐", "image": "games/puzzle-forest/assets/images/prop-blueberry-transparent.png" },
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" },
+        { "id": "frog", "label": "Frog", "icon": "🐸", "image": "games/puzzle-forest/assets/images/prop-frog-green-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-yellow",
+      "categoryId": "color-sorting",
+      "promptIcon": "🟡",
+      "promptText": "Put the yellow thing in the yellow basket.",
+      "targets": [
+        { "id": "yellow-basket", "label": "Yellow Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-yellow-transparent.png", "slotLabel": "Yellow goes here", "accepts": ["banana"] }
+      ],
+      "objects": [
+        { "id": "banana", "label": "Banana", "icon": "🍌", "image": "games/puzzle-forest/assets/images/prop-banana-transparent.png" },
+        { "id": "blueberry", "label": "Blueberry", "icon": "🫐", "image": "games/puzzle-forest/assets/images/prop-blueberry-transparent.png" },
+        { "id": "leaf", "label": "Leaf", "icon": "🍃", "image": "games/puzzle-forest/assets/images/prop-leaf-green-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-orange",
+      "categoryId": "color-sorting",
+      "promptIcon": "🟠",
+      "promptText": "Put the orange thing in the orange basket.",
+      "targets": [
+        { "id": "orange-basket", "label": "Orange Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-orange-transparent.png", "slotLabel": "Orange goes here", "accepts": ["pumpkin"] }
+      ],
+      "objects": [
+        { "id": "pumpkin", "label": "Pumpkin", "icon": "🎃", "image": "games/puzzle-forest/assets/images/prop-pumpkin-orange-transparent.png" },
+        { "id": "frog", "label": "Frog", "icon": "🐸", "image": "games/puzzle-forest/assets/images/prop-frog-green-transparent.png" },
+        { "id": "cloud", "label": "Cloud", "icon": "☁️", "image": "games/puzzle-forest/assets/images/prop-cloud-white-transparent.png" }
+      ]
+    },
+    {
+      "id": "sort-white",
+      "categoryId": "color-sorting",
+      "promptIcon": "⚪",
+      "promptText": "Put the white thing in the white basket.",
+      "targets": [
+        { "id": "white-basket", "label": "White Basket", "icon": "🧺", "image": "games/puzzle-forest/assets/images/basket-white-transparent.png", "slotLabel": "White goes here", "accepts": ["cloud"] }
+      ],
+      "objects": [
+        { "id": "cloud", "label": "Cloud", "icon": "☁️", "image": "games/puzzle-forest/assets/images/prop-cloud-white-transparent.png" },
+        { "id": "pumpkin", "label": "Pumpkin", "icon": "🎃", "image": "games/puzzle-forest/assets/images/prop-pumpkin-orange-transparent.png" },
+        { "id": "apple", "label": "Apple", "icon": "🍎", "image": "games/puzzle-forest/assets/images/prop-apple-red-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-circle",
+      "categoryId": "shape-matching",
+      "promptIcon": "⚪",
+      "promptText": "Can you match the circle?",
+      "targets": [
+        { "id": "circle-hole", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-circle-slot-transparent.png", "slotLabel": "Circle goes here", "accepts": ["circle"] }
+      ],
+      "objects": [
+        { "id": "circle", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-circle-piece-transparent.png" },
+        { "id": "square", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-square-piece-transparent.png" },
+        { "id": "triangle", "label": "Triangle", "icon": "🔺", "image": "games/puzzle-forest/assets/images/shape-triangle-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-square",
+      "categoryId": "shape-matching",
+      "promptIcon": "🟥",
+      "promptText": "Can you match the square?",
+      "targets": [
+        { "id": "square-hole", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-square-slot-transparent.png", "slotLabel": "Square goes here", "accepts": ["square"] }
+      ],
+      "objects": [
+        { "id": "square", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-square-piece-transparent.png" },
+        { "id": "circle", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-circle-piece-transparent.png" },
+        { "id": "star", "label": "Star", "icon": "⭐", "image": "games/puzzle-forest/assets/images/shape-star-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-triangle",
+      "categoryId": "shape-matching",
+      "promptIcon": "🔺",
+      "promptText": "Can you match the triangle?",
+      "targets": [
+        { "id": "triangle-hole", "label": "Triangle", "icon": "🔺", "image": "games/puzzle-forest/assets/images/shape-triangle-slot-transparent.png", "slotLabel": "Triangle goes here", "accepts": ["triangle"] }
+      ],
+      "objects": [
+        { "id": "triangle", "label": "Triangle", "icon": "🔺", "image": "games/puzzle-forest/assets/images/shape-triangle-piece-transparent.png" },
+        { "id": "diamond", "label": "Diamond", "icon": "🔷", "image": "games/puzzle-forest/assets/images/shape-diamond-piece-transparent.png" },
+        { "id": "circle", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-circle-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-star",
+      "categoryId": "shape-matching",
+      "promptIcon": "⭐",
+      "promptText": "Can you match the star?",
+      "targets": [
+        { "id": "star-hole", "label": "Star", "icon": "⭐", "image": "games/puzzle-forest/assets/images/shape-star-slot-transparent.png", "slotLabel": "Star goes here", "accepts": ["star"] }
+      ],
+      "objects": [
+        { "id": "star", "label": "Star", "icon": "⭐", "image": "games/puzzle-forest/assets/images/shape-star-piece-transparent.png" },
+        { "id": "square", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-square-piece-transparent.png" },
+        { "id": "triangle", "label": "Triangle", "icon": "🔺", "image": "games/puzzle-forest/assets/images/shape-triangle-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-heart",
+      "categoryId": "shape-matching",
+      "promptIcon": "❤️",
+      "promptText": "Can you match the heart?",
+      "targets": [
+        { "id": "heart-hole", "label": "Heart", "icon": "❤️", "image": "games/puzzle-forest/assets/images/shape-heart-slot-transparent.png", "slotLabel": "Heart goes here", "accepts": ["heart"] }
+      ],
+      "objects": [
+        { "id": "heart", "label": "Heart", "icon": "❤️", "image": "games/puzzle-forest/assets/images/shape-heart-piece-transparent.png" },
+        { "id": "diamond", "label": "Diamond", "icon": "🔷", "image": "games/puzzle-forest/assets/images/shape-diamond-piece-transparent.png" },
+        { "id": "circle", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-circle-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "shape-diamond",
+      "categoryId": "shape-matching",
+      "promptIcon": "🔷",
+      "promptText": "Can you match the diamond?",
+      "targets": [
+        { "id": "diamond-hole", "label": "Diamond", "icon": "🔷", "image": "games/puzzle-forest/assets/images/shape-diamond-slot-transparent.png", "slotLabel": "Diamond goes here", "accepts": ["diamond"] }
+      ],
+      "objects": [
+        { "id": "diamond", "label": "Diamond", "icon": "🔷", "image": "games/puzzle-forest/assets/images/shape-diamond-piece-transparent.png" },
+        { "id": "heart", "label": "Heart", "icon": "❤️", "image": "games/puzzle-forest/assets/images/shape-heart-piece-transparent.png" },
+        { "id": "square", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-square-piece-transparent.png" }
+      ]
+    },
+    {
+      "id": "build-bear",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildAxis": "vertical",
+      "buildImage": "games/puzzle-forest/assets/images/build-bear-transparent.png",
+      "promptIcon": "🐻",
+      "promptText": "Can you build the bear?",
+      "targets": [
+        { "id": "bear-left-slot", "label": "Bear Top", "slotLabel": "Top", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 0, "accepts": ["bear-left"] },
+        { "id": "bear-middle-slot", "label": "Bear Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 1, "accepts": ["bear-middle"] },
+        { "id": "bear-right-slot", "label": "Bear Bottom", "slotLabel": "Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 2, "accepts": ["bear-right"] }
+      ],
+      "objects": [
+        { "id": "bear-left", "label": "Bear Top", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 0 },
+        { "id": "bear-middle", "label": "Bear Middle", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 1 },
+        { "id": "bear-right", "label": "Bear Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 2 },
+        { "id": "fox-right", "label": "Fox Back", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 2 },
+        { "id": "duck-left", "label": "Duck Front", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 0 }
+      ]
+    },
+    {
+      "id": "build-fox",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildImage": "games/puzzle-forest/assets/images/build-fox-transparent.png",
+      "promptIcon": "🦊",
+      "promptText": "Can you build the fox?",
+      "targets": [
+        { "id": "fox-left-slot", "label": "Fox Front", "slotLabel": "Front", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 0, "accepts": ["fox-left"] },
+        { "id": "fox-middle-slot", "label": "Fox Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 1, "accepts": ["fox-middle"] },
+        { "id": "fox-right-slot", "label": "Fox Back", "slotLabel": "Back", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 2, "accepts": ["fox-right"] }
+      ],
+      "objects": [
+        { "id": "fox-left", "label": "Fox Front", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 0 },
+        { "id": "fox-middle", "label": "Fox Middle", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 1 },
+        { "id": "fox-right", "label": "Fox Back", "sliceImage": "games/puzzle-forest/assets/images/build-fox-transparent.png", "sliceIndex": 2 },
+        { "id": "bear-left", "label": "Bear Top", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 0 },
+        { "id": "owl-middle", "label": "Owl Middle", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 1 }
+      ]
+    },
+    {
+      "id": "build-owl",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildAxis": "vertical",
+      "buildImage": "games/puzzle-forest/assets/images/build-owl-transparent.png",
+      "promptIcon": "🦉",
+      "promptText": "Can you build the owl?",
+      "targets": [
+        { "id": "owl-left-slot", "label": "Owl Top", "slotLabel": "Top", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 0, "accepts": ["owl-left"] },
+        { "id": "owl-middle-slot", "label": "Owl Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 1, "accepts": ["owl-middle"] },
+        { "id": "owl-right-slot", "label": "Owl Bottom", "slotLabel": "Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 2, "accepts": ["owl-right"] }
+      ],
+      "objects": [
+        { "id": "owl-left", "label": "Owl Top", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 0 },
+        { "id": "owl-middle", "label": "Owl Middle", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 1 },
+        { "id": "owl-right", "label": "Owl Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 2 },
+        { "id": "rabbit-right", "label": "Rabbit Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 2 },
+        { "id": "squirrel-left", "label": "Squirrel Front", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 0 }
+      ]
+    },
+    {
+      "id": "build-rabbit",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildAxis": "vertical",
+      "buildImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png",
+      "promptIcon": "🐰",
+      "promptText": "Can you build the rabbit?",
+      "targets": [
+        { "id": "rabbit-left-slot", "label": "Rabbit Top", "slotLabel": "Top", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 0, "accepts": ["rabbit-left"] },
+        { "id": "rabbit-middle-slot", "label": "Rabbit Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 1, "accepts": ["rabbit-middle"] },
+        { "id": "rabbit-right-slot", "label": "Rabbit Bottom", "slotLabel": "Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 2, "accepts": ["rabbit-right"] }
+      ],
+      "objects": [
+        { "id": "rabbit-left", "label": "Rabbit Top", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 0 },
+        { "id": "rabbit-middle", "label": "Rabbit Middle", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 1 },
+        { "id": "rabbit-right", "label": "Rabbit Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 2 },
+        { "id": "owl-right", "label": "Owl Bottom", "sliceImage": "games/puzzle-forest/assets/images/build-owl-transparent.png", "sliceIndex": 2 },
+        { "id": "duck-middle", "label": "Duck Middle", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 1 }
+      ]
+    },
+    {
+      "id": "build-duck",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildImage": "games/puzzle-forest/assets/images/build-duck-transparent.png",
+      "promptIcon": "🦆",
+      "promptText": "Can you build the duck?",
+      "targets": [
+        { "id": "duck-left-slot", "label": "Duck Front", "slotLabel": "Front", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 0, "accepts": ["duck-left"] },
+        { "id": "duck-middle-slot", "label": "Duck Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 1, "accepts": ["duck-middle"] },
+        { "id": "duck-right-slot", "label": "Duck Back", "slotLabel": "Back", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 2, "accepts": ["duck-right"] }
+      ],
+      "objects": [
+        { "id": "duck-left", "label": "Duck Front", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 0 },
+        { "id": "duck-middle", "label": "Duck Middle", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 1 },
+        { "id": "duck-right", "label": "Duck Back", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 2 },
+        { "id": "bear-middle", "label": "Bear Middle", "sliceImage": "games/puzzle-forest/assets/images/build-bear-transparent.png", "sliceIndex": 1 },
+        { "id": "squirrel-right", "label": "Squirrel Back", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 2 }
+      ]
+    },
+    {
+      "id": "build-squirrel",
+      "categoryId": "build-the-animal",
+      "layout": "build-animal",
+      "buildImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png",
+      "promptIcon": "🐿️",
+      "promptText": "Can you build the squirrel?",
+      "targets": [
+        { "id": "squirrel-left-slot", "label": "Squirrel Front", "slotLabel": "Front", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 0, "accepts": ["squirrel-left"] },
+        { "id": "squirrel-middle-slot", "label": "Squirrel Middle", "slotLabel": "Middle", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 1, "accepts": ["squirrel-middle"] },
+        { "id": "squirrel-right-slot", "label": "Squirrel Back", "slotLabel": "Back", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 2, "accepts": ["squirrel-right"] }
+      ],
+      "objects": [
+        { "id": "squirrel-left", "label": "Squirrel Front", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 0 },
+        { "id": "squirrel-middle", "label": "Squirrel Middle", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 1 },
+        { "id": "squirrel-right", "label": "Squirrel Back", "sliceImage": "games/puzzle-forest/assets/images/build-squirrel-transparent.png", "sliceIndex": 2 },
+        { "id": "duck-left", "label": "Duck Front", "sliceImage": "games/puzzle-forest/assets/images/build-duck-transparent.png", "sliceIndex": 0 },
+        { "id": "rabbit-middle", "label": "Rabbit Middle", "sliceImage": "games/puzzle-forest/assets/images/build-rabbit-transparent.png", "sliceIndex": 1 }
+      ]
+    }
+  ]
+}

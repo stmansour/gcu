@@ -1,0 +1,11 @@
+TARGET FILE: shape-triangle-slot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A carved wooden board or stump plaque with one large triangle-shaped cutout in the center, rounded corners on the cutout, moss accents on the wood edges, isolated object.
+
+
+NOTES:
+Triangle cutout corners must be rounded, not sharp. Drop target, not the draggable piece.

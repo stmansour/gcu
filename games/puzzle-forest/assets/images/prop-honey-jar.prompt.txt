@@ -1,0 +1,11 @@
+TARGET FILE: prop-honey-jar.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A round jar filled with golden honey, simple lid on top, honey visible through the jar walls, centered, isolated object.
+
+
+NOTES:
+Should not look fragile or glass-heavy. Rounded, compact proportions.

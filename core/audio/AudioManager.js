@@ -75,6 +75,44 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Lightweight synthesized feedback tone for prototype interactions when no
+   * recorded asset exists yet.
+   * @param {{
+   *   frequency?: number,
+   *   frequencyEnd?: number,
+   *   duration?: number,
+   *   type?: OscillatorType,
+   *   volume?: number
+   * }} [opts]
+   */
+  playTone(opts = {}) {
+    if (this.muted || !this.unlocked || !this.audioContext) return;
+    try {
+      const now = this.audioContext.currentTime;
+      const osc = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+      const duration = opts.duration ?? 0.16;
+      const startFreq = opts.frequency ?? 440;
+      const endFreq = opts.frequencyEnd ?? startFreq;
+
+      osc.type = opts.type ?? 'sine';
+      osc.frequency.setValueAtTime(startFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(1, endFreq), now + duration);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, opts.volume ?? 0.06), now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(this.audioContext.destination);
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
+    } catch (e) {
+      console.warn('[AudioManager] playTone failed', e);
+    }
+  }
+
   setMuted(muted) {
     this.muted = !!muted;
   }

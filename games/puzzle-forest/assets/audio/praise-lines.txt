@@ -1,0 +1,10 @@
+praise_01|Great job!
+praise_02|You did it!
+praise_03|Nice work!
+praise_04|That was perfect!
+praise_05|You got it!
+praise_06|Amazing!
+praise_07|Super job!
+praise_08|Hooray!
+praise_09|That was wonderful!
+praise_10|You are doing great!

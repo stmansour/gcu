@@ -1,0 +1,11 @@
+TARGET FILE: prop-banana.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A single banana, curved shape, bright yellow peel, rounded ends, centered, isolated object.
+
+
+NOTES:
+Simple and iconic, not detailed or realistic.

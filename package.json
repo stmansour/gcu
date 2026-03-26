@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "npx http-server . -p 3000 -c-1",
+    "generate:puzzle-forest-images": "node scripts/generate-puzzle-forest-images.mjs",
     "cap:sync": "npx cap sync ios",
     "cap:open": "npx cap open ios",
     "ios": "npx cap sync ios && npx cap open ios"

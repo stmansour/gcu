@@ -1,0 +1,12 @@
+TARGET FILE: scene-fruit.png
+SIZE: 800x600
+BACKGROUND_MODE: scene
+BACKGROUND: warm cream kitchen surface with wooden table
+
+STYLE_NAME: rl_scene
+
+PROMPT:
+A colorful fruit bowl on a wooden kitchen table. Large bright RED apple on the left, vivid YELLOW banana arching in the center, round ORANGE orange on the right, GREEN pear in the back. Each fruit has a strongly saturated, distinct color. Bowl is a simple dark grey ceramic. Warm cream background.
+
+NOTES:
+Fruit colors must be intensely saturated primaries — no muted or pastel tones. Each fruit must occupy a clearly distinct color region (red apple, yellow banana, orange orange, green pear) so that filtering individual RGB channels produces obviously different results. Wide landscape composition, fruit fills most of the frame.

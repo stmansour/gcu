@@ -1,0 +1,12 @@
+TARGET FILE: category-color.png
+SIZE: 1024x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A forest clearing with six woven baskets in red, green, blue, yellow, orange, and white arranged in an arc. Nearby objects include an apple, blueberry, leaf, banana, pumpkin, and a white cloud shape. Mossy ground, no text, no UI.
+
+
+NOTES:
+Basket colors must be unmistakable at a glance. Avoid visual clutter.

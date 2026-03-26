@@ -1,0 +1,11 @@
+TARGET FILE: basket-white.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+
+PROMPT:
+A woven basket in cream-white with subtle shadow definition for edge readability, rounded handles, large open top, slight three-quarter angle, centered, isolated object.
+
+
+NOTES:
+The basket must read clearly against light backgrounds. Single object only, no extra objects.

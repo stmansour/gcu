@@ -1,0 +1,11 @@
+TARGET FILE: shape-triangle-piece.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A triangular wooden puzzle piece, painted a solid cheerful color, rounded corners, visible thickness suggesting a physical piece, centered, isolated object.
+
+
+NOTES:
+Corners must be rounded, not sharp or severe.

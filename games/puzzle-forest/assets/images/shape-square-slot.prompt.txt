@@ -1,0 +1,11 @@
+TARGET FILE: shape-square-slot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A carved wooden board or stump plaque with one large square-shaped cutout in the center, rounded corners on the cutout, moss accents on the wood edges, isolated object.
+
+
+NOTES:
+Square cutout must be very obvious. Drop target, not the draggable piece.

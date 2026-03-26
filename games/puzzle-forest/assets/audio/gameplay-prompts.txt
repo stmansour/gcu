@@ -1,0 +1,24 @@
+feed_bunny|Can you feed the bunny?
+feed_dog|Can you feed the puppy?
+feed_monkey|Can you feed the monkey?
+feed_bear|Can you feed the bear?
+feed_duck|Can you feed the duck?
+feed_squirrel|Can you feed the squirrel?
+sort_red|Put the red thing in the red basket.
+sort_green|Put the green thing in the green basket.
+sort_blue|Put the blue thing in the blue basket.
+sort_yellow|Put the yellow thing in the yellow basket.
+sort_orange|Put the orange thing in the orange basket.
+sort_white|Put the white thing in the white basket.
+shape_circle|Can you match the circle?
+shape_square|Can you match the square?
+shape_triangle|Can you match the triangle?
+shape_star|Can you match the star?
+shape_heart|Can you match the heart?
+shape_diamond|Can you match the diamond?
+build_bear|Can you build the bear?
+build_fox|Can you build the fox?
+build_owl|Can you build the owl?
+build_rabbit|Can you build the rabbit?
+build_duck|Can you build the duck?
+build_squirrel|Can you build the squirrel?

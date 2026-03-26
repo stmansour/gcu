@@ -36,7 +36,8 @@ The core engine is the foundation that all games build on. Think of it like a ho
 Unified touch and mouse handling that works identically on iPad, iPhone, and desktop.
 
 **What it provides:**
-- `DragManager` — Handles drag-and-drop with iOS-safe touch events
+- `DragManager` — Drag-and-drop for HTML elements with iOS-safe touch events
+- `LineDragManager` — Draw a line between named points inside an SVG (used for wiring, circuit connections, any game where the player "draws" a connection)
 - `TapManager` — Handles taps with debounce, no 300ms delay
 - `GestureDetector` — Optional: swipe, pinch, long-press detection
 - Automatic `passive: false` and `preventDefault()` where needed
@@ -47,9 +48,9 @@ Unified touch and mouse handling that works identically on iPad, iPhone, and des
 **Key API surface:**
 
 ```javascript
-import { DragManager, TapManager } from '@grandpa/core/input';
+import { DragManager, LineDragManager, TapManager } from '@grandpa/core/input';
 
-// Drag and drop
+// Drag and drop (HTML elements)
 const drag = new DragManager(containerElement, {
   dragSelector: '.draggable',           // What can be dragged
   dropTargets: ['.mixing-well', '.slot'], // Where things can be dropped
@@ -61,6 +62,19 @@ const drag = new DragManager(containerElement, {
   cloneStyle: { scale: 1.1, zIndex: 9999 }
 });
 
+// Line drawing between named SVG points (wiring, connections)
+const wire = new LineDragManager(boardElement, {
+  svgEl:        svgElement,
+  points:       terminalPositions,   // Map<id, {x, y}> in SVG units
+  hitRadius:    44,                  // snap radius in SVG units
+  canStartFrom: (id) => true,        // guard: return false to block drag start
+  onDragStart:  (id)         => {},  // id of the terminal the drag started from
+  onDragMove:   (svgX, svgY) => {},  // current SVG position of the free end
+  onDrop:       (from, to)   => {},  // ids of both endpoints on successful connection
+  onCancel:     ()           => {},  // drag released without hitting a target
+});
+// Call wire.destroy() in scene exit() to remove all event listeners.
+
 // Taps
 const tap = new TapManager(containerElement, {
   tapSelector: '.button',
@@ -69,7 +83,7 @@ const tap = new TapManager(containerElement, {
 });
 ```
 
-**Games using it:** All of them. SuperMatch3 uses it for card taps. Art Studio uses it for paint blob dragging. Robot Lab uses it for wiring components.
+**Games using it:** All of them. SuperMatch3 uses DragManager for card taps. Art Studio uses DragManager for paint blob dragging. Robot Lab uses LineDragManager for circuit wiring.
 
 ---
 
@@ -338,7 +352,51 @@ html, body {
 
 ---
 
-### 7. Reward System (`core/rewards/`)
+### 7. Progress System (`core/progress/`)
+
+Shared chapter/level progress persistence and chapter-picker UI for any game that has multiple chapters or levels.
+
+**What it provides:**
+- `ProgressManager` — Read and write completed chapter/level lists, clear progress. Wraps `GameStorage` with a clean API specific to chapter progression.
+- `ChapterPicker` — Modal overlay that lets the player select any unlocked chapter. Supports a "Clear Progress" option to start over. Used on title screens when the player has prior progress.
+
+**Key API surface:**
+
+```javascript
+import { ProgressManager, ChapterPicker } from '@grandpa/core/progress';
+
+// In a TitleScene constructor:
+this._pm = new ProgressManager('robot-lab');  // namespaced by game id
+
+// In TitleScene.enter():
+const completed = await this._pm.getCompletedChapters();  // Set<chapterId>
+
+if (completed.size === 0) {
+  // First play — go straight to chapter 1
+  goToChapter('ch1-power');
+} else {
+  // Returning player — show chapter picker
+  const result = await ChapterPicker.show(container, {
+    chapters:          ALL_CHAPTERS,     // [{ id, label }, ...]
+    completedChapters: completed,        // Set<chapterId>
+  });
+  // result.action: 'select' | 'cancel' | 'clear'
+  // result.chapterId: string (when action === 'select')
+
+  if      (result.action === 'select') goToChapter(result.chapterId);
+  else if (result.action === 'clear')  { await this._pm.clearProgress(); goToChapter('ch1'); }
+}
+
+// In a MissionScene, after a chapter is completed:
+await this._pm.markCompleted('ch1-power');
+const allDone = await this._pm.getCompletedChapters();
+```
+
+**Games using it:** Robot Lab (chapter picker on title screen, chapter completion tracking). All future multi-chapter games should use this instead of rolling their own progress storage.
+
+---
+
+### 8. Reward System (`core/rewards/`)
 
 Shared celebration effects used across all games.
 

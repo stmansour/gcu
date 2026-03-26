@@ -202,6 +202,19 @@
   letter-spacing: 0.05em;
 }
 
+.rl-btn--prev-chapter {
+  background: linear-gradient(135deg, #1a427a, #0f2e5a);
+  color: #40a8e8;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(40, 100, 200, 0.35);
+  border: 1px solid rgba(64, 168, 232, 0.4);
+  margin-top: 6px;
+  width: 100%;
+  letter-spacing: 0.05em;
+}
+
 /* ── SWIRL-E robot ────────────────────────────────────────────────────────── */
 
 .rl-swirle {
@@ -1262,6 +1275,7 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  max-width: clamp(180px, 22vw, 250px);
 }
 
 /* SWIRL-E portrait photo — square crop with glowing border */
@@ -1346,6 +1360,11 @@
   font-size: clamp(18px, 2.2vh, 24px);
   padding: clamp(14px, 1.8vh, 20px) clamp(44px, 6vw, 64px);
   position: relative;
+  /* Override gold rl-btn--start — use dark mission blue with fluorescent text */
+  background: linear-gradient(135deg, #0d2a5a, #061630);
+  color: #00d4ff;
+  box-shadow: 0 6px 24px rgba(0, 180, 255, 0.4);
+  border: 1px solid rgba(0, 200, 255, 0.45);
 }
 
 @media (orientation: portrait) {
@@ -1504,15 +1523,70 @@
     0 0 36px rgba(64, 232, 128, 0.5);
 }
 
-/* ── Success card — two-column layout ────────────────────────────────────── */
+/* ── Success card — three-column layout ──────────────────────────────────── */
 .rl-success-body {
   display: flex;
   flex-direction: row;
-  gap: 0;
-  margin: 0 -30px;          /* bleed to card padding edges */
+  gap: 20px;
+  margin: 0 0 24px;
+  align-items: flex-start;
 }
 
-/* Left column — wider: SWIRL-E photo + greeting + recap */
+/* Section A: SWIRL-E portrait column — same as mission briefing */
+.rl-success-robot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  width: clamp(180px, 22vw, 250px);
+  max-width: clamp(180px, 22vw, 250px);
+  padding: 0;
+  align-self: flex-start;
+}
+
+/* Section B: Mission Results — labeled panel, left-justified text */
+.rl-success-results-panel {
+  flex: 2;
+  min-width: 0;
+  background: rgba(4, 14, 32, 0.92);
+  border: 1.5px solid rgba(0, 200, 255, 0.3);
+  border-radius: 8px;
+  padding: 24px 20px 20px;
+  position: relative;
+  box-shadow: inset 0 0 18px rgba(0, 180, 255, 0.06), 0 0 10px rgba(0, 180, 255, 0.08);
+  align-self: stretch;
+}
+
+.rl-success-results-panel::before {
+  content: 'MISSION RESULTS';
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  font-family: 'Orbitron', 'Share Tech Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(0, 200, 255, 0.7);
+  background: #0d1a30;
+  padding: 0 8px;
+}
+
+.rl-success-results-panel .rl-success-explain {
+  text-align: left;
+}
+
+/* Middle column — kept for backward compat */
+.rl-success-mid {
+  flex: 2;
+  min-width: 0;
+  padding: 4px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Left column — kept for backward compat (no longer used) */
 .rl-success-left {
   flex: 2;
   min-width: 0;
@@ -1541,27 +1615,29 @@
 /* SWIRL-E's first words to the kid */
 .rl-swirle-greeting {
   font-family: 'Orbitron', var(--font-display, sans-serif);
-  font-size: clamp(0.7rem, 1.6vw, 0.9rem);
+  font-size: clamp(0.62rem, 1.3vw, 0.78rem);
   font-weight: 700;
   color: #00D4FF;
-  text-align: left;
-  letter-spacing: 0.1em;
-  margin: 0 0 10px;
+  text-align: center;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  margin: 4px 0 0;
   text-shadow:
     0 0 10px rgba(0, 212, 255, 0.9),
     0 0 26px rgba(0, 212, 255, 0.5);
 }
 
-/* Right column — thinner: kid photo + chapter checklist */
+/* Section C: Systems checklist — kid avatar + chapter list */
 .rl-success-right {
   flex: 1;
-  min-width: 0;
+  min-width: 140px;
   border-left: 1px solid rgba(90, 138, 191, 0.22);
-  padding: 0 16px 0 14px;
+  padding: 0 0 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  align-self: stretch;
 }
 
 .rl-success-kid-wrap {

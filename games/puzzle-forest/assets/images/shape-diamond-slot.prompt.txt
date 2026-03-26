@@ -1,0 +1,11 @@
+TARGET FILE: shape-diamond-slot.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A carved wooden board or stump plaque with one large diamond-shaped cutout in the center, broad proportions, moss accents on the wood edges, isolated object.
+
+
+NOTES:
+Diamond cutout must be broad and not jewel-like or sharp. Drop target, not the draggable piece.
