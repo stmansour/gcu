@@ -74,7 +74,6 @@ export class ColorMissionScene extends Scene {
     // Canvas state
     this._sourceCanvas  = null;   // original drawn scene
     this._resultCanvas  = null;   // processed output shown to player
-    this._thumbCanvases = {};     // sensor thumbnails { A, B, C }
     this._currentSource = null;   // active source id
     this._avatarImg     = null;   // loaded Image for avatar source
 
@@ -82,7 +81,7 @@ export class ColorMissionScene extends Scene {
     this._pbSvg         = null;
     this._wireLayer     = null;
     this._drawnWires    = {};     // outputChannel → SVGLineElement
-    this._thumbEls      = {};     // sensorId → <canvas> in SVG via foreignObject
+    this._thumbImgEls   = {};     // sensorId → SVG <image> element (avoids iOS foreignObject bugs)
 
     // Wire drag state
     this._dragFrom      = null;   // 'A'|'B'|'C' — dragging from sensor
@@ -121,10 +120,11 @@ export class ColorMissionScene extends Scene {
     document.removeEventListener('pointermove', this._boundPointerMove);
     document.removeEventListener('pointerup',   this._boundPointerUp);
     container.innerHTML = '';
-    this._container  = null;
-    this._pbSvg      = null;
+    this._container    = null;
+    this._pbSvg        = null;
     this._sourceCanvas = this._resultCanvas = null;
     this._avatarImg    = null;
+    this._thumbImgEls  = {};
   }
 
   // ── DOM ───────────────────────────────────────────────────────────────────
@@ -179,7 +179,10 @@ export class ColorMissionScene extends Scene {
           <div class="rl-cs-result-label">WHAT SWIRL-E SEES</div>
           <canvas class="rl-cs-result-canvas" id="rl-result-canvas"
                   width="${SCENE_W}" height="${SCENE_H}"></canvas>
-          <div class="rl-cs-source-picker" id="rl-source-picker"></div>
+          <div class="rl-cs-sources-section">
+            <div class="rl-cs-result-label">TEST SOURCES</div>
+            <div class="rl-cs-source-picker" id="rl-source-picker"></div>
+          </div>
         </div>
 
       </div>
@@ -213,15 +216,6 @@ export class ColorMissionScene extends Scene {
     this._sourceCanvas = document.createElement('canvas');
     this._sourceCanvas.width  = SCENE_W;
     this._sourceCanvas.height = SCENE_H;
-
-    // Sensor thumbnail canvases — match the foreignObject display size exactly
-    // so CSS does not stretch the pixels (aspect ratio fix).
-    for (const id of ['A', 'B', 'C']) {
-      const c = document.createElement('canvas');
-      c.width  = THUMB_W;
-      c.height = THUMB_H;
-      this._thumbCanvases[id] = c;
-    }
 
     // Build source picker UI
     this._buildSourcePicker();
@@ -311,9 +305,10 @@ export class ColorMissionScene extends Scene {
     this._svgText(svg, 12 + THUMB_W / 2, 22, 'SENSOR VIEWS',   'rl-cs-pb-colhdr');
     this._svgText(svg, PB_W - 100,       22, 'COLOR OUTPUTS',  'rl-cs-pb-colhdr');
 
-    // Discovery hint — nudges children to use the thumbnails as clues
-    const hint = this._svgText(svg, 12 + THUMB_W / 2, 38,
+    // Discovery hint — left-aligned so it never clips at the SVG edge
+    const hint = this._svgText(svg, 12, 38,
       'each sees one color — which?', 'rl-cs-pb-hint');
+    hint.setAttribute('text-anchor', 'start');
     hint.setAttribute('text-anchor', 'middle');
 
     // Draw sensor nodes
@@ -338,22 +333,21 @@ export class ColorMissionScene extends Scene {
     g.setAttribute('class', 'rl-cs-sensor-node');
     g.setAttribute('data-sensor', id);
 
-    // ── Thumbnail (foreignObject) ─────────────────────────────────────────
+    // ── Thumbnail (<image> element — avoids iOS Safari foreignObject bugs) ──
     // Placed to the LEFT of the terminal circle, centred vertically on pos.y.
     const thumbX = 12;
     const thumbY = pos.y - THUMB_H / 2;
-    const fo = document.createElementNS(SVG_NS, 'foreignObject');
-    fo.setAttribute('x',      thumbX);
-    fo.setAttribute('y',      thumbY);
-    fo.setAttribute('width',  THUMB_W);
-    fo.setAttribute('height', THUMB_H);
-    const canvas = this._thumbCanvases[id];
-    canvas.style.width        = `${THUMB_W}px`;
-    canvas.style.height       = `${THUMB_H}px`;
-    canvas.style.borderRadius = '5px';
-    canvas.style.display      = 'block';
-    fo.appendChild(canvas);
-    g.appendChild(fo);
+    const imgEl = document.createElementNS(SVG_NS, 'image');
+    imgEl.setAttribute('x',                   thumbX);
+    imgEl.setAttribute('y',                   thumbY);
+    imgEl.setAttribute('width',               THUMB_W);
+    imgEl.setAttribute('height',              THUMB_H);
+    imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    // Grey placeholder until thumbnails are generated
+    imgEl.setAttribute('href', 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=');
+    imgEl.style.borderRadius = '5px';
+    this._thumbImgEls[id] = imgEl;
+    g.appendChild(imgEl);
 
     // ── Sensor label — sits BELOW the thumbnail ───────────────────────────
     // Show "SENSOR A" on one line, "filter: ?" on the next as a clue prompt.
@@ -609,16 +603,19 @@ export class ColorMissionScene extends Scene {
   // ── Image processing ──────────────────────────────────────────────────────
 
   _updateThumbnails() {
+    if (!this._sourceCanvas) return;
     const srcCtx = this._sourceCanvas.getContext('2d');
     const srcData = srcCtx.getImageData(0, 0, SCENE_W, SCENE_H);
 
     for (const id of ['A', 'B', 'C']) {
-      const grey  = this._engine.getSensorGreyscale(id, srcData);
-      const thumb = this._thumbCanvases[id];
-      const tCtx  = thumb.getContext('2d');
-      const tData = tCtx.createImageData(SCENE_W, SCENE_H);
+      const grey = this._engine.getSensorGreyscale(id, srcData);
 
-      // Fill RGBA from greyscale
+      // Build greyscale at full resolution
+      const full = document.createElement('canvas');
+      full.width  = SCENE_W;
+      full.height = SCENE_H;
+      const fullCtx = full.getContext('2d');
+      const tData   = fullCtx.createImageData(SCENE_W, SCENE_H);
       for (let i = 0; i < SCENE_W * SCENE_H; i++) {
         const v = grey[i];
         tData.data[i * 4]     = v;
@@ -626,16 +623,17 @@ export class ColorMissionScene extends Scene {
         tData.data[i * 4 + 2] = v;
         tData.data[i * 4 + 3] = 255;
       }
+      fullCtx.putImageData(tData, 0, 0);
 
-      // Draw to full-size offscreen, then scale down to thumbnail
-      const offscreen = document.createElement('canvas');
-      offscreen.width  = SCENE_W;
-      offscreen.height = SCENE_H;
-      offscreen.getContext('2d').putImageData(tData, 0, 0);
+      // Scale down to thumbnail size
+      const thumb = document.createElement('canvas');
+      thumb.width  = THUMB_W;
+      thumb.height = THUMB_H;
+      thumb.getContext('2d').drawImage(full, 0, 0, THUMB_W, THUMB_H);
 
-      // Scale to thumbnail size
-      tCtx.clearRect(0, 0, thumb.width, thumb.height);
-      tCtx.drawImage(offscreen, 0, 0, thumb.width, thumb.height);
+      // Update the SVG <image> element via data URL — works reliably on iOS Safari
+      const imgEl = this._thumbImgEls[id];
+      if (imgEl) imgEl.setAttribute('href', thumb.toDataURL('image/jpeg', 0.85));
     }
   }
 
