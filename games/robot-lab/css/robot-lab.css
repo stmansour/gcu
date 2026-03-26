@@ -1119,36 +1119,38 @@
 
 .rl-hint-panel__inner {
   padding: 20px;
-  max-width: min(480px, 90vw);
+  max-width: min(900px, 92vw);
+  max-height: 92vh;
+  overflow-y: auto;
   width: 100%;
 }
 
 .rl-hint-panel__paper {
   background:
     url('../assets/images/journal-blank-page.png') center top / cover no-repeat;
-  border-radius: 12px;
-  padding: 28px 28px 24px;
+  border-radius: 16px;
+  padding: 48px 56px 44px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 2px rgba(180,140,80,0.5);
   color: #1a0e04;
 }
 
 .rl-hint-panel__heading {
   font-family: 'Caveat', cursive;
-  font-size: 26px;
+  font-size: 52px;
   font-weight: 700;
   color: #4a2008;
-  margin: 0 0 14px;
+  margin: 0 0 20px;
   text-align: center;
   letter-spacing: 0.5px;
 }
 
 .rl-hint-panel__text {
   font-family: 'Caveat', cursive;
-  font-size: 19px;
+  font-size: 36px;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.6;
 }
-.rl-hint-panel__text p { margin: 0 0 8px; }
+.rl-hint-panel__text p { margin: 0 0 12px; }
 .rl-hint-panel__text p:last-child {
   margin-bottom: 0;
   color: #4a2008;
