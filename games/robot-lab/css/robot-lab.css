@@ -554,11 +554,13 @@
 }
 
 .rl-mission__title {
-  font-family: var(--font-display, 'Baloo 2', cursive);
-  font-size: 15px;
-  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(16px, 2.2vw, 26px);
+  font-weight: 900;
   color: #F0C866;
   text-align: center;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 24px rgba(240, 200, 102, 0.5);
   flex: 1;
   min-width: 0;
   overflow: hidden;
