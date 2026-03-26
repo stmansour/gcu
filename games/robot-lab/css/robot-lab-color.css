@@ -209,9 +209,11 @@
 .rl-cs-gain-row {
   display: flex;
   align-items: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 12px 20px;
   padding: 14px 12px 12px;
   flex-shrink: 0;
+  overflow: hidden;
   border-top: 1px solid rgba(100,180,255,0.15);
   background: rgba(0,8,24,0.4);
 }
@@ -229,6 +231,7 @@
   align-items: center;
   gap: 10px;
   flex: 1;
+  min-width: 140px;  /* wraps to next line before controls become unusably small */
 }
 
 .rl-cs-gain-ch {
@@ -245,6 +248,7 @@
   -webkit-appearance: none;
   appearance: none;
   flex: 1;
+  min-width: 0;   /* lets flex shrink the slider instead of overflowing */
   height: 10px;
   border-radius: 5px;
   outline: none;
