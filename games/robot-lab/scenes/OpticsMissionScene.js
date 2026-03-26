@@ -96,15 +96,20 @@ export class OpticsMissionScene extends Scene {
     this._beat1Shown = false;
     this._container  = container;
 
-    this.storage.get('progress', { completedChapters: [] }).then(p => {
-      this._completedChapters = new Set(p.completedChapters);
-    });
-
     container.className = 'rl-optics';
     this._buildDOM(container);
     this._initOptics();
     this._attachEvents();
     this._updateOptics();   // initial render (all empty)
+
+    // Show nav buttons immediately if this chapter was previously completed.
+    this.storage.get('progress', { completedChapters: [] }).then(p => {
+      this._completedChapters = new Set(p.completedChapters);
+      if (this._completedChapters.has(CHAPTER_2.id)) {
+        this._showResetButton();
+        this._showNextChapterButton();
+      }
+    });
   }
 
   exit(container) {
@@ -691,7 +696,11 @@ export class OpticsMissionScene extends Scene {
       btn.className = 'rl-btn rl-btn--next-chapter';
       btn.textContent = 'Next Chapter →';
       btn.addEventListener('click', () => {
-        this.sceneManager.go('hub');
+        const route = CHAPTER_SCENES[nextChapter.id]
+          ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id };
+        const data = { avatarId: this._avatarId };
+        if (route.missionId) data.missionId = route.missionId;
+        this.sceneManager.go(route.scene, data);
       });
       actionsEl.appendChild(btn);
     }

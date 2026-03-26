@@ -89,6 +89,15 @@ export class CircuitMissionScene extends Scene {
     this._buildDOM(container);
     this._shuffleAndBuild();
     this._attachEvents();
+
+    // Show nav buttons immediately if this chapter was previously completed.
+    this.storage.get('progress', { completedChapters: [] }).then(p => {
+      this._completedChapters = new Set(p.completedChapters);
+      if (this._completedChapters.has(this._mission.id)) {
+        this._everSolved = true;
+        this._refreshNavButtons();
+      }
+    });
   }
 
   exit(container) {
@@ -283,9 +292,6 @@ export class CircuitMissionScene extends Scene {
 
     this._container.querySelector('#rl-back').addEventListener('click',
       () => this.sceneManager.go('hub'));
-
-    this._container.querySelector('#rl-clear').addEventListener('click',
-      () => this._resetCircuit());
 
     this._container.querySelector('#rl-hint').addEventListener('click',
       () => { this._container.querySelector('#rl-hint-panel').hidden = false; });
@@ -822,29 +828,52 @@ export class CircuitMissionScene extends Scene {
     actionsEl.appendChild(btn);
   }
 
+  /** Rebuild nav buttons (Previous / Next Chapter) based on current progress. */
+  _refreshNavButtons() {
+    const actionsEl = this._container?.querySelector('#rl-actions');
+    if (!actionsEl) return;
+    // Remove any existing nav buttons before re-adding them.
+    actionsEl.querySelectorAll('.rl-btn--prev-chapter, .rl-btn--next-chapter').forEach(b => b.remove());
+    this._showNextChapterButton();
+  }
+
   _showNextChapterButton() {
     const currentIdx  = ROBOT_LAB_CHAPTERS.findIndex(ch => ch.id === this._mission.id);
+    const prevChapter = currentIdx > 0 ? ROBOT_LAB_CHAPTERS[currentIdx - 1] : null;
     const nextChapter = ROBOT_LAB_CHAPTERS[currentIdx + 1] ?? null;
-    if (!nextChapter) return; // already the last chapter
 
     const actionsEl = this._container.querySelector('#rl-actions');
     if (!actionsEl) return;
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'rl-btn rl-btn--next-chapter';
-    btn.textContent = 'Next Chapter →';
-    btn.addEventListener('click', () => {
-      const route = CHAPTER_SCENES[nextChapter.id];
-      if (route) {
+    if (prevChapter) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rl-btn rl-btn--prev-chapter';
+      btn.textContent = '← Previous Chapter';
+      btn.addEventListener('click', () => {
+        const route = CHAPTER_SCENES[prevChapter.id]
+          ?? { scene: 'robot-lab-circuit', missionId: prevChapter.id };
+        const data = { avatarId: this._avatarId };
+        if (route.missionId) data.missionId = route.missionId;
+        this.sceneManager.go(route.scene, data);
+      });
+      actionsEl.appendChild(btn);
+    }
+
+    if (nextChapter) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rl-btn rl-btn--next-chapter';
+      btn.textContent = 'Next Chapter →';
+      btn.addEventListener('click', () => {
+        const route = CHAPTER_SCENES[nextChapter.id]
+          ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id };
         const routeData = { avatarId: this._avatarId };
         if (route.missionId) routeData.missionId = route.missionId;
         this.sceneManager.go(route.scene, routeData);
-      } else {
-        this.sceneManager.go('hub', { avatarId: this._avatarId });
-      }
-    });
-    actionsEl.appendChild(btn);
+      });
+      actionsEl.appendChild(btn);
+    }
   }
 
   _showResetButton() {
