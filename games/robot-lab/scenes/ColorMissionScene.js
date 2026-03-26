@@ -140,8 +140,6 @@ export class ColorMissionScene extends Scene {
         <span class="rl-mission__title">
           <span class="rl-label-prefix">Ch&nbsp;${m.chapterNumber}:</span> ${m.title}
         </span>
-        <button type="button" class="rl-clear-btn" id="rl-reset" title="Reset wires and gains">↺ Reset</button>
-        <button type="button" class="rl-hint-btn"  id="rl-hint" aria-label="Show hint">📓</button>
       </div>
 
       <div class="rl-mission__main">
@@ -153,6 +151,8 @@ export class ColorMissionScene extends Scene {
           </div>
           <div class="rl-cs-speech" id="rl-speech">${m.speech.none}</div>
           <div class="rl-mission__actions" id="rl-actions"></div>
+          <!-- Grandpa's Journal — always visible -->
+          <button type="button" class="rl-btn rl-btn--journal" id="rl-hint">📖 Grandpa's Journal</button>
         </div>
 
         <div class="rl-cs-center" id="rl-center">
@@ -795,9 +795,8 @@ export class ColorMissionScene extends Scene {
 
         </div>
         <div class="rl-outcome__btns">
-          <button type="button" class="rl-btn rl-btn--reset" id="rl-oc-reset">🔄 Try Again</button>
+          <button type="button" class="rl-btn rl-btn--close" id="rl-oc-keep">Keep Exploring</button>
           ${nextChapter ? `<button type="button" class="rl-btn rl-btn--next-chapter" id="rl-oc-next">Next Chapter →</button>` : ''}
-          <button type="button" class="rl-btn rl-outcome__close-btn" id="rl-oc-close">Close</button>
         </div>
       </div>
     `;
@@ -807,9 +806,7 @@ export class ColorMissionScene extends Scene {
       setTimeout(() => { overlayEl.remove(); fn?.(); }, 380);
     };
 
-    overlayEl.querySelector('#rl-oc-close')?.addEventListener('click', () => dismiss());
-    overlayEl.querySelector('#rl-oc-reset')?.addEventListener('click',
-      () => dismiss(() => this._reset()));
+    overlayEl.querySelector('#rl-oc-keep')?.addEventListener('click', () => dismiss());
     if (nextChapter) {
       overlayEl.querySelector('#rl-oc-next')?.addEventListener('click', () => {
         const route = CHAPTER_SCENES[nextChapter.id]

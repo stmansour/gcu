@@ -115,8 +115,6 @@ export class CircuitMissionScene extends Scene {
       <div class="rl-mission__topbar">
         <button type="button" class="rl-back-btn" id="rl-back">← Hub</button>
         <span class="rl-mission__title"><span class="rl-label-prefix">Ch&nbsp;${m.chapterNumber}:</span> ${m.title}</span>
-        <button type="button" class="rl-clear-btn" id="rl-clear" title="Remove all wires and start over">↺ Rewire</button>
-        <button type="button" class="rl-hint-btn" id="rl-hint" aria-label="Show hint">📓</button>
       </div>
 
       <div class="rl-mission__main">
@@ -129,6 +127,8 @@ export class CircuitMissionScene extends Scene {
 
           <div class="rl-mission__problem" id="rl-problem"></div>
           <div class="rl-mission__actions" id="rl-actions"></div>
+          <!-- Grandpa's Journal — always visible -->
+          <button type="button" class="rl-btn rl-btn--journal" id="rl-hint">📖 Grandpa's Journal</button>
         </div>
 
         <div class="rl-board" id="rl-board">

@@ -132,8 +132,6 @@ export class OpticsMissionScene extends Scene {
         <span class="rl-mission__title">
           <span class="rl-label-prefix">Ch&nbsp;${m.chapterNumber}:</span> ${m.title}
         </span>
-        <button type="button" class="rl-clear-btn" id="rl-reset" title="Clear all lenses">↺ Reset</button>
-        <button type="button" class="rl-hint-btn" id="rl-hint" aria-label="Show hint">📓</button>
       </div>
 
       <div class="rl-mission__main">
@@ -154,6 +152,9 @@ export class OpticsMissionScene extends Scene {
 
           <!-- Action buttons (appear on outcomes) -->
           <div class="rl-mission__actions" id="rl-actions"></div>
+
+          <!-- Grandpa's Journal — always visible -->
+          <button type="button" class="rl-btn rl-btn--journal" id="rl-hint">📖 Grandpa's Journal</button>
 
         </div>
 
@@ -859,7 +860,7 @@ export class OpticsMissionScene extends Scene {
     this._container.querySelector('#rl-back').addEventListener('click',
       () => this.sceneManager.go('hub'));
 
-    this._container.querySelector('#rl-reset').addEventListener('click',
+    this._container.querySelector('#rl-reset')?.addEventListener('click',
       () => this._resetLenses());
 
     this._container.querySelector('#rl-hint').addEventListener('click',

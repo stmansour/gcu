@@ -92,6 +92,32 @@
   width: 100%;
 }
 
+/* Grandpa's Journal button — lives in sidebar, always visible */
+.rl-btn--journal {
+  background: rgba(180, 130, 50, 0.18);
+  border: 1.5px solid rgba(210, 160, 70, 0.5);
+  color: #d4a853;
+  padding: 11px 16px;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, border-color 0.15s;
+}
+.rl-btn--journal:active {
+  background: rgba(210, 160, 70, 0.28);
+  border-color: rgba(210, 160, 70, 0.8);
+}
+@media (hover: hover) {
+  .rl-btn--journal:hover {
+    background: rgba(210, 160, 70, 0.28);
+    border-color: rgba(210, 160, 70, 0.8);
+  }
+}
+
 /* ── Flow direction flip-switch ─────────────────────────────────────────── */
 .rl-dir-toggle {
   display: flex;
