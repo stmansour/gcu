@@ -43,8 +43,8 @@ const PB_W = 640;
 const PB_H = 400;
 
 // Thumbnail dimensions inside each sensor row
-const THUMB_W = 100;
-const THUMB_H =  64;
+const THUMB_H = 64;
+const THUMB_W = Math.round(THUMB_H * (SCENE_W / SCENE_H)); // preserves source aspect ratio (400×300 → 85×64)
 
 // Terminal positions in SVG space  (rows at y = 90 / 200 / 310)
 const SENSOR_NODES = {
@@ -512,7 +512,11 @@ export class ColorMissionScene extends Scene {
     if (outputHit) {
       if (this._engine.routing[outputHit]) {
         e.preventDefault();
+        const disconnectedSensor = this._engine.routing[outputHit];
         this._engine.removeRoute(outputHit);
+        // Reset that sensor's filter sub-label back to undiscovered state
+        const sub = this._pbSvg.querySelector(`[data-sublbl="${disconnectedSensor}"]`);
+        if (sub) { sub.textContent = 'filter: ?'; sub.removeAttribute('style'); }
         this._redrawWires();
         this._processAndDisplay();
         this._checkState();
@@ -817,6 +821,12 @@ export class ColorMissionScene extends Scene {
     this._drawnWires = {};
     for (const badge of this._pbSvg.querySelectorAll('[data-badge]')) {
       badge.setAttribute('visibility', 'hidden');
+    }
+
+    // Reset filter sub-labels back to "filter: ?" (undiscovered state)
+    for (const sub of this._pbSvg.querySelectorAll('[data-sublbl]')) {
+      sub.textContent = 'filter: ?';
+      sub.removeAttribute('style');
     }
 
     // Reset sliders
