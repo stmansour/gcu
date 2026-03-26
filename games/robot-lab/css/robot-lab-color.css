@@ -209,14 +209,16 @@
 .rl-cs-gain-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 8px 4px 2px;
-  flex-wrap: wrap;
+  gap: 20px;
+  padding: 14px 12px 12px;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(100,180,255,0.15);
+  background: rgba(0,8,24,0.4);
 }
 
 .rl-cs-gain-label {
   font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   color: rgba(100,200,255,0.6);
   white-space: nowrap;
@@ -225,14 +227,15 @@
 .rl-cs-gain-ctrl {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  flex: 1;
 }
 
 .rl-cs-gain-ch {
   font-family: 'Orbitron', sans-serif;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 900;
-  min-width: 14px;
+  min-width: 18px;
 }
 .rl-cs-gain-ch--r { color: #FF5555; }
 .rl-cs-gain-ch--g { color: #44EE44; }
@@ -241,27 +244,28 @@
 .rl-cs-gain-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 90px;
-  height: 6px;
-  border-radius: 3px;
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
   outline: none;
   cursor: pointer;
   background: rgba(100,150,220,0.25);
+  touch-action: none;
 }
 .rl-cs-gain-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 18px; height: 18px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   background: #D4A959;
-  border: 2px solid #FFE08A;
+  border: 3px solid #FFE08A;
   cursor: pointer;
 }
 
 .rl-cs-gain-val {
   font-family: 'Orbitron', sans-serif;
-  font-size: 10px;
+  font-size: 13px;
   color: rgba(220,240,255,0.7);
-  min-width: 30px;
+  min-width: 36px;
 }
 
 /* ── Result panel ─────────────────────────────────────────────────────────── */
