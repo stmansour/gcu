@@ -302,8 +302,11 @@ export class ColorMissionScene extends Scene {
     svg.appendChild(this._wireLayer);
 
     // Column headers
-    this._svgText(svg, 12 + THUMB_W / 2, 22, 'SENSOR VIEWS',   'rl-cs-pb-colhdr');
-    this._svgText(svg, PB_W - 100,       22, 'COLOR OUTPUTS',  'rl-cs-pb-colhdr');
+    // Left-align SENSOR VIEWS and right-align COLOR OUTPUTS so neither ever clips
+    const hdrL = this._svgText(svg, 12,          22, 'SENSOR VIEWS',  'rl-cs-pb-colhdr');
+    hdrL.setAttribute('text-anchor', 'start');
+    const hdrR = this._svgText(svg, PB_W - 12,   22, 'COLOR OUTPUTS', 'rl-cs-pb-colhdr');
+    hdrR.setAttribute('text-anchor', 'end');
 
     // Discovery hint — left-aligned so it never clips at the SVG edge
     const hint = this._svgText(svg, 12, 38,

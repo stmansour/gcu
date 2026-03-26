@@ -92,8 +92,8 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 13px;
   fill: rgba(100,200,255,0.5);
-  text-anchor: middle;
   letter-spacing: 0.08em;
+  /* text-anchor set per-element in JS to avoid clipping on either side */
 }
 
 .rl-cs-pb-sensor-lbl {
