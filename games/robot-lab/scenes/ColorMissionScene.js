@@ -474,12 +474,23 @@ export class ColorMissionScene extends Scene {
   // ── Patchbay wire drag ────────────────────────────────────────────────────
 
   _svgPoint(clientX, clientY) {
-    const rect  = this._pbSvg.getBoundingClientRect();
-    const scaleX = PB_W / rect.width;
-    const scaleY = PB_H / rect.height;
+    // Use SVG matrix math — correctly handles viewBox, preserveAspectRatio
+    // letterboxing, and any CSS transforms. Simple rect math breaks when the
+    // SVG container is a different aspect ratio than the viewBox (xMidYMid meet
+    // adds blank bars at top/bottom, shifting the coordinate origin).
+    const ctm = this._pbSvg.getScreenCTM();
+    if (ctm) {
+      const pt = this._pbSvg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      const svgPt = pt.matrixTransform(ctm.inverse());
+      return { x: svgPt.x, y: svgPt.y };
+    }
+    // Fallback for detached / hidden SVG
+    const rect = this._pbSvg.getBoundingClientRect();
     return {
-      x: (clientX - rect.left) * scaleX,
-      y: (clientY - rect.top)  * scaleY,
+      x: (clientX - rect.left) * (PB_W / rect.width),
+      y: (clientY - rect.top)  * (PB_H / rect.height),
     };
   }
 
