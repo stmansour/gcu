@@ -109,6 +109,7 @@
   font-size: 11px;
   fill: rgba(255,200,100,0.55);
   letter-spacing: 0.04em;
+  text-anchor: start;   /* CSS beats SVG presentation attributes — must be here */
 }
 
 /* "filter: ?" sub-label under each sensor label */
@@ -118,6 +119,7 @@
   fill: rgba(255,200,100,0.6);
   dominant-baseline: middle;
   letter-spacing: 0.06em;
+  text-anchor: middle;
 }
 
 /* "tap to disconnect" micro-label on output nodes */
