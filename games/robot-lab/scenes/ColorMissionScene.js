@@ -450,8 +450,6 @@ export class ColorMissionScene extends Scene {
 
     c.querySelector('#rl-back').addEventListener('click',
       () => this.sceneManager.go('hub'));
-    c.querySelector('#rl-reset').addEventListener('click',
-      () => this._reset());
     c.querySelector('#rl-hint').addEventListener('click',
       () => { c.querySelector('#rl-hint-panel').hidden = false; });
     c.querySelector('#rl-hint-close').addEventListener('click',
