@@ -109,10 +109,11 @@ export class ColorMissionScene extends Scene {
     this._attachEvents();
 
     // Show nav buttons immediately if this chapter was previously completed.
+    // Do NOT set _solved=true here — that would block all drag interaction on re-entry.
+    // _solved is only set by _doSuccess() when the player actually solves it this session.
     this.storage.get('progress', { completedChapters: [] }).then(p => {
       this._completedChapters = new Set(p.completedChapters);
       if (this._completedChapters.has(CHAPTER_3.id)) {
-        this._solved = true;
         this._showNextChapterButton();
       }
     });
