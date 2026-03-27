@@ -1,5 +1,17 @@
 # CLAUDE.md — Grandpa's Creative Universe
 
+## Git & Workflow Rules
+
+**This is a solo project. Steve is the only developer.**
+
+- **Never commit, push, or create PRs unless Steve explicitly asks.**
+- When code changes are done, just say so and let Steve test.
+- If Steve says "commit my changes" — do ONE `git add` + `git commit`. That's it. No push, no PR.
+- Never use `gh` CLI or create pull requests. There is no team, no review process.
+- Don't run multiple git commands trying to verify status, check logs, find gh CLI, etc.
+
+---
+
 ## Working Directory
 
 **This directory (`gcu/`) is the repository root.** All GCU code, docs, assets, and games live here.
