@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gcu-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "/Users/stevemansour/Documents/src/html/gcu", "-p", "8080", "-c-1", "--cors"],
+      "port": 8080
+    }
+  ]
+}
