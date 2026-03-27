@@ -41,19 +41,11 @@ export class ColorSensorEngine {
     this.routing = { R: null, G: null, B: null };
 
     // Gain per output channel (child-adjustable).
-    // Start slightly off so white-balance is also a task.
-    this.gainTarget = opts.gainTarget ?? {
-      R: 1.0 + (Math.random() * 0.4 - 0.2),  // 0.8–1.2
-      G: 1.0 + (Math.random() * 0.4 - 0.2),
-      B: 1.0 + (Math.random() * 0.4 - 0.2),
-    };
-    // Normalize so they average to 1.0
-    const avg = (this.gainTarget.R + this.gainTarget.G + this.gainTarget.B) / 3;
-    this.gainTarget.R /= avg;
-    this.gainTarget.G /= avg;
-    this.gainTarget.B /= avg;
+    // Target is always 1.0 so the default slider positions are already "correct"
+    // and routing alone is the completion gate. Sliders remain for sandbox exploration.
+    this.gainTarget = opts.gainTarget ?? { R: 1.0, G: 1.0, B: 1.0 };
 
-    // Slider positions start at 1.0 regardless of target.
+    // Slider positions start at 1.0 (matching target).
     this.gains = { R: 1.0, G: 1.0, B: 1.0 };
   }
 
