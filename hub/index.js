@@ -41,7 +41,7 @@ const games = [
     id: 'art-studio',
     name: 'Art Studio',
     icon: '🎨',
-    available: true,
+    available: false,
     sceneId: 'art-studio-title',
     previewImage: 'assets/images/portals/portal-art-studio.png',
   },

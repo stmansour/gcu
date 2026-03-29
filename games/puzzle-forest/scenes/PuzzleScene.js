@@ -2,7 +2,7 @@ import { Scene } from '../../../core/scene/index.js';
 import { DragManager } from '../../../core/input/index.js';
 import { celebrate } from '../../../core/rewards/index.js';
 import { GameStorage } from '../../../core/storage/index.js';
-import { AudioManager } from '../../../core/audio/index.js';
+import { AudioManager, AudioClips } from '../../../core/audio/index.js';
 import { PuzzleManager } from '../engine/PuzzleManager.js';
 import { SnapManager } from '../engine/SnapManager.js';
 
@@ -39,11 +39,12 @@ export class PuzzleScene extends Scene {
     this._avatarId = null;
     this._missionLength = 6;
     this._advanceTimer = null;
-    this._speechEnabled = typeof window !== 'undefined' && 'speechSynthesis' in window;
     this._objectOrders = new Map();
+    // Cache of image content bounds {x0,y0,x1,y1} keyed by image src
+    this._imageBoundsCache = new Map();
   }
 
-  enter(container, data = {}) {
+  async enter(container, data = {}) {
     this._container = container;
     this._avatarId = data.avatarId ?? null;
     this._category = this.loader.getCategory(data.categoryId);
@@ -57,9 +58,74 @@ export class PuzzleScene extends Scene {
     this.manager.startMission(this._category.id, this._missionLength);
     this._objectOrders.clear();
     container.className = 'pf-game';
+
+    // Pre-detect image content bounds for build puzzles so slicing is tight
+    if (this._category.id === 'build-the-animal') {
+      await this._preloadBuildBounds();
+    }
+
     this._renderShell();
     this._renderPuzzle();
-    this._speakCurrentPrompt();
+    this._speakPrompt();
+  }
+
+  /**
+   * Scan a transparent PNG at 128×128 to find the bounding box of non-transparent pixels.
+   * Returns {x0,y0,x1,y1} as fractions 0–1 of image width/height.
+   * Falls back to {0,0,1,1} on any error.
+   */
+  async _detectImageBounds(src) {
+    if (this._imageBoundsCache.has(src)) return this._imageBoundsCache.get(src);
+    const fallback = { x0: 0, y0: 0, x1: 1, y1: 1 };
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const S = 128;
+          const canvas = document.createElement('canvas');
+          canvas.width = S;
+          canvas.height = S;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, S, S);
+          const pixels = ctx.getImageData(0, 0, S, S).data;
+          let minY = S, maxY = 0, minX = S, maxX = 0;
+          for (let y = 0; y < S; y++) {
+            for (let x = 0; x < S; x++) {
+              if (pixels[(y * S + x) * 4 + 3] > 20) {
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+              }
+            }
+          }
+          const bounds = minY < maxY
+            ? { x0: minX / S, y0: minY / S, x1: (maxX + 1) / S, y1: (maxY + 1) / S }
+            : fallback;
+          this._imageBoundsCache.set(src, bounds);
+          resolve(bounds);
+        } catch {
+          this._imageBoundsCache.set(src, fallback);
+          resolve(fallback);
+        }
+      };
+      img.onerror = () => { this._imageBoundsCache.set(src, fallback); resolve(fallback); };
+      img.src = src;
+    });
+  }
+
+  /** Pre-load bounds for every image used in build puzzles of this category. */
+  async _preloadBuildBounds() {
+    const puzzles = this.loader.getPuzzlesByCategory(this._category.id)
+      .filter((p) => p.layout === 'build-animal');
+    const srcs = new Set();
+    for (const p of puzzles) {
+      if (p.buildImage) srcs.add(p.buildImage);
+      for (const t of (p.targets ?? [])) { if (t.sliceImage) srcs.add(t.sliceImage); }
+      for (const o of (p.objects ?? [])) { if (o.sliceImage) srcs.add(o.sliceImage); }
+    }
+    await Promise.all([...srcs].map((src) => this._detectImageBounds(src)));
   }
 
   _renderShell() {
@@ -116,14 +182,14 @@ export class PuzzleScene extends Scene {
 
     const onBack = () => this.sceneManager.go('puzzle-forest-title', { avatarId: this._avatarId });
     const onHome = () => this.sceneManager.go('hub', { avatarId: this._avatarId });
-    const onPrompt = () => this._speakCurrentPrompt(true);
+    const onPrompt = () => this._speakPrompt();
     const onPlayAgain = () => {
       this.manager.startMission(this._category.id, this._missionLength);
       this._objectOrders.clear();
       this._container.querySelector('#pf-success').setAttribute('hidden', '');
       this._renderShell();
       this._renderPuzzle();
-      this._speakCurrentPrompt();
+      this._speakPrompt();
     };
     const onChoose = () => this.sceneManager.go('puzzle-forest-title', { avatarId: this._avatarId });
 
@@ -153,10 +219,15 @@ export class PuzzleScene extends Scene {
     const trackEl = this._container.querySelector('#pf-progress-track');
     const progress = this.manager.getProgress();
     const isBuildPuzzle = this._isBuildPuzzle(puzzle);
+    const isShapeMatch = this._category.id === 'shape-matching';
+    const isColorSort = this._category.id === 'color-sorting';
+    const isFeedAnimal = this._category.id === 'feed-the-animal';
 
     this._container.classList.toggle('pf-game--build-active', isBuildPuzzle);
     this._container.querySelector('.pf-board')?.classList.toggle('pf-board--build', isBuildPuzzle);
     this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--build', isBuildPuzzle);
+    this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--shape-match', isShapeMatch);
+    this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--color-sort', isColorSort);
 
     promptEl.innerHTML = `
       <div class="pf-prompt__icon">${puzzle.promptIcon ?? this._category.icon}</div>
@@ -172,20 +243,53 @@ export class PuzzleScene extends Scene {
 
     if (isBuildPuzzle) {
       this._renderBuildStage(stageEl, puzzle);
+    } else if (isShapeMatch) {
+      this._renderShapeMatchStage(stageEl, puzzle);
+    } else if (isColorSort) {
+      this._renderColorSortStage(stageEl, puzzle);
     } else {
       this._renderStandardStage(stageEl, puzzle);
     }
 
+    // Determine build axis/bounds for tray slice rendering
+    const buildAxis = isBuildPuzzle
+      ? (puzzle.buildAxis === 'horizontal' ? 'horizontal' : 'vertical')
+      : null;
+
     trayEl.innerHTML = '';
+    // No labels for any of these — the children that play this are too young to read
+    const hideLabel = isBuildPuzzle || isShapeMatch || isColorSort || isFeedAnimal;
     for (const object of this._getOrderedObjects(puzzle)) {
       const placed = this.manager.isObjectPlaced(object.id);
       const item = document.createElement('button');
       item.type = 'button';
-      item.className = `pf-object ${object.sliceImage ? 'pf-object--slice' : ''} ${placed ? 'pf-object--placed' : 'pf-object--available'} draggable`;
+      const extraClass = isShapeMatch ? 'pf-object--shape-item'
+        : isColorSort ? 'pf-object--sort-item'
+        : isFeedAnimal ? 'pf-object--feed-item'
+        : isBuildPuzzle ? 'pf-object--build-item'
+        : '';
+      item.className = `pf-object ${object.sliceImage ? 'pf-object--slice' : ''} ${extraClass} ${placed ? 'pf-object--placed' : 'pf-object--available'} draggable`;
       item.dataset.objectId = object.id;
+
+      let artHtml;
+      let artAspect = null;
+      if (isBuildPuzzle && object.sliceImage) {
+        // Use per-image bounds so distractors (other animals) also slice correctly
+        const obBounds = this._imageBoundsCache.get(object.sliceImage)
+          ?? { x0: 0, y0: 0, x1: 1, y1: 1 };
+        const odx = Math.max(obBounds.x1 - obBounds.x0, 0.05);
+        const ody = Math.max(obBounds.y1 - obBounds.y0, 0.05);
+        // Slot aspect ratio for the tray container so slice math works correctly
+        artAspect = buildAxis === 'horizontal' ? odx / (3 * ody) : 3 * odx / ody;
+        artHtml = this._renderSlice(object, { axis: buildAxis, bounds: obBounds });
+      } else {
+        artHtml = this._renderObjectArt(object);
+      }
+
+      const artStyle = artAspect !== null ? ` style="aspect-ratio:${artAspect.toFixed(4)}"` : '';
       item.innerHTML = `
-        <span class="pf-object__art">${this._renderObjectArt(object)}</span>
-        <span class="pf-object__label">${escapeHtml(object.label)}</span>
+        <span class="pf-object__art"${artStyle}>${artHtml}</span>
+        ${hideLabel ? '' : `<span class="pf-object__label">${escapeHtml(object.label)}</span>`}
       `;
       if (placed) item.disabled = true;
       trayEl.appendChild(item);
@@ -271,7 +375,7 @@ export class PuzzleScene extends Scene {
       return;
     }
     this._renderPuzzle();
-    this._speakCurrentPrompt();
+    this._speakPrompt();
   }
 
   async _saveMissionProgress() {
@@ -290,6 +394,7 @@ export class PuzzleScene extends Scene {
     const textEl = this._container.querySelector('#pf-success-text');
     textEl.textContent = `${this._category.name} is all lit up. Want to play it again or try a new forest game?`;
     successEl.removeAttribute('hidden');
+    AudioClips.getInstance().speakRandom('puzzle-forest', 'mission_complete_');
     celebrate('large', {
       duration: 2200,
       origin: {
@@ -322,25 +427,23 @@ export class PuzzleScene extends Scene {
     return `<span class="pf-object__icon">${escapeHtml(object.icon ?? object.label)}</span>`;
   }
 
-  _speakCurrentPrompt(force = false) {
-    if (!this._speechEnabled || !window.speechSynthesis) return;
-    if (!force && this._container?.querySelector('#pf-success') && !this._container.querySelector('#pf-success').hasAttribute('hidden')) return;
-
+  /**
+   * Speak the current puzzle's prompt via AudioClips (WAV or TTS fallback).
+   * The clip key is derived from the puzzle ID: 'feed-bunny' → 'feed_bunny'.
+   * Uses speakPrompt() so numbered variants (_01, _02, …) are chosen randomly
+   * when they exist (e.g. sort_green_01–04), otherwise plays the single clip.
+   */
+  _speakPrompt() {
     const puzzle = this.manager.getCurrentPuzzle();
-    if (!puzzle?.promptText) return;
-
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(puzzle.promptText);
-    utterance.rate = 0.9;
-    utterance.pitch = 1.2;
-    utterance.volume = 0.8;
-    window.speechSynthesis.speak(utterance);
+    if (!puzzle) return;
+    const key = puzzle.id.replaceAll('-', '_');
+    AudioClips.getInstance().speakPrompt('puzzle-forest', key);
   }
 
   exit(container) {
     if (this.dragManager) this.dragManager.destroy();
     if (this._advanceTimer) clearTimeout(this._advanceTimer);
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    AudioClips.getInstance().cancel();
     this._removeListeners();
     this.dragManager = null;
     this._advanceTimer = null;
@@ -369,7 +472,7 @@ export class PuzzleScene extends Scene {
       case 'feed-the-animal': return 'Yum!';
       case 'color-sorting': return 'Nice!';
       case 'shape-matching': return 'Pop!';
-      case 'build-the-animal': return 'Great job!';
+      case 'build-the-animal': return '⭐';
       default: return 'Yay!';
     }
   }
@@ -411,13 +514,12 @@ export class PuzzleScene extends Scene {
   }
 
   _celebrateBuildComplete() {
-    const board = this._container?.querySelector('.pf-build-board');
-    const frame = this._container?.querySelector('.pf-build-preview__frame');
-    if (board) {
-      board.classList.remove('pf-build-board--celebrate');
-      void board.offsetWidth;
-      board.classList.add('pf-build-board--celebrate');
-      const existing = board.querySelector('.pf-build-burst');
+    const assembly = this._container?.querySelector('.pf-build-assembly');
+    if (assembly) {
+      assembly.classList.remove('pf-build-assembly--celebrate');
+      void assembly.offsetWidth;
+      assembly.classList.add('pf-build-assembly--celebrate');
+      const existing = assembly.querySelector('.pf-build-burst');
       existing?.remove();
       const burst = document.createElement('div');
       burst.className = 'pf-build-burst';
@@ -426,16 +528,11 @@ export class PuzzleScene extends Scene {
         <div class="pf-build-burst__text">You Built It!</div>
         <div class="pf-build-burst__sparkles">🌟 🐾 🌟</div>
       `;
-      board.appendChild(burst);
+      assembly.appendChild(burst);
       setTimeout(() => burst.remove(), 1700);
     }
-    if (frame) {
-      frame.classList.remove('pf-build-preview__frame--celebrate');
-      void frame.offsetWidth;
-      frame.classList.add('pf-build-preview__frame--celebrate');
-    }
 
-    const rect = frame?.getBoundingClientRect();
+    const rect = assembly?.getBoundingClientRect();
     celebrate('large', {
       origin: {
         x: rect ? rect.left + (rect.width / 2) : window.innerWidth / 2,
@@ -445,11 +542,81 @@ export class PuzzleScene extends Scene {
       colors: ['#FFD95E', '#FF8D6B', '#7CCF7B', '#7EC8FF'],
     });
     this._playBuildCompleteRiff();
+    AudioClips.getInstance().speakRandom('puzzle-forest', 'build_complete_');
     this._advanceTimer = setTimeout(() => this._advanceMission(), 2200);
   }
 
   _isBuildPuzzle(puzzle) {
-    return puzzle.layout === 'build-animal';
+    return puzzle?.layout === 'build-animal';
+  }
+
+  /**
+   * Color Sorting stage — shows the basket large and centered.
+   * The drop zone is a transparent overlay positioned over the basket opening
+   * (top rim), measured at ~20% down from the image top across all basket images.
+   * No dotted rectangle, no text label — the basket IS the instruction.
+   */
+  _renderColorSortStage(stageEl, puzzle) {
+    stageEl.className = 'pf-stage pf-stage--color-sort';
+    stageEl.innerHTML = '';
+
+    for (const target of puzzle.targets) {
+      const placed = this.manager.getPlacedObjectForTarget(target.id);
+      const board = document.createElement('div');
+      board.className = 'pf-color-basket';
+
+      const imgHtml = target.image
+        ? `<img class="pf-color-basket__img" src="${target.image}" alt="" draggable="false">`
+        : '';
+
+      const placedHtml = placed && placed.image
+        ? `<img class="pf-color-basket__placed-item" src="${placed.image}" alt="">`
+        : '';
+
+      board.innerHTML = `
+        ${imgHtml}
+        <div class="pf-target pf-color-basket__opening ${placed ? 'pf-target--filled' : ''}"
+             data-target-id="${target.id}">
+          ${placedHtml}
+        </div>
+      `;
+      stageEl.appendChild(board);
+    }
+  }
+
+  /**
+   * Shape Matching stage — shows the slot image (log-with-hole) large and centered.
+   * The drop target is a transparent overlay positioned over the hole in the image.
+   * No text labels: the visual hole in the wood IS the instruction.
+   */
+  _renderShapeMatchStage(stageEl, puzzle) {
+    stageEl.className = 'pf-stage pf-stage--shape-match';
+    stageEl.innerHTML = '';
+
+    for (const target of puzzle.targets) {
+      const placed = this.manager.getPlacedObjectForTarget(target.id);
+      const board = document.createElement('div');
+      board.className = 'pf-shape-board';
+
+      // The slot image (wooden board with hole) fills the board area
+      const imgHtml = target.image
+        ? `<img class="pf-shape-board__img" src="${target.image}" alt="" draggable="false">`
+        : '';
+
+      // The placed piece sits inside the hole as an overlay
+      const placedHtml = placed && placed.image
+        ? `<img class="pf-shape-board__placed-piece" src="${placed.image}" alt="">`
+        : '';
+
+      board.innerHTML = `
+        ${imgHtml}
+        <div class="pf-target pf-shape-board__hole ${placed ? 'pf-target--filled' : ''}"
+             data-target-id="${target.id}">
+          ${placedHtml}
+        </div>
+      `;
+      stageEl.appendChild(board);
+    }
   }
 
   _renderStandardStage(stageEl, puzzle) {
@@ -471,63 +638,97 @@ export class PuzzleScene extends Scene {
     }
   }
 
+  /**
+   * Build the seamless assembly frame for "Build the Animal" puzzles.
+   * Three slots stacked (vertical) or side by side (horizontal), no gaps,
+   * no text labels. Uses content-bounds-aware slicing so each slot shows
+   * a meaningful third of the animal even when the image has transparent padding.
+   */
   _renderBuildStage(stageEl, puzzle) {
-    const buildImage = puzzle.buildImage ?? puzzle.targets[0]?.sliceImage ?? '';
-    const axis = puzzle.buildAxis === 'vertical' ? 'vertical' : 'horizontal';
+    const axis = puzzle.buildAxis === 'horizontal' ? 'horizontal' : 'vertical';
+    const buildSrc = puzzle.buildImage ?? puzzle.targets[0]?.sliceImage ?? '';
+    const bounds = this._imageBoundsCache.get(buildSrc) ?? { x0: 0, y0: 0, x1: 1, y1: 1 };
     const slots = [...puzzle.targets].sort((a, b) => (a.sliceIndex ?? 0) - (b.sliceIndex ?? 0));
+
+    // Set aspect-ratio of the assembly frame to match the animal's content area.
+    // For a vertical-sliced animal: assembly height >> width (portrait);
+    // for horizontal: assembly width >> height (landscape).
+    const dx = Math.max(bounds.x1 - bounds.x0, 0.05);
+    const dy = Math.max(bounds.y1 - bounds.y0, 0.05);
+    const contentAspect = (dx / dy).toFixed(4);
+
     stageEl.className = 'pf-stage pf-stage--build';
     stageEl.innerHTML = `
-      <div class="pf-build-board pf-build-board--${axis}">
-        <div class="pf-build-board__silhouette">
-          <img src="${buildImage}" alt="${escapeHtml(puzzle.promptText)}" class="pf-build-board__image">
-        </div>
-        <div class="pf-build-board__slots pf-build-board__slots--${axis}">
-          ${slots.map((target) => {
-            const placed = this.manager.getPlacedObjectForTarget(target.id);
-            return `
-              <div class="pf-target pf-build-slot ${placed ? 'pf-target--filled' : ''}" data-target-id="${target.id}">
-                <div class="pf-build-slot__inner">
-                  ${placed
-                    ? this._renderPlacedObject(placed)
-                    : `
-                      <div class="pf-build-slot__ghost">
-                        ${this._renderSlice(target, { ghost: true })}
-                      </div>
-                      <span class="pf-target__hint">${escapeHtml(target.slotLabel ?? 'Drop here')}</span>
-                    `}
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
+      <div class="pf-build-assembly pf-build-assembly--${axis}" style="aspect-ratio:${contentAspect}">
+        ${slots.map((target) => {
+          const placed = this.manager.getPlacedObjectForTarget(target.id);
+          // Ghost uses the target's own sliceImage; placed uses the object's
+          const renderEntry = placed ?? target;
+          const sliceSrc = renderEntry.sliceImage ?? buildSrc;
+          const sliceBounds = this._imageBoundsCache.get(sliceSrc) ?? bounds;
+          return `<div class="pf-target pf-build-slot ${placed ? 'pf-target--filled' : ''}"
+                       data-target-id="${target.id}">
+            ${this._renderSlice(renderEntry, { ghost: !placed, axis, bounds: sliceBounds })}
+          </div>`;
+        }).join('')}
       </div>
     `;
   }
 
+  /**
+   * Render a slice of an image using bounds-aware positioning.
+   * The .pf-slice wrapper fills its container 100%×100%;
+   * the img is position:absolute with inline style from _sliceStyle().
+   */
   _renderSlice(entry, opts = {}) {
     const ghostClass = opts.ghost ? ' pf-slice--ghost' : '';
-    const joinedClass = opts.joined ? ' pf-slice--joined' : '';
-    const axisClass = opts.axis === 'vertical' ? ' pf-slice--vertical' : ' pf-slice--horizontal';
+    const axis = opts.axis ?? 'vertical';
+    const bounds = opts.bounds ?? null;
+    const style = this._sliceStyle(entry.sliceIndex ?? 0, axis, bounds);
     return `
-      <span class="pf-slice${ghostClass}${joinedClass}${axisClass}" aria-hidden="true">
-        <img
-          class="pf-slice__img"
-          src="${entry.sliceImage}"
-          alt=""
-          style="${this._sliceTransform(entry.sliceIndex ?? 0, opts.axis)}"
-        >
+      <span class="pf-slice${ghostClass}" aria-hidden="true">
+        <img class="pf-slice__img" src="${entry.sliceImage}" alt="" style="${style}">
       </span>
     `;
   }
 
-  _sliceTransform(index, axis = 'horizontal') {
+  /**
+   * Compute inline CSS for the slice image so it sits inside an overflow:hidden
+   * container and shows exactly 1/3 of the animal's content (not 1/3 of the
+   * full transparent-padded image).
+   *
+   * For vertical axis (3 rows):
+   *   image width  = 100% / dx of slot width  (fills content area horizontally)
+   *   image height = 300% / dy of slot height  (content spans all 3 slots)
+   *   image left   = -(x0/dx * 100)% of slot width
+   *   image top    = -(y0/dy * 300 + index*100)% of slot height
+   *
+   * For horizontal axis (3 columns):
+   *   image width  = 300% / dx of slot width  (content spans all 3 slots)
+   *   image height = 100% / dy of slot height  (fills content area vertically)
+   *   image left   = -(x0/dx * 300 + index*100)% of slot width
+   *   image top    = -(y0/dy * 100)% of slot height
+   *
+   * These formulas preserve the image's natural aspect ratio when the container
+   * has the correct slot aspect ratio (set via inline aspect-ratio style).
+   * Default bounds (0,0,1,1) reproduce the original naive 1/3 slicing.
+   */
+  _sliceStyle(index, axis = 'vertical', bounds = null) {
+    const b = bounds ?? { x0: 0, y0: 0, x1: 1, y1: 1 };
+    const dx = Math.max(b.x1 - b.x0, 0.05);
+    const dy = Math.max(b.y1 - b.y0, 0.05);
     if (axis === 'vertical') {
-      if (index <= 0) return 'transform:translateY(0%);';
-      if (index === 1) return 'transform:translateY(-33.333%);';
-      return 'transform:translateY(-66.666%);';
+      const w = 100 / dx;
+      const h = 300 / dy;
+      const top = -(b.y0 / dy * 300 + index * 100);
+      const left = -(b.x0 / dx * 100);
+      return `position:absolute;width:${w.toFixed(2)}%;height:${h.toFixed(2)}%;top:${top.toFixed(2)}%;left:${left.toFixed(2)}%;`;
+    } else {
+      const w = 300 / dx;
+      const h = 100 / dy;
+      const left = -(b.x0 / dx * 300 + index * 100);
+      const top = -(b.y0 / dy * 100);
+      return `position:absolute;width:${w.toFixed(2)}%;height:${h.toFixed(2)}%;left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;`;
     }
-    if (index <= 0) return 'transform:translateX(0%);';
-    if (index === 1) return 'transform:translateX(-33.333%);';
-    return 'transform:translateX(-66.666%);';
   }
 }

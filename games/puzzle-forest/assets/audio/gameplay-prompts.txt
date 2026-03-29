@@ -1,24 +1,96 @@
-feed_bunny|Can you feed the bunny?
-feed_dog|Can you feed the puppy?
-feed_monkey|Can you feed the monkey?
-feed_bear|Can you feed the bear?
-feed_duck|Can you feed the duck?
-feed_squirrel|Can you feed the squirrel?
-sort_red|Put the red thing in the red basket.
-sort_green|Put the green thing in the green basket.
-sort_blue|Put the blue thing in the blue basket.
-sort_yellow|Put the yellow thing in the yellow basket.
-sort_orange|Put the orange thing in the orange basket.
-sort_white|Put the white thing in the white basket.
-shape_circle|Can you match the circle?
-shape_square|Can you match the square?
-shape_triangle|Can you match the triangle?
-shape_star|Can you match the star?
-shape_heart|Can you match the heart?
-shape_diamond|Can you match the diamond?
-build_bear|Can you build the bear?
-build_fox|Can you build the fox?
-build_owl|Can you build the owl?
-build_rabbit|Can you build the rabbit?
-build_duck|Can you build the duck?
-build_squirrel|Can you build the squirrel?
+feed_bunny_01|What would you feed the bunny?
+feed_bunny_02|Can you find something the bunny might like to eat?
+feed_bunny_03|What do you think the bunny would want to eat?
+feed_bunny_04|Move something you think the bunny might like to eat to the center.
+feed_dog_01|What would you feed the puppy?
+feed_dog_02|Can you find something the puppy might like to eat?
+feed_dog_03|What do you think the puppy would want to eat?
+feed_dog_04|Move something you think the puppy might like to eat to the center.
+feed_monkey_01|What would you feed the monkey?
+feed_monkey_02|Can you find something the monkey might like to eat?
+feed_monkey_03|What do you think the monkey would want to eat?
+feed_monkey_04|Move something you think the monkey might like to eat to the center.
+feed_bear_01|What would you feed the bear?
+feed_bear_02|Can you find something the bear might like to eat?
+feed_bear_03|What do you think the bear would want to eat?
+feed_bear_04|Move something you think the bear might like to eat to the center.
+feed_duck_01|What would you feed the duck?
+feed_duck_02|Can you find something the duck might like to eat?
+feed_duck_03|What do you think the duck would want to eat?
+feed_duck_04|Move something you think the duck might like to eat to the center.
+feed_squirrel_01|What would you feed the squirrel?
+feed_squirrel_02|Can you find something the squirrel might like to eat?
+feed_squirrel_03|What do you think the squirrel would want to eat?
+feed_squirrel_04|Move something you think the squirrel might like to eat to the center.
+sort_red_01|Can you put something, RED, into the basket?
+sort_red_02|Find something, RED, and put it in the basket.
+sort_red_03|I want you to put something, RED, into the basket.
+sort_red_04|Can you find something, RED, and put it in the basket?
+sort_green_01|Can you put something, GREEN, into the basket?
+sort_green_02|Find something, GREEN, and put it in the basket.
+sort_green_03|I want you to put something, GREEN, into the basket.
+sort_green_04|Can you find something, GREEN, and put it in the basket?
+sort_blue_01|Can you put something, BLUE, into the basket?
+sort_blue_02|Find something, BLUE, and put it in the basket.
+sort_blue_03|I want you to put something, BLUE, into the basket.
+sort_blue_04|Can you find something, BLUE, and put it in the basket?
+sort_yellow_01|Can you put something, YELLOW, into the basket?
+sort_yellow_02|Find something, YELLOW, and put it in the basket.
+sort_yellow_03|I want you to put something, YELLOW, into the basket.
+sort_yellow_04|Can you find something, YELLOW, and put it in the basket?
+sort_orange_01|Can you put something, ORANGE, into the basket?
+sort_orange_02|Find something, ORANGE, and put it in the basket.
+sort_orange_03|I want you to put something, ORANGE, into the basket.
+sort_orange_04|Can you find something, ORANGE, and put it in the basket?
+sort_white_01|Can you put something, WHITE, into the basket?
+sort_white_02|Find something, WHITE, and put it in the basket.
+sort_white_03|I want you to put something, WHITE, into the basket.
+sort_white_04|Can you find something, WHITE, and put it in the basket?
+shape_circle_01|Can you move the circle to the center?
+shape_circle_02|Find the circle at the bottom and move it to the center.
+shape_circle_03|See if you can find the circle and move it to the center.
+shape_circle_04|Can you find the circle and move it to the center?
+shape_square_01|Can you move the square to the center?
+shape_square_02|Find the square at the bottom and move it to the center.
+shape_square_03|See if you can find the square and move it to the center.
+shape_square_04|Can you find the square and move it to the center?
+shape_triangle_01|Can you move the triangle to the center?
+shape_triangle_02|Find the triangle at the bottom and move it to the center.
+shape_triangle_03|See if you can find the triangle and move it to the center.
+shape_triangle_04|Can you find the triangle and move it to the center?
+shape_star_01|Can you move the star to the center?
+shape_star_02|Find the star at the bottom and move it to the center.
+shape_star_03|See if you can find the star and move it to the center.
+shape_star_04|Can you find the star and move it to the center?
+shape_heart_01|Can you move the heart to the center?
+shape_heart_02|Find the heart at the bottom and move it to the center.
+shape_heart_03|See if you can find the heart and move it to the center.
+shape_heart_04|Can you find the heart and move it to the center?
+shape_diamond_01|Can you move the diamond to the center?
+shape_diamond_02|Find the diamond at the bottom and move it to the center.
+shape_diamond_03|See if you can find the diamond and move it to the center.
+shape_diamond_04|Can you find the diamond and move it to the center?
+build_bear_01|Can you find and place the bear pieces?
+build_bear_02|Do you think you can move the bear pieces to the center?
+build_bear_03|I want you to build the bear for me.
+build_bear_04|Find the bear pieces and move them to the center.
+build_fox_01|Can you find and place the fox pieces?
+build_fox_02|Do you think you can move the fox pieces to the center?
+build_fox_03|I want you to build the fox for me.
+build_fox_04|Find the fox pieces and move them to the center.
+build_owl_01|Can you find and place the owl pieces?
+build_owl_02|Do you think you can move the owl pieces to the center?
+build_owl_03|I want you to build the owl for me.
+build_owl_04|Find the owl pieces and move them to the center.
+build_rabbit_01|Can you find and place the rabbit pieces?
+build_rabbit_02|Do you think you can move the rabbit pieces to the center?
+build_rabbit_03|I want you to build the rabbit for me.
+build_rabbit_04|Find the rabbit pieces and move them to the center.
+build_duck_01|Can you find and place the duck pieces?
+build_duck_02|Do you think you can move the duck pieces to the center?
+build_duck_03|I want you to build the duck for me.
+build_duck_04|Find the duck pieces and move them to the center.
+build_squirrel_01|Can you find and place the squirrel pieces?
+build_squirrel_02|Do you think you can move the squirrel pieces to the center?
+build_squirrel_03|I want you to build the squirrel for me.
+build_squirrel_04|Find the squirrel pieces and move them to the center.

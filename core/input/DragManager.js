@@ -78,15 +78,20 @@ export class DragManager {
 
   _hitTest(x, y) {
     const targets = this._getDropTargets();
+    let nearest = null;
+    let nearestDist = Infinity;
     for (const el of targets) {
       const rect = el.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const r = Math.max(rect.width, rect.height) / 2 * this.forgiveness;
       const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
-      if (dist <= r) return el;
+      if (dist <= r && dist < nearestDist) {
+        nearest = el;
+        nearestDist = dist;
+      }
     }
-    return null;
+    return nearest;
   }
 
   _onStart(e) {

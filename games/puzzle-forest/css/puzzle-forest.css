@@ -327,76 +327,39 @@
 }
 
 .pf-stage--build {
-  display: grid;
-  place-items: center;
-  align-content: stretch;
-}
-
-.pf-build-board {
-  position: relative;
-  width: min(100%, 780px);
-  min-height: 0;
-  height: 100%;
-  padding: 14px 18px 18px;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 10px;
-  box-sizing: border-box;
-}
-
-.pf-build-board--celebrate {
-  animation: pf-build-board-celebrate 1.1s ease;
-}
-
-.pf-build-preview {
-  width: min(100%, 520px);
-  display: grid;
-  justify-items: center;
-}
-
-.pf-build-preview__frame {
   display: flex;
-  width: min(100%, 420px);
-  height: 150px;
-  border-radius: 28px;
-  overflow: hidden;
-  background: rgba(255, 251, 238, 0.82);
-  box-shadow:
-    inset 0 0 0 4px rgba(221, 203, 142, 0.58),
-    0 16px 32px rgba(78, 84, 45, 0.08);
-}
-
-.pf-build-preview--vertical .pf-build-preview__frame {
-  flex-direction: column;
-  width: min(100%, 180px);
-  height: 360px;
-}
-
-.pf-build-preview__piece {
-  flex: 1 1 33.333%;
-  min-width: 0;
-  min-height: 0;
-}
-
-.pf-build-preview__piece--ghost {
-  background: rgba(231, 221, 190, 0.35);
-}
-
-.pf-build-preview__piece--placed {
-  background: rgba(255, 252, 240, 0.68);
-}
-
-.pf-build-preview__empty {
-  display: block;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
   height: 100%;
-  background:
-    linear-gradient(180deg, rgba(255, 251, 238, 0.8), rgba(243, 234, 204, 0.8));
+  padding: 12px;
 }
 
-.pf-build-preview__frame--celebrate {
-  animation: pf-build-celebrate 1.2s ease;
+/* ===== BUILD ASSEMBLY — seamless frame that becomes the animal ===== */
+
+.pf-build-assembly {
+  display: flex;
+  flex-direction: column; /* vertical axis: 3 rows */
+  /* height drives the size; aspect-ratio (set inline from bounds) computes width */
+  height: min(100%, 520px);
+  max-width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 36px rgba(78, 84, 45, 0.2),
+    inset 0 0 0 3px rgba(185, 162, 102, 0.3);
+  position: relative;
+  background: rgba(255, 252, 240, 0.25);
+}
+
+.pf-build-assembly--horizontal {
+  flex-direction: row; /* horizontal axis: 3 columns */
+  height: auto;
+  width: min(100%, 680px);
+  max-height: min(100%, 340px);
+}
+
+.pf-build-assembly--celebrate {
+  animation: pf-build-board-celebrate 1.1s ease;
 }
 
 .pf-build-burst {
@@ -428,75 +391,49 @@
   letter-spacing: 6px;
 }
 
-.pf-build-board__silhouette {
-  display: grid;
-  place-items: center;
+/* ===== BUILD SLOT — one of the three assembly zones ===== */
+
+/* .pf-build-slot — these rules live here but use .pf-build-assembly ancestor
+   for specificity so they beat the later .pf-target base rule */
+.pf-build-assembly .pf-build-slot {
+  flex: 1 1 0;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
   padding: 0;
-  margin-top: 0;
-  margin-bottom: -6px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  gap: 0;
+  box-shadow: none;
+  transition: filter 0.18s ease;
 }
 
-.pf-build-board__image {
-  width: min(100%, 460px);
-  max-height: 180px;
-  object-fit: contain;
-  opacity: 0.22;
-  filter: grayscale(1) saturate(0.6);
+/* Dashed separator between slots */
+.pf-build-assembly--vertical .pf-build-slot + .pf-build-slot {
+  border-top: 2px dashed rgba(185, 162, 102, 0.45);
 }
 
-.pf-build-board__slots {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  align-items: center;
-  width: min(100%, 680px);
-  margin: 0 auto 0;
+.pf-build-assembly--horizontal .pf-build-slot + .pf-build-slot {
+  border-left: 2px dashed rgba(185, 162, 102, 0.45);
 }
 
-.pf-build-board--vertical {
-  width: min(100%, 720px);
-  min-height: 0;
-  max-height: 100%;
-  grid-template-columns: minmax(0, 1fr) 180px;
-  grid-template-areas: 'silhouette slots';
-  align-items: stretch;
-  justify-items: stretch;
-  column-gap: 20px;
+.pf-build-assembly .pf-build-slot.pf-target--filled {
+  background: transparent;
 }
 
-.pf-build-board--vertical .pf-build-board__silhouette {
-  grid-area: silhouette;
-  align-self: stretch;
-  margin-bottom: 0;
+/* Snap highlight: brighten the slot in-place */
+.pf-build-assembly .pf-build-slot.pf-target--snap {
+  transform: none;
+  filter: brightness(1.14) saturate(1.4);
+  box-shadow: none;
 }
 
-.pf-build-board--vertical .pf-build-board__image {
-  width: min(100%, 300px);
-  max-height: 100%;
-}
-
-.pf-build-board__slots--vertical {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  grid-area: slots;
-  width: 100%;
-  max-width: 180px;
-  height: 100%;
-  max-height: 100%;
-  align-self: stretch;
-  align-items: stretch;
-}
-
-.pf-build-board__slots--vertical .pf-build-slot {
-  min-height: 0;
-  height: 100%;
-}
-
-.pf-build-board__slots--vertical .pf-build-slot__inner {
-  min-height: 0;
-  height: 100%;
-  align-content: center;
+/* Wrong drop: wiggle only, no border or background change */
+.pf-build-assembly .pf-build-slot.pf-target--wrong {
+  border-color: transparent;
 }
 
 .pf-target {
@@ -519,20 +456,27 @@
   margin: auto;
 }
 
-.pf-build-slot {
-  min-height: 170px;
-  padding: 10px;
-  background: rgba(248, 241, 210, 0.84);
+/* ===== SLICE — shared by build slots and tray items ===== */
+
+/* The wrapper fills its container completely */
+.pf-slice {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
-.pf-build-slot__inner {
-  display: grid;
-  place-items: center;
-  min-height: 146px;
+/* The image is absolutely positioned via JS-computed inline style */
+.pf-slice__img {
+  display: block;
+  max-width: none;
 }
 
-.pf-build-slot__ghost {
-  opacity: 0.4;
+/* Ghost: faint silhouette shown in empty slots */
+.pf-slice--ghost .pf-slice__img {
+  opacity: 0.18;
+  filter: grayscale(0.6);
 }
 
 .pf-target__art,
@@ -671,70 +615,56 @@
   min-height: 156px;
 }
 
-.pf-slice {
-  display: block;
-  width: min(100%, 190px);
-  aspect-ratio: 1 / 1;
-  border-radius: 22px;
-  background-color: rgba(255, 248, 223, 0.72);
-  box-shadow: inset 0 0 0 2px rgba(126, 101, 50, 0.1);
-  overflow: hidden;
-  position: relative;
-}
-
-.pf-slice--joined {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: auto;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.pf-slice__img {
-  display: block;
-  width: 300%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
-}
-
-.pf-slice--vertical .pf-slice__img {
-  width: 100%;
-  height: 300%;
-}
-
-.pf-slice--ghost {
-  filter: grayscale(1) opacity(0.7);
-}
+/* .pf-slice and .pf-slice__img are defined above near .pf-build-slot */
 
 .pf-tray--build .pf-tray__items {
   grid-template-columns: 1fr;
-  grid-auto-rows: minmax(0, 1fr);
+  grid-auto-rows: auto;
   align-content: start;
   overflow: auto;
   min-height: 0;
 }
 
 .pf-tray--build .pf-object {
-  min-height: 94px;
-  padding: 8px 6px;
+  min-height: 0;
+  padding: 8px 8px 6px;
+  gap: 0;
+  /* Belt-and-suspenders: clip anything that escapes the inner art container */
+  overflow: hidden;
 }
 
 .pf-tray--build .pf-object--slice {
-  min-height: 94px;
+  min-height: 0;
 }
 
+/* Art area for build tray items — height driven by aspect-ratio set inline from JS.
+   The inline aspect-ratio matches the slot dimensions so _sliceStyle math is exact.
+   Uses padding-top hack as a fallback for iOS Safari where height:auto + aspect-ratio
+   may not give child elements a resolvable 100% height. */
 .pf-tray--build .pf-object__art {
-  min-height: 54px;
+  display: block;
+  width: 100%;
+  max-height: 160px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+  /* aspect-ratio is set inline by JS; height follows width automatically */
+  height: auto;
 }
 
+/* The slice fills the art container exactly */
+.pf-tray--build .pf-object__art > .pf-slice {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* No labels in build mode */
 .pf-tray--build .pf-object__label {
-  font-size: 15px;
-}
-
-.pf-tray--build .pf-slice {
-  width: min(100%, 88px);
+  display: none;
 }
 
 .pf-object__icon {
@@ -861,6 +791,370 @@
   75% { transform: translateX(-3px); }
 }
 
+/* ===== SHAPE MATCHING — big board layout ===== */
+
+/*
+ * Stage: no grid, just a centred flex container so the board can fill it.
+ */
+.pf-stage--shape-match {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  height: 100%;
+}
+
+/*
+ * The board wrapper is relative so we can overlay the drop target on the hole.
+ * The slot image (wooden board with cutout) drives the sizing.
+ */
+.pf-shape-board {
+  position: relative;
+  width: min(100%, 460px);
+  /* Let height follow the image's natural aspect ratio */
+}
+
+.pf-shape-board__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+ * The drop target is an invisible overlay centred on the hole in the image.
+ * Slot images are square with the hole centred; the hole fills roughly 32% of
+ * the image area.  We position the hit zone to match.
+ *
+ * Override all the default .pf-target card styles — we want it transparent.
+ */
+.pf-shape-board__hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36%;
+  height: 36%;
+  transform: translate(-50%, -50%);
+  /* Reset card look */
+  background: transparent;
+  border: none;
+  border-radius: 50%;   /* works for every shape — generous hit area */
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  box-shadow: none;
+  /* Show placed piece inside */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Snap-hover glow — visible without text or border */
+.pf-shape-board__hole.pf-target--snap {
+  background: rgba(255, 255, 180, 0.28);
+  box-shadow: 0 0 0 6px rgba(255, 240, 100, 0.45), 0 0 22px rgba(255, 230, 80, 0.35);
+  transform: translate(-50%, -50%); /* keep centred — no lift */
+}
+
+/* Wrong-drop: wiggle the whole board, not the invisible target */
+.pf-shape-board__hole.pf-target--wrong {
+  border-color: transparent;
+}
+.pf-shape-board:has(.pf-target--wrong) {
+  animation: pf-wiggle 0.32s ease;
+}
+
+/* The shape piece that snaps into the hole */
+.pf-shape-board__placed-piece {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  pointer-events: none;
+  animation: pf-shape-into-hole 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pf-shape-into-hole {
+  0%   { transform: scale(0.3) rotate(-20deg); opacity: 0.4; }
+  60%  { transform: scale(1.12) rotate(4deg);  opacity: 1; }
+  100% { transform: scale(1)    rotate(0deg);  opacity: 1; }
+}
+
+/* Happy bounce on the board after correct placement */
+.pf-shape-board__hole.pf-target--happy {
+  animation: none;    /* don't move the invisible overlay */
+}
+.pf-shape-board__hole.pf-target--happy .pf-shape-board__placed-piece {
+  animation: pf-happy 0.42s ease;
+}
+
+/* Reaction bubble re-anchored so it sits on the image, not the tiny hole */
+.pf-shape-board__hole .pf-target__reaction {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 8px);
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/*
+ * Tray: shape pieces — no box card, just the shape floating above the tray.
+ * The "shape-item" class is on the button itself so it also applies to the
+ * drag clone (which DragManager appends to document.body).
+ */
+.pf-tray--shape-match .pf-tray__label {
+  display: none;   /* voice says what to do — no need for text */
+}
+
+.pf-tray--shape-match .pf-tray__items {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+/* ---- shape piece: transparent card, just the image ---- */
+.pf-object--shape-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--shape-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--shape-item .pf-object__img {
+  max-height: 88px;
+  /* soft drop-shadow on the shape itself so it reads against any background */
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+/* Drag clone: same transparent float, slightly bigger shadow while moving */
+.pf-object--shape-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--shape-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ===== FEED THE ANIMAL — transparent drag pieces ===== */
+
+/*
+ * Works both in the tray (inside .pf-tray--color-sort) and as the drag clone
+ * (appended to document.body by DragManager).
+ */
+.pf-object--feed-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--feed-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--feed-item .pf-object__img {
+  max-height: 88px;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.pf-object--feed-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--feed-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ===== BUILD THE ANIMAL — transparent drag pieces ===== */
+
+/*
+ * The animal slice is an absolutely-positioned image inside overflow:hidden art.
+ * We remove the card background from the outer button but keep the art clip.
+ * filter:drop-shadow on the button composites AFTER the clip fires, so the
+ * shadow follows the actual visible animal shape — not the bounding rectangle.
+ *
+ * IMPORTANT: the button must NOT have overflow:hidden itself, or the filter
+ * shadow gets clipped too.  The art container keeps its own overflow:hidden.
+ */
+.pf-object--build-item {
+  background: transparent;
+  box-shadow: none;
+  /* override the overflow:hidden that .pf-tray--build .pf-object sets */
+  overflow: visible;
+  /* shadow follows the composited slice pixels */
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.24));
+}
+
+.pf-object--build-item.dragging {
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.34)) !important;
+}
+
+/* Art container keeps clipping the slice correctly */
+.pf-object--build-item .pf-object__art {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+/* ===== COLOR SORTING — big basket layout ===== */
+
+.pf-stage--color-sort {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  height: 100%;
+}
+
+.pf-color-basket {
+  position: relative;
+  width: min(100%, 400px);
+}
+
+.pf-color-basket__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+ * The drop zone sits over the basket opening.
+ * Pixel analysis puts the rim centre at ~20% from image top, horizontally centred.
+ * We make the zone wide (65%) and tall enough (30%) to be easy for small fingers.
+ */
+.pf-color-basket__opening {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 65%;
+  height: 30%;
+  transform: translate(-50%, -50%);
+  /* Reset all card styles */
+  background: transparent;
+  border: none;
+  border-radius: 50% 50% 40% 40%; /* oval matching basket rim shape */
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Glow on the basket opening when dragging nearby */
+.pf-color-basket__opening.pf-target--snap {
+  background: rgba(255, 255, 180, 0.30);
+  box-shadow: 0 0 0 6px rgba(255, 240, 80, 0.45), 0 0 24px rgba(255, 225, 60, 0.40);
+  transform: translate(-50%, -50%); /* keep position — no lift */
+}
+
+.pf-color-basket__opening.pf-target--wrong {
+  border-color: transparent;
+}
+
+.pf-color-basket:has(.pf-target--wrong) {
+  animation: pf-wiggle 0.32s ease;
+}
+
+/* Placed item appears above the basket interior, then settles in */
+.pf-color-basket__placed-item {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  pointer-events: none;
+  animation: pf-item-into-basket 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pf-item-into-basket {
+  0%   { transform: scale(0.3) translateY(-20px); opacity: 0.4; }
+  60%  { transform: scale(1.1)  translateY(4px);  opacity: 1; }
+  100% { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.pf-color-basket__opening.pf-target--happy .pf-color-basket__placed-item {
+  animation: pf-happy 0.42s ease;
+}
+
+.pf-color-basket__opening .pf-target__reaction {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 6px);
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* ---- color sort tray: items are just images, no card box ---- */
+.pf-tray--color-sort .pf-tray__label {
+  display: none;
+}
+
+.pf-tray--color-sort .pf-tray__items {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+/* pf-object--sort-item: works both in tray and as drag clone on body */
+.pf-object--sort-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--sort-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--sort-item .pf-object__img {
+  max-height: 88px;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.pf-object--sort-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--sort-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ============================= */
+
 @media (max-width: 960px) {
   .pf-picker {
     grid-template-columns: 1fr;
@@ -893,23 +1187,12 @@
     grid-auto-rows: auto;
   }
 
-  .pf-build-board--vertical {
-    width: min(100%, 520px);
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'silhouette'
-      'slots';
-    justify-items: center;
-    row-gap: 14px;
+  .pf-build-assembly {
+    height: min(100%, 400px);
   }
 
-  .pf-build-board--vertical .pf-build-board__image {
-    width: min(100%, 220px);
-    max-height: 180px;
-  }
-
-  .pf-build-board__slots--vertical {
-    max-width: 190px;
+  .pf-build-assembly--horizontal {
+    max-height: min(100%, 280px);
   }
 }
 
