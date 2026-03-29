@@ -1,14 +1,29 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# games/art-studio/ — Art Studio game (pure JS/CSS, no generated assets)
-# ─────────────────────────────────────────────────────────────────────────────
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
+DIST      := $(REPO_ROOT)/dist
+DIRS      := css engine missions scenes
+THISDIR   := games/art-studio
 
 .PHONY: all clean package
 
 all:
-	@echo "art-studio: nothing to build"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir; \
+	done
+	@echo "*** $(THISDIR): completed build ***"
 
 clean:
-	@echo "art-studio: nothing to clean"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@echo "*** $(THISDIR): completed clean ***"
 
 package:
-	@echo "art-studio: package handled by root"
+	mkdir -p $(DIST)/games/art-studio
+	cp index.js $(DIST)/games/art-studio/
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir package; \
+	done
+	@echo "*** $(THISDIR): completed package ***"

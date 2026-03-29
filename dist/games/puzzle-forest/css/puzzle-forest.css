@@ -1,0 +1,1616 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap');
+
+.pf-title,
+.pf-game {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #193127;
+  font-family: 'Nunito', sans-serif;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pf-title__bg,
+.pf-game__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 241, 181, 0.5), transparent 30%),
+    radial-gradient(circle at 80% 18%, rgba(135, 214, 178, 0.35), transparent 28%),
+    linear-gradient(180deg, #d9f3c3 0%, #b8e39a 32%, #7bc37d 68%, #4b8d57 100%);
+}
+
+.pf-title__bg::before,
+.pf-game__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 82%, rgba(66, 120, 76, 0.7), transparent 16%),
+    radial-gradient(circle at 32% 88%, rgba(59, 109, 69, 0.72), transparent 18%),
+    radial-gradient(circle at 54% 86%, rgba(52, 102, 65, 0.74), transparent 19%),
+    radial-gradient(circle at 74% 90%, rgba(47, 93, 61, 0.78), transparent 18%),
+    radial-gradient(circle at 92% 84%, rgba(42, 84, 58, 0.75), transparent 15%);
+}
+
+.pf-title__topbar,
+.pf-game__topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 8px;
+}
+
+.pf-nav-btn,
+.pf-audio-btn,
+.pf-success__btn {
+  min-width: 120px;
+  min-height: 56px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pf-nav-btn,
+.pf-audio-btn {
+  background: rgba(255, 252, 233, 0.92);
+  color: #214d31;
+  box-shadow: 0 10px 30px rgba(35, 72, 45, 0.18);
+}
+
+.pf-nav-btn--ghost {
+  background: rgba(28, 70, 42, 0.14);
+  color: #fff9e4;
+  border: 2px solid rgba(255, 249, 228, 0.35);
+}
+
+.pf-title__content,
+.pf-game__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  padding: 0 24px 24px;
+}
+
+.pf-title__hero {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 18px;
+}
+
+.pf-title__guide {
+  max-width: 760px;
+  text-align: center;
+}
+
+.pf-guide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 249, 228, 0.92);
+  box-shadow: 0 10px 24px rgba(45, 85, 53, 0.18);
+  color: #2b5b35;
+  font-weight: 800;
+}
+
+.pf-guide-badge__icon {
+  font-size: 30px;
+}
+
+.pf-title__heading,
+.pf-game__title {
+  margin: 18px 0 10px;
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 0.95;
+  color: #fff8df;
+  text-shadow: 0 3px 0 rgba(37, 86, 45, 0.45);
+}
+
+.pf-title__subhead {
+  margin: 0;
+  font-size: clamp(22px, 2.8vw, 30px);
+  font-weight: 800;
+  color: #23482b;
+}
+
+.pf-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pf-card {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  gap: 18px;
+  border: none;
+  border-radius: 32px;
+  padding: 18px;
+  background: rgba(255, 250, 235, 0.94);
+  box-shadow: 0 18px 40px rgba(36, 74, 46, 0.16);
+  text-align: left;
+  cursor: pointer;
+}
+
+.pf-card__art {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 24px;
+  background: #dcefcf;
+}
+
+.pf-card__icon {
+  font-size: 34px;
+}
+
+.pf-card__title {
+  margin: 4px 0;
+  font-family: 'Baloo 2', cursive;
+  font-size: 32px;
+  line-height: 1;
+  color: #274c32;
+}
+
+.pf-card__text,
+.pf-sidecard__text,
+.pf-target__label,
+.pf-object__label,
+.pf-prompt__text,
+.pf-success__text,
+.pf-progress__label,
+.pf-tray__label,
+.pf-game__eyebrow {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.pf-card__text {
+  margin: 0;
+  color: #4d6753;
+}
+
+.pf-game__content {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 18px;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.pf-sidecard,
+.pf-board,
+.pf-prompt,
+.pf-tray,
+.pf-success__card {
+  background: rgba(255, 250, 235, 0.95);
+  box-shadow: 0 18px 40px rgba(36, 74, 46, 0.18);
+}
+
+.pf-sidecard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 28px;
+  padding: 22px;
+  min-height: 0;
+}
+
+.pf-board {
+  display: grid;
+  grid-template-rows: auto auto minmax(260px, 1fr) auto;
+  gap: 14px;
+  border-radius: 32px;
+  padding: 18px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pf-game--build-active .pf-game__title {
+  font-size: clamp(36px, 5vw, 60px);
+  margin: 8px 0 4px;
+}
+
+.pf-board--build .pf-progress {
+  grid-area: progress;
+}
+
+.pf-board--build .pf-prompt {
+  grid-area: prompt;
+}
+
+.pf-board--build .pf-stage {
+  grid-area: stage;
+}
+
+.pf-board--build .pf-tray {
+  grid-area: tray;
+}
+
+.pf-board--build {
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-areas:
+    'progress prompt'
+    'tray stage';
+  grid-template-rows: auto minmax(360px, 1fr);
+  gap: 12px;
+}
+
+.pf-board--build .pf-prompt {
+  min-height: 0;
+  padding: 14px 16px;
+}
+
+.pf-board--build .pf-stage {
+  padding: 14px;
+  min-height: 0;
+  height: 100%;
+}
+
+.pf-board--build .pf-tray {
+  padding: 12px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-progress__track {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pf-progress__dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d8e5cf;
+  border: 3px solid #c3d9b0;
+}
+
+.pf-progress__dot--done {
+  background: #ffd55e;
+  border-color: #e5b93c;
+}
+
+.pf-prompt {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 26px;
+  padding: 18px 20px;
+}
+
+.pf-prompt__icon {
+  font-size: 42px;
+}
+
+.pf-stage {
+  display: grid;
+  gap: 18px;
+  align-content: center;
+  min-height: 0;
+  padding: 20px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 250, 224, 0.82), transparent 22%),
+    linear-gradient(180deg, rgba(238, 232, 202, 0.96) 0%, rgba(226, 218, 177, 0.96) 100%);
+  border: 4px solid rgba(210, 188, 134, 0.65);
+  overflow: hidden;
+}
+
+.pf-stage--targets-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.pf-stage--targets-2,
+.pf-stage--targets-3,
+.pf-stage--targets-4 {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.pf-stage--build {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 12px;
+}
+
+/* ===== BUILD ASSEMBLY — seamless frame that becomes the animal ===== */
+
+.pf-build-assembly {
+  display: flex;
+  flex-direction: column; /* vertical axis: 3 rows */
+  /* height drives the size; aspect-ratio (set inline from bounds) computes width */
+  height: min(100%, 520px);
+  max-width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 36px rgba(78, 84, 45, 0.2),
+    inset 0 0 0 3px rgba(185, 162, 102, 0.3);
+  position: relative;
+  background: rgba(255, 252, 240, 0.25);
+}
+
+.pf-build-assembly--horizontal {
+  flex-direction: row; /* horizontal axis: 3 columns */
+  height: auto;
+  width: min(100%, 680px);
+  max-height: min(100%, 340px);
+}
+
+.pf-build-assembly--celebrate {
+  animation: pf-build-board-celebrate 1.1s ease;
+}
+
+.pf-build-burst {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  pointer-events: none;
+  animation: pf-build-burst-in 1.4s ease;
+}
+
+.pf-build-burst__text {
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(79, 155, 88, 0.96);
+  color: #fff8df;
+  font-family: 'Baloo 2', cursive;
+  font-size: 30px;
+  line-height: 1;
+  box-shadow: 0 14px 28px rgba(63, 122, 69, 0.24);
+}
+
+.pf-build-burst__sparkles {
+  font-size: 28px;
+  letter-spacing: 6px;
+}
+
+/* ===== BUILD SLOT — one of the three assembly zones ===== */
+
+/* .pf-build-slot — these rules live here but use .pf-build-assembly ancestor
+   for specificity so they beat the later .pf-target base rule */
+.pf-build-assembly .pf-build-slot {
+  flex: 1 1 0;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  gap: 0;
+  box-shadow: none;
+  transition: filter 0.18s ease;
+}
+
+/* Dashed separator between slots */
+.pf-build-assembly--vertical .pf-build-slot + .pf-build-slot {
+  border-top: 2px dashed rgba(185, 162, 102, 0.45);
+}
+
+.pf-build-assembly--horizontal .pf-build-slot + .pf-build-slot {
+  border-left: 2px dashed rgba(185, 162, 102, 0.45);
+}
+
+.pf-build-assembly .pf-build-slot.pf-target--filled {
+  background: transparent;
+}
+
+/* Snap highlight: brighten the slot in-place */
+.pf-build-assembly .pf-build-slot.pf-target--snap {
+  transform: none;
+  filter: brightness(1.14) saturate(1.4);
+  box-shadow: none;
+}
+
+/* Wrong drop: wiggle only, no border or background change */
+.pf-build-assembly .pf-build-slot.pf-target--wrong {
+  border-color: transparent;
+}
+
+.pf-target {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 12px;
+  min-height: 230px;
+  padding: 18px 14px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(244, 236, 198, 0.95), rgba(229, 212, 169, 0.92));
+  border: 4px solid rgba(143, 111, 60, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.pf-stage--targets-1 .pf-target {
+  width: min(100%, 720px);
+  min-height: 220px;
+  margin: auto;
+}
+
+/* ===== SLICE — shared by build slots and tray items ===== */
+
+/* The wrapper fills its container completely */
+.pf-slice {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The image is absolutely positioned via JS-computed inline style */
+.pf-slice__img {
+  display: block;
+  max-width: none;
+}
+
+/* Ghost: faint silhouette shown in empty slots */
+.pf-slice--ghost .pf-slice__img {
+  opacity: 0.18;
+  filter: grayscale(0.6);
+}
+
+.pf-target__art,
+.pf-target__slot {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.pf-target__art {
+  min-height: 128px;
+  padding: 8px;
+}
+
+.pf-object__art {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 96px;
+  padding: 6px;
+}
+
+.pf-target__img,
+.pf-target__placed-img,
+.pf-object__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.pf-target__img {
+  max-width: 100%;
+  max-height: 148px;
+}
+
+.pf-target__placed-img {
+  max-width: 100%;
+  max-height: 160px;
+}
+
+.pf-object__img {
+  max-width: 100%;
+  max-height: 118px;
+}
+
+.pf-target__icon {
+  font-size: 62px;
+}
+
+.pf-target__slot {
+  min-height: 88px;
+  border-radius: 24px;
+  padding: 12px;
+  background: rgba(255, 251, 238, 0.76);
+  border: 3px dashed rgba(113, 87, 43, 0.26);
+  text-align: center;
+}
+
+.pf-target__hint {
+  color: #866d42;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.pf-target--snap {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(93, 177, 99, 0.7);
+  box-shadow: 0 16px 32px rgba(70, 132, 78, 0.18);
+}
+
+.pf-target--wrong,
+.pf-object--wrong,
+.pf-object--miss {
+  animation: pf-wiggle 0.32s ease;
+}
+
+.pf-target--filled {
+  background: linear-gradient(180deg, rgba(250, 239, 190, 0.96), rgba(233, 223, 147, 0.96));
+}
+
+.pf-target--placed-pop {
+  animation: pf-pop 0.35s ease;
+}
+
+.pf-target--happy {
+  animation: pf-happy 0.42s ease;
+}
+
+.pf-target__placed-icon {
+  display: block;
+  font-size: 42px;
+}
+
+.pf-target__placed-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.pf-tray {
+  border-radius: 28px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.pf-tray__items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.pf-object {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  min-height: 126px;
+  padding: 14px 10px;
+  border: none;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff8df, #f4ebc6);
+  box-shadow: inset 0 -4px 0 rgba(136, 101, 49, 0.08);
+  cursor: grab;
+  font: inherit;
+  color: #29432f;
+}
+
+.pf-object--correct {
+  animation: pf-correct 0.34s ease;
+}
+
+.pf-object--slice {
+  min-height: 156px;
+}
+
+/* .pf-slice and .pf-slice__img are defined above near .pf-build-slot */
+
+.pf-tray--build .pf-tray__items {
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  align-content: start;
+  overflow: auto;
+  min-height: 0;
+}
+
+.pf-tray--build .pf-object {
+  min-height: 0;
+  padding: 8px 8px 6px;
+  gap: 0;
+  /* Belt-and-suspenders: clip anything that escapes the inner art container */
+  overflow: hidden;
+}
+
+.pf-tray--build .pf-object--slice {
+  min-height: 0;
+}
+
+/* Art area for build tray items — height driven by aspect-ratio set inline from JS.
+   The inline aspect-ratio matches the slot dimensions so _sliceStyle math is exact.
+   Uses padding-top hack as a fallback for iOS Safari where height:auto + aspect-ratio
+   may not give child elements a resolvable 100% height. */
+.pf-tray--build .pf-object__art {
+  display: block;
+  width: 100%;
+  max-height: 160px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+  /* aspect-ratio is set inline by JS; height follows width automatically */
+  height: auto;
+}
+
+/* The slice fills the art container exactly */
+.pf-tray--build .pf-object__art > .pf-slice {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* No labels in build mode */
+.pf-tray--build .pf-object__label {
+  display: none;
+}
+
+.pf-object__icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.pf-object--placed {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pf-object.dragging {
+  box-shadow: 0 24px 40px rgba(33, 70, 43, 0.25);
+}
+
+.pf-success {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  background: rgba(25, 65, 38, 0.32);
+  backdrop-filter: blur(4px);
+}
+
+.pf-success[hidden] {
+  display: none;
+}
+
+.pf-success__card {
+  width: min(680px, calc(100% - 32px));
+  border-radius: 36px;
+  padding: 32px;
+  text-align: center;
+}
+
+.pf-success__icon {
+  font-size: 42px;
+}
+
+.pf-success__title {
+  margin: 8px 0 12px;
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(34px, 5vw, 52px);
+  color: #2d5637;
+}
+
+.pf-success__btn {
+  margin: 8px 6px 0;
+  background: #4f9b58;
+  color: #fff8df;
+}
+
+.pf-success__btn--secondary {
+  background: #f0d16a;
+  color: #314e2d;
+}
+
+.pf-target__reaction {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(87, 164, 89, 0.92);
+  color: #fff7df;
+  font-size: 16px;
+  font-weight: 800;
+  animation: pf-reaction 0.38s ease;
+}
+
+@keyframes pf-pop {
+  0% { transform: scale(0.9); }
+  65% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pf-happy {
+  0% { transform: scale(0.96); }
+  35% { transform: scale(1.03) translateY(-5px); }
+  70% { transform: scale(1.01) translateY(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pf-correct {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pf-reaction {
+  0% { transform: translateY(8px) scale(0.86); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes pf-build-celebrate {
+  0% { transform: scale(1); box-shadow: inset 0 0 0 4px rgba(221, 203, 142, 0.58), 0 16px 32px rgba(78, 84, 45, 0.08); }
+  20% { transform: scale(1.04) rotate(-1deg); box-shadow: inset 0 0 0 4px rgba(244, 204, 85, 0.9), 0 22px 40px rgba(78, 84, 45, 0.16); }
+  45% { transform: scale(1.02) rotate(1deg); }
+  70% { transform: scale(1.05) rotate(-1deg); }
+  100% { transform: scale(1); box-shadow: inset 0 0 0 4px rgba(221, 203, 142, 0.58), 0 16px 32px rgba(78, 84, 45, 0.08); }
+}
+
+@keyframes pf-build-board-celebrate {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-8px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pf-build-burst-in {
+  0% { transform: translateX(-50%) translateY(14px) scale(0.86); opacity: 0; }
+  20% { transform: translateX(-50%) translateY(0) scale(1.04); opacity: 1; }
+  80% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-8px) scale(1.02); opacity: 0; }
+}
+
+@keyframes pf-wiggle {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+
+/* ===== SHAPE MATCHING — big board layout ===== */
+
+/*
+ * Stage: no grid, just a centred flex container so the board can fill it.
+ */
+.pf-stage--shape-match {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  height: 100%;
+}
+
+/*
+ * The board wrapper is relative so we can overlay the drop target on the hole.
+ * The slot image (wooden board with cutout) drives the sizing.
+ */
+.pf-shape-board {
+  position: relative;
+  width: min(100%, 460px);
+  /* Let height follow the image's natural aspect ratio */
+}
+
+.pf-shape-board__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+ * The drop target is an invisible overlay centred on the hole in the image.
+ * Slot images are square with the hole centred; the hole fills roughly 32% of
+ * the image area.  We position the hit zone to match.
+ *
+ * Override all the default .pf-target card styles — we want it transparent.
+ */
+.pf-shape-board__hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36%;
+  height: 36%;
+  transform: translate(-50%, -50%);
+  /* Reset card look */
+  background: transparent;
+  border: none;
+  border-radius: 50%;   /* works for every shape — generous hit area */
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  box-shadow: none;
+  /* Show placed piece inside */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Snap-hover glow — visible without text or border */
+.pf-shape-board__hole.pf-target--snap {
+  background: rgba(255, 255, 180, 0.28);
+  box-shadow: 0 0 0 6px rgba(255, 240, 100, 0.45), 0 0 22px rgba(255, 230, 80, 0.35);
+  transform: translate(-50%, -50%); /* keep centred — no lift */
+}
+
+/* Wrong-drop: wiggle the whole board, not the invisible target */
+.pf-shape-board__hole.pf-target--wrong {
+  border-color: transparent;
+}
+.pf-shape-board:has(.pf-target--wrong) {
+  animation: pf-wiggle 0.32s ease;
+}
+
+/* The shape piece that snaps into the hole */
+.pf-shape-board__placed-piece {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  pointer-events: none;
+  animation: pf-shape-into-hole 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pf-shape-into-hole {
+  0%   { transform: scale(0.3) rotate(-20deg); opacity: 0.4; }
+  60%  { transform: scale(1.12) rotate(4deg);  opacity: 1; }
+  100% { transform: scale(1)    rotate(0deg);  opacity: 1; }
+}
+
+/* Happy bounce on the board after correct placement */
+.pf-shape-board__hole.pf-target--happy {
+  animation: none;    /* don't move the invisible overlay */
+}
+.pf-shape-board__hole.pf-target--happy .pf-shape-board__placed-piece {
+  animation: pf-happy 0.42s ease;
+}
+
+/* Reaction bubble re-anchored so it sits on the image, not the tiny hole */
+.pf-shape-board__hole .pf-target__reaction {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 8px);
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/*
+ * Tray: shape pieces — no box card, just the shape floating above the tray.
+ * The "shape-item" class is on the button itself so it also applies to the
+ * drag clone (which DragManager appends to document.body).
+ */
+.pf-tray--shape-match .pf-tray__label {
+  display: none;   /* voice says what to do — no need for text */
+}
+
+.pf-tray--shape-match .pf-tray__items {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+/* ---- shape piece: transparent card, just the image ---- */
+.pf-object--shape-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--shape-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--shape-item .pf-object__img {
+  max-height: 88px;
+  /* soft drop-shadow on the shape itself so it reads against any background */
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+/* Drag clone: same transparent float, slightly bigger shadow while moving */
+.pf-object--shape-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--shape-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ===== FEED THE ANIMAL — transparent drag pieces ===== */
+
+/*
+ * Works both in the tray (inside .pf-tray--color-sort) and as the drag clone
+ * (appended to document.body by DragManager).
+ */
+.pf-object--feed-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--feed-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--feed-item .pf-object__img {
+  max-height: 88px;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.pf-object--feed-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--feed-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ===== BUILD THE ANIMAL — transparent drag pieces ===== */
+
+/*
+ * The animal slice is an absolutely-positioned image inside overflow:hidden art.
+ * We remove the card background from the outer button but keep the art clip.
+ * filter:drop-shadow on the button composites AFTER the clip fires, so the
+ * shadow follows the actual visible animal shape — not the bounding rectangle.
+ *
+ * IMPORTANT: the button must NOT have overflow:hidden itself, or the filter
+ * shadow gets clipped too.  The art container keeps its own overflow:hidden.
+ */
+.pf-object--build-item {
+  background: transparent;
+  box-shadow: none;
+  /* override the overflow:hidden that .pf-tray--build .pf-object sets */
+  overflow: visible;
+  /* shadow follows the composited slice pixels */
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.24));
+}
+
+.pf-object--build-item.dragging {
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.34)) !important;
+}
+
+/* Art container keeps clipping the slice correctly */
+.pf-object--build-item .pf-object__art {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+/* ===== COLOR SORTING — big basket layout ===== */
+
+.pf-stage--color-sort {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  height: 100%;
+}
+
+.pf-color-basket {
+  position: relative;
+  width: min(100%, 400px);
+}
+
+.pf-color-basket__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+ * The drop zone sits over the basket opening.
+ * Pixel analysis puts the rim centre at ~20% from image top, horizontally centred.
+ * We make the zone wide (65%) and tall enough (30%) to be easy for small fingers.
+ */
+.pf-color-basket__opening {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 65%;
+  height: 30%;
+  transform: translate(-50%, -50%);
+  /* Reset all card styles */
+  background: transparent;
+  border: none;
+  border-radius: 50% 50% 40% 40%; /* oval matching basket rim shape */
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+/* Glow on the basket opening when dragging nearby */
+.pf-color-basket__opening.pf-target--snap {
+  background: rgba(255, 255, 180, 0.30);
+  box-shadow: 0 0 0 6px rgba(255, 240, 80, 0.45), 0 0 24px rgba(255, 225, 60, 0.40);
+  transform: translate(-50%, -50%); /* keep position — no lift */
+}
+
+.pf-color-basket__opening.pf-target--wrong {
+  border-color: transparent;
+}
+
+.pf-color-basket:has(.pf-target--wrong) {
+  animation: pf-wiggle 0.32s ease;
+}
+
+/* Placed item appears above the basket interior, then settles in */
+.pf-color-basket__placed-item {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  pointer-events: none;
+  animation: pf-item-into-basket 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pf-item-into-basket {
+  0%   { transform: scale(0.3) translateY(-20px); opacity: 0.4; }
+  60%  { transform: scale(1.1)  translateY(4px);  opacity: 1; }
+  100% { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.pf-color-basket__opening.pf-target--happy .pf-color-basket__placed-item {
+  animation: pf-happy 0.42s ease;
+}
+
+.pf-color-basket__opening .pf-target__reaction {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 6px);
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* ---- color sort tray: items are just images, no card box ---- */
+.pf-tray--color-sort .pf-tray__label {
+  display: none;
+}
+
+.pf-tray--color-sort .pf-tray__items {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+/* pf-object--sort-item: works both in tray and as drag clone on body */
+.pf-object--sort-item {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  min-height: 100px;
+  padding: 6px;
+  gap: 0;
+}
+
+.pf-object--sort-item .pf-object__art {
+  min-height: 88px;
+  padding: 2px;
+}
+
+.pf-object--sort-item .pf-object__img {
+  max-height: 88px;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.pf-object--sort-item.dragging {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.pf-object--sort-item.dragging .pf-object__img {
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+/* ============================= */
+
+@media (max-width: 960px) {
+  .pf-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-card {
+    grid-template-columns: 132px 1fr;
+  }
+
+  .pf-game__content {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-sidecard {
+    order: 2;
+  }
+
+  .pf-board--build {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'progress'
+      'prompt'
+      'tray'
+      'stage';
+    grid-template-rows: auto auto minmax(280px, 1fr) auto;
+  }
+
+  .pf-tray--build .pf-tray__items {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-auto-rows: auto;
+  }
+
+  .pf-build-assembly {
+    height: min(100%, 400px);
+  }
+
+  .pf-build-assembly--horizontal {
+    max-height: min(100%, 280px);
+  }
+}
+
+@media (max-width: 640px) {
+  .pf-title__topbar,
+  .pf-game__topbar {
+    padding: 16px 14px 8px;
+  }
+
+  .pf-title__content,
+  .pf-game__content {
+    padding: 0 14px 14px;
+  }
+
+  .pf-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-card__art {
+    aspect-ratio: 16 / 9;
+  }
+
+  .pf-sidecard,
+  .pf-board {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .pf-target {
+    min-height: 190px;
+  }
+
+  .pf-tray__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pf-build-board {
+    min-height: 220px;
+    padding: 12px 8px 12px;
+  }
+
+  .pf-build-board__slots {
+    gap: 8px;
+  }
+
+  .pf-build-board__image {
+    width: min(100%, 320px);
+    max-height: 118px;
+  }
+
+  .pf-build-slot {
+    min-height: 126px;
+    padding: 8px;
+  }
+
+  .pf-build-slot__inner {
+    min-height: 106px;
+  }
+}
+
+@media (max-height: 980px) {
+  .pf-title__topbar,
+  .pf-game__topbar {
+    padding: 14px 20px 6px;
+  }
+
+  .pf-nav-btn,
+  .pf-audio-btn,
+  .pf-success__btn {
+    min-height: 48px;
+    padding: 10px 18px;
+  }
+
+  .pf-title__content,
+  .pf-game__content {
+    padding: 0 20px 18px;
+  }
+
+  .pf-title__heading,
+  .pf-game__title {
+    margin: 10px 0 6px;
+    font-size: clamp(34px, 4.8vw, 58px);
+  }
+
+  .pf-sidecard {
+    gap: 12px;
+    padding: 18px;
+  }
+
+  .pf-board {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .pf-board--build {
+    grid-template-rows: auto minmax(360px, 1fr);
+  }
+
+  .pf-prompt {
+    padding: 14px 16px;
+  }
+
+  .pf-stage {
+    padding: 16px;
+  }
+
+  .pf-target {
+    min-height: 190px;
+    padding: 14px 12px;
+  }
+
+  .pf-target__art {
+    min-height: 104px;
+  }
+
+  .pf-target__img {
+    max-height: 116px;
+  }
+
+  .pf-target__placed-img {
+    max-height: 128px;
+  }
+
+  .pf-target__slot {
+    min-height: 72px;
+    padding: 10px;
+  }
+
+  .pf-tray {
+    padding: 12px;
+  }
+
+  .pf-tray--build {
+    padding: 10px;
+  }
+
+  .pf-tray__items {
+    gap: 10px;
+  }
+
+  .pf-object {
+    min-height: 108px;
+    padding: 10px 8px;
+  }
+
+  .pf-object__art {
+    min-height: 74px;
+  }
+
+  .pf-object__img {
+    max-height: 88px;
+  }
+
+  .pf-build-board {
+    min-height: 0;
+    padding: 10px 12px 12px;
+  }
+
+  .pf-build-board--vertical {
+    min-height: 0;
+  }
+
+  .pf-build-board__image {
+    max-height: 150px;
+  }
+
+  .pf-build-board--vertical .pf-build-board__image {
+    width: min(100%, 240px);
+  }
+
+  .pf-build-board__slots {
+    width: min(100%, 620px);
+    gap: 10px;
+  }
+
+  .pf-build-board__slots--vertical {
+    width: 100%;
+    max-width: 170px;
+  }
+
+  .pf-build-slot {
+    min-height: 150px;
+  }
+
+  .pf-build-slot__inner {
+    min-height: 126px;
+  }
+
+  .pf-build-board__slots--vertical .pf-build-slot {
+    min-height: 0;
+  }
+
+  .pf-build-board__slots--vertical .pf-build-slot__inner {
+    min-height: 0;
+  }
+}
+
+@media (max-height: 820px) {
+  .pf-title__topbar,
+  .pf-game__topbar {
+    padding: 10px 16px 4px;
+  }
+
+  .pf-nav-btn,
+  .pf-audio-btn,
+  .pf-success__btn {
+    min-width: 104px;
+    min-height: 42px;
+    padding: 8px 14px;
+  }
+
+  .pf-title__content,
+  .pf-game__content {
+    padding: 0 16px 12px;
+  }
+
+  .pf-game__content {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .pf-title__heading,
+  .pf-game__title {
+    margin: 6px 0 4px;
+    font-size: clamp(30px, 4.2vw, 48px);
+  }
+
+  .pf-card__text,
+  .pf-sidecard__text,
+  .pf-target__label,
+  .pf-object__label,
+  .pf-prompt__text,
+  .pf-success__text,
+  .pf-progress__label,
+  .pf-tray__label,
+  .pf-game__eyebrow {
+    font-size: 18px;
+  }
+
+  .pf-sidecard,
+  .pf-board {
+    border-radius: 24px;
+  }
+
+  .pf-sidecard {
+    padding: 14px;
+  }
+
+  .pf-guide-badge {
+    padding: 8px 12px;
+  }
+
+  .pf-guide-badge__icon {
+    font-size: 24px;
+  }
+
+  .pf-board {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .pf-board--build {
+    grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+    grid-template-rows: auto minmax(300px, 1fr);
+  }
+
+  .pf-prompt {
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .pf-prompt__icon {
+    font-size: 34px;
+  }
+
+  .pf-stage {
+    gap: 12px;
+    padding: 12px;
+    border-radius: 24px;
+  }
+
+  .pf-target {
+    min-height: 164px;
+    gap: 8px;
+    border-radius: 22px;
+    padding: 12px 10px;
+  }
+
+  .pf-stage--targets-1 .pf-target {
+    min-height: 176px;
+  }
+
+  .pf-target__art {
+    min-height: 84px;
+    padding: 4px;
+  }
+
+  .pf-target__img {
+    max-height: 94px;
+  }
+
+  .pf-target__placed-img {
+    max-height: 104px;
+  }
+
+  .pf-target__slot {
+    min-height: 62px;
+    border-radius: 18px;
+    padding: 8px;
+  }
+
+  .pf-tray {
+    border-radius: 22px;
+    padding: 10px;
+  }
+
+  .pf-tray--build {
+    padding: 8px;
+  }
+
+  .pf-tray__items {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .pf-tray--build .pf-tray__items {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .pf-object {
+    min-height: 94px;
+    gap: 6px;
+    border-radius: 18px;
+    padding: 8px 6px;
+  }
+
+  .pf-object__art {
+    min-height: 60px;
+    padding: 2px;
+  }
+
+  .pf-object__img {
+    max-height: 66px;
+  }
+
+  .pf-build-board {
+    width: min(100%, 700px);
+    min-height: 0;
+    gap: 8px;
+    padding: 8px 8px 10px;
+  }
+
+  .pf-build-board--vertical {
+    width: min(100%, 560px);
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) 150px;
+  }
+
+  .pf-build-board__image {
+    width: min(100%, 360px);
+    max-height: 120px;
+  }
+
+  .pf-build-board--vertical .pf-build-board__image {
+    width: min(100%, 190px);
+  }
+
+  .pf-build-board__slots {
+    width: min(100%, 580px);
+    gap: 8px;
+  }
+
+  .pf-build-board__slots--vertical {
+    width: 100%;
+    max-width: 150px;
+  }
+
+  .pf-build-slot {
+    min-height: 120px;
+    padding: 8px;
+  }
+
+  .pf-build-slot__inner {
+    min-height: 98px;
+  }
+
+  .pf-build-board__slots--vertical .pf-build-slot {
+    min-height: 0;
+  }
+
+  .pf-build-board__slots--vertical .pf-build-slot__inner {
+    min-height: 0;
+  }
+
+  .pf-tray--build .pf-object {
+    min-height: 86px;
+  }
+
+  .pf-tray--build .pf-object__label {
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 700px) {
+  .pf-title,
+  .pf-game {
+    overflow: auto;
+  }
+
+  .pf-title__content,
+  .pf-game__content {
+    padding-bottom: 10px;
+  }
+
+  .pf-game__content {
+    align-items: start;
+  }
+}

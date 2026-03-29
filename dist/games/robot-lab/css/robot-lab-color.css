@@ -1,0 +1,369 @@
+/**
+ * Robot Lab — Chapter 3: Color Sensing styles
+ * Prefix: .rl-cs-
+ */
+
+/* ── Page layout ──────────────────────────────────────────────────────────── */
+
+/* Make the scene a flex column so the main area fills all remaining height */
+.rl-color {
+  display: flex;
+  flex-direction: column;
+}
+
+.rl-color .rl-mission__topbar {
+  flex-shrink: 0;
+}
+
+.rl-color .rl-mission__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;
+  gap: 0;
+}
+
+/* Sidebar inherits from robot-lab.css .rl-mission__sidebar */
+
+.rl-cs-center {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 10px 12px 8px;
+}
+
+.rl-cs-result {
+  width: 440px;
+  min-width: 320px;
+  max-width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 12px 8px;
+  background: rgba(0,10,30,0.45);
+  border-left: 1px solid rgba(100,180,255,0.15);
+  overflow-y: auto;
+}
+
+/* ── Section labels ───────────────────────────────────────────────────────── */
+
+.rl-cs-patchbay-label,
+.rl-cs-result-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(100,200,255,0.7);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  align-self: flex-start;
+}
+
+/* ── Patchbay ─────────────────────────────────────────────────────────────── */
+
+.rl-cs-patchbay-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.rl-cs-patchbay {
+  flex: 1;
+  width: 100%;
+  min-height: 240px;
+  /* no max-height — let it fill all available space */
+  background: rgba(0, 8, 24, 0.7);
+  border: 1.5px solid rgba(100,180,255,0.2);
+  border-radius: 10px;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* Patchbay text elements */
+.rl-cs-pb-colhdr {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  fill: rgba(100,200,255,0.5);
+  letter-spacing: 0.08em;
+  /* text-anchor set per-element in JS to avoid clipping on either side */
+}
+
+.rl-cs-pb-sensor-lbl {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  fill: rgba(220,240,255,0.75);
+  dominant-baseline: middle;
+}
+
+/* Discovery hint text under the "SENSOR VIEWS" column header */
+.rl-cs-pb-hint {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  fill: rgba(255,200,100,0.55);
+  letter-spacing: 0.04em;
+  text-anchor: start;   /* CSS beats SVG presentation attributes — must be here */
+}
+
+/* "filter: ?" sub-label under each sensor label */
+.rl-cs-pb-sensor-sublbl {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  fill: rgba(255,200,100,0.6);
+  dominant-baseline: middle;
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+}
+
+/* "tap to disconnect" micro-label on output nodes */
+.rl-cs-pb-taphint {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 7.5px;
+  fill: rgba(180,220,255,0.0);   /* invisible by default */
+  letter-spacing: 0.04em;
+  transition: fill 0.2s;
+  pointer-events: none;
+}
+/* Show the hint only when the output has a wire (badge visible) */
+.rl-cs-pb-taphint--active {
+  fill: rgba(180,220,255,0.45);
+}
+
+.rl-cs-pb-output-lbl {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  dominant-baseline: middle;
+  letter-spacing: 0.08em;
+}
+
+/* Terminal circles */
+.rl-cs-pb-terminal {
+  fill: rgba(0,20,50,0.8);
+  stroke-width: 2.5;
+  cursor: pointer;
+  transition: r 0.1s;
+}
+.rl-cs-pb-terminal--sensor {
+  stroke: rgba(100,200,255,0.8);
+}
+.rl-cs-pb-terminal--sensor:hover,
+.rl-cs-pb-terminal--sensor:active {
+  fill: rgba(50,120,200,0.6);
+}
+.rl-cs-pb-terminal--output {
+  /* stroke color set inline per channel */
+  stroke-width: 2.5;
+}
+
+/* Connected-sensor badge inside output node */
+.rl-cs-pb-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  fill: #ffffff;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ── Guide lines (sensor → terminal stub) ────────────────────────────────── */
+
+.rl-cs-guide-line {
+  stroke: rgba(100,180,255,0.2);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+/* ── Wires ────────────────────────────────────────────────────────────────── */
+
+.rl-cs-wire {
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  pointer-events: none;
+}
+.rl-cs-wire--r { stroke: #FF4444; }
+.rl-cs-wire--g { stroke: #44DD44; }
+.rl-cs-wire--b { stroke: #4488FF; }
+.rl-cs-wire--preview {
+  stroke: rgba(255,255,255,0.5);
+  stroke-dasharray: 6 4;
+  animation: rl-dash-march 0.5s linear infinite;
+}
+
+@keyframes rl-dash-march {
+  to { stroke-dashoffset: -20; }
+}
+
+/* ── Gain sliders ─────────────────────────────────────────────────────────── */
+
+.rl-cs-gain-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding: 14px 12px 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(100,180,255,0.15);
+  background: rgba(0,8,24,0.4);
+}
+
+.rl-cs-gain-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: rgba(100,200,255,0.6);
+  white-space: nowrap;
+}
+
+.rl-cs-gain-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 140px;  /* wraps to next line before controls become unusably small */
+}
+
+.rl-cs-gain-ch {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  min-width: 18px;
+}
+.rl-cs-gain-ch--r { color: #FF5555; }
+.rl-cs-gain-ch--g { color: #44EE44; }
+.rl-cs-gain-ch--b { color: #5599FF; }
+
+.rl-cs-gain-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  min-width: 0;   /* lets flex shrink the slider instead of overflowing */
+  height: 10px;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background: rgba(100,150,220,0.25);
+  touch-action: none;
+}
+.rl-cs-gain-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #D4A959;
+  border: 3px solid #FFE08A;
+  cursor: pointer;
+}
+
+.rl-cs-gain-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  color: rgba(220,240,255,0.7);
+  min-width: 36px;
+}
+
+/* ── Result panel ─────────────────────────────────────────────────────────── */
+
+.rl-cs-result-canvas {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1.5px solid rgba(100,180,255,0.25);
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* ── Test Sources section ─────────────────────────────────────────────────── */
+
+.rl-cs-sources-section {
+  width: 100%;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(100,180,255,0.15);
+}
+
+.rl-cs-sources-section .rl-cs-result-label {
+  margin-bottom: 10px;
+}
+
+/* ── Source picker ────────────────────────────────────────────────────────── */
+
+.rl-cs-source-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.rl-cs-source-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 14px 10px;
+  background: rgba(0,20,50,0.6);
+  border: 1.5px solid rgba(100,180,255,0.2);
+  border-radius: 12px;
+  color: rgba(220,240,255,0.75);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 72px;
+  touch-action: manipulation;
+}
+.rl-cs-source-btn:active { transform: scale(0.95); }
+.rl-cs-source-btn--active {
+  border-color: #D4A959;
+  background: rgba(212,169,89,0.15);
+  color: #FFE08A;
+}
+
+.rl-cs-source-icon { font-size: 28px; }
+.rl-cs-source-lbl  { font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+/* ── SWIRL-E speech bubble ────────────────────────────────────────────────── */
+
+.rl-cs-speech {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #FFE4A0;
+  background: rgba(0,10,30,0.55);
+  border: 1px solid rgba(255,220,120,0.25);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  line-height: 1.4;
+  min-height: 52px;
+  transition: color 0.3s;
+}
+
+/* ── Outcome math row ─────────────────────────────────────────────────────── */
+
+.rl-cs-math-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rl-cs-channel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.rl-cs-channel--r { background: rgba(255,60,60,0.25);  color: #FF6666; }
+.rl-cs-channel--g { background: rgba(60,200,60,0.25);  color: #66EE66; }
+.rl-cs-channel--b { background: rgba(60,100,255,0.25); color: #88AAFF; }

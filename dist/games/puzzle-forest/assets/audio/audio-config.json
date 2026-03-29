@@ -1,0 +1,15 @@
+{
+  "gameId": "puzzle-forest",
+  "voice": "semaine",
+  "voiceModel": "en_GB-semaine-medium.onnx",
+  "voicesDir": "~/piper/voices/semaine",
+  "manifests": [
+    "gameplay-prompts.txt",
+    "praise-lines.txt",
+    "build-complete-lines.txt",
+    "mission-complete-lines.txt",
+    "retry-lines.txt",
+    "ui-lines.txt"
+  ],
+  "clipsDir": "clips"
+}

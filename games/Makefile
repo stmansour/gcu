@@ -1,17 +1,27 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# games/ — All game modules
-# Fans out to each game subdirectory.
-# ─────────────────────────────────────────────────────────────────────────────
-
-SUBDIRS := art-studio robot-lab puzzle-forest
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
+DIST      := $(REPO_ROOT)/dist
+DIRS      := art-studio robot-lab puzzle-forest
+THISDIR   := games
 
 .PHONY: all clean package
 
 all:
-	@for d in $(SUBDIRS); do $(MAKE) -C $$d; done
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir; \
+	done
+	@echo "*** $(THISDIR): completed build ***"
 
 clean:
-	@for d in $(SUBDIRS); do $(MAKE) -C $$d clean; done
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@echo "*** $(THISDIR): completed clean ***"
 
 package:
-	@echo "games: package handled by root"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir package; \
+	done
+	@echo "*** $(THISDIR): completed package ***"

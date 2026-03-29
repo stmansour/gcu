@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="36" fill="#F8E2C5"/>
+  <rect x="66" y="76" width="86" height="72" rx="22" fill="#FFF8EA"/>
+  <rect x="168" y="76" width="86" height="72" rx="22" fill="#FFF8EA"/>
+  <rect x="117" y="164" width="86" height="72" rx="22" fill="#FFF8EA"/>
+  <text x="88" y="126" font-size="42">🐻</text>
+  <text x="192" y="126" font-size="42">🟤</text>
+  <text x="140" y="215" font-size="42">👣</text>
+</svg>

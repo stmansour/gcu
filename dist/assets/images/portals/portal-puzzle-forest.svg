@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d8f1c0"/>
+      <stop offset="100%" stop-color="#5ca06a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="920" cy="180" r="110" fill="#fff0b6" opacity="0.75"/>
+  <ellipse cx="220" cy="820" rx="300" ry="180" fill="#437d4e"/>
+  <ellipse cx="620" cy="850" rx="380" ry="210" fill="#3b7248"/>
+  <ellipse cx="1060" cy="810" rx="260" ry="170" fill="#315f3d"/>
+  <circle cx="280" cy="340" r="120" fill="#fff7dd"/>
+  <circle cx="860" cy="420" r="150" fill="#dff2b2"/>
+  <text x="220" y="410" font-size="180">🐿️</text>
+  <text x="780" y="520" font-size="200">🧩</text>
+  <text x="445" y="290" font-size="160">🌲</text>
+  <text x="360" y="710" font-size="110" font-family="Arial, sans-serif" font-weight="700" fill="#fff8df">Puzzle Forest</text>
+</svg>

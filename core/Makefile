@@ -1,15 +1,27 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# core/ — Shared engine (pure JS/CSS source, nothing to generate here)
-# Image generation tools live in core/imgen/ and have their own workflow.
-# ─────────────────────────────────────────────────────────────────────────────
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
+DIST      := $(REPO_ROOT)/dist
+DIRS      := animation audio avatar input journal layout progress rewards scene storage utils
+THISDIR   := core
 
 .PHONY: all clean package
 
 all:
-	@echo "core: nothing to build"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir; \
+	done
+	@echo "*** $(THISDIR): completed build ***"
 
 clean:
-	@echo "core: nothing to clean"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@echo "*** $(THISDIR): completed clean ***"
 
 package:
-	@echo "core: package handled by root"
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir package; \
+	done
+	@echo "*** $(THISDIR): completed package ***"

@@ -6,12 +6,29 @@
 
 REPO_ROOT  := $(shell git rev-parse --show-toplevel)
 IMGEN_DIR  := $(REPO_ROOT)/core/imgen
+DIST       := $(REPO_ROOT)/dist
 PYTHON     := python3
 PYTHONPATH := .:$(IMGEN_DIR)
+THISDIR    := games/puzzle-forest/assets/images
 
 export PYTHONPATH
 
-.PHONY: generate validate prompts help
+.PHONY: all clean package generate validate prompts help
+
+## all: Nothing to build (images are generated on demand with make generate)
+all:
+	@echo "*** $(THISDIR): build done ***"
+
+## clean: Images are never auto-cleaned — they take hours to regenerate
+clean:
+	@echo "*** $(THISDIR): nothing to clean (images are preserved) ***"
+
+## package: Copy all PNGs and SVGs to dist
+package:
+	mkdir -p $(DIST)/$(THISDIR)
+	cp *.png $(DIST)/$(THISDIR)/
+	cp *.svg $(DIST)/$(THISDIR)/
+	@echo "*** $(THISDIR): completed package ***"
 
 ## generate: Generate all missing images from .prompt.txt files
 generate:

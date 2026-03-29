@@ -1,26 +1,29 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# games/puzzle-forest/ — Puzzle Forest game
-#
-# assets/images/ contains AI-generated PNGs (one per .prompt.txt file).
-# Requires ComfyUI running at http://127.0.0.1:8188 to generate images.
-# Activate the ComfyUI venv before running make:
-#   source ~/Documents/src/ai/ComfyUI/venv/bin/activate
-# ─────────────────────────────────────────────────────────────────────────────
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
+DIST      := $(REPO_ROOT)/dist
+DIRS      := assets css engine puzzles scenes
+THISDIR   := games/puzzle-forest
 
 .PHONY: all clean package
 
-## all: Generate any missing images in assets/images/
 all:
-	$(MAKE) -C assets/images generate
-
-## clean: Remove all generated PNG files in assets/images/
-clean:
-	@echo "puzzle-forest: removing generated images..."
-	@cd assets/images && for f in *.prompt.txt; do \
-		base=$$(basename "$$f" .prompt.txt); \
-		rm -f "$$base.png" "$$base-transparent.png"; \
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir; \
 	done
-	@echo "puzzle-forest: done"
+	@echo "*** $(THISDIR): completed build ***"
+
+clean:
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@echo "*** $(THISDIR): completed clean ***"
 
 package:
-	@echo "puzzle-forest: package handled by root"
+	mkdir -p $(DIST)/games/puzzle-forest
+	cp index.js $(DIST)/games/puzzle-forest/
+	@set -e; \
+	for dir in $(DIRS); do \
+		$(MAKE) -C $$dir package; \
+	done
+	@echo "*** $(THISDIR): completed package ***"
