@@ -3,8 +3,8 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
-DIRS      := core hub games assets
+DIST      := $(REPO_ROOT)/dist/gcu
+DIRS      := core hub games assets CharacterSheets
 THISDIR   := gcu
 
 .PHONY: all clean package help
@@ -17,7 +17,7 @@ all:
 	@echo "*** $(THISDIR): completed build ***"
 
 clean:
-	rm -rf $(DIST)
+	rm -rf $(REPO_ROOT)/dist
 	@set -e; \
 	for dir in $(DIRS); do \
 		$(MAKE) -C $$dir clean; \
@@ -31,11 +31,16 @@ package:
 	for dir in $(DIRS); do \
 		$(MAKE) -C $$dir package; \
 	done
-	@echo "*** $(THISDIR): completed package ***"
+	cd $(REPO_ROOT)/dist && tar czf gcu.tar.gz gcu/
+	@echo "*** $(THISDIR): completed package — dist/gcu.tar.gz ready ***"
+
+release:
+	scp -i ~/.ssh/id_platosrv dist/gcu.tar.gz sman:~/www/
 
 help:
 	@echo ""
 	@echo "  make           — lint and validate all source"
-	@echo "  make clean     — remove dist/ and all generated image files"
-	@echo "  make package   — build the web distribution in dist/"
+	@echo "  make clean     — remove dist/ entirely (images are never deleted)"
+	@echo "  make package   — build dist/gcu/ and create dist/gcu.tar.gz"
+	@echo "  make generate  — (in image dirs) regenerate AI images via ComfyUI"
 	@echo ""

@@ -6,7 +6,7 @@
 
 REPO_ROOT  := $(shell git rev-parse --show-toplevel)
 IMGEN_DIR  := $(REPO_ROOT)/core/imgen
-DIST       := $(REPO_ROOT)/dist
+DIST       := $(REPO_ROOT)/dist/gcu
 PYTHON     := python3
 PYTHONPATH := .:$(IMGEN_DIR)
 THISDIR    := games/puzzle-forest/assets/images

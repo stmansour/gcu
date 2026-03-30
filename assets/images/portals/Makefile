@@ -10,7 +10,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
+DIST      := $(REPO_ROOT)/dist/gcu
 THISDIR   := assets/images/portals
 
 .PHONY: all clean package generate

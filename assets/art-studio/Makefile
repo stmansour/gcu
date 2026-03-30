@@ -3,7 +3,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
+DIST      := $(REPO_ROOT)/dist/gcu
 THISDIR   := assets/art-studio
 
 .PHONY: all clean package

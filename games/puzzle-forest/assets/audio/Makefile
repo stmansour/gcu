@@ -1,5 +1,5 @@
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
+DIST      := $(REPO_ROOT)/dist/gcu
 DIRS      := clips
 THISDIR   := games/puzzle-forest/assets/audio
 
@@ -21,7 +21,7 @@ clean:
 
 package:
 	mkdir -p $(DIST)/games/puzzle-forest/assets/audio
-	cp audio-config.json $(DIST)/games/puzzle-forest/assets/audio/
+	cp audio-config.json *.txt $(DIST)/games/puzzle-forest/assets/audio/
 	@set -e; \
 	for dir in $(DIRS); do \
 		$(MAKE) -C $$dir package; \

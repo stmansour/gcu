@@ -1,5 +1,5 @@
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
+DIST      := $(REPO_ROOT)/dist/gcu
 THISDIR   := games/art-studio/engine
 
 .PHONY: all clean package

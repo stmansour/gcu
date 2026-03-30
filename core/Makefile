@@ -1,5 +1,5 @@
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist
+DIST      := $(REPO_ROOT)/dist/gcu
 DIRS      := animation audio avatar input journal layout progress rewards scene storage utils
 THISDIR   := core
 
