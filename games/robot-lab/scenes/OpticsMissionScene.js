@@ -602,6 +602,10 @@ export class OpticsMissionScene extends Scene {
     this._solved = true;
     this._completedChapters.add(CHAPTER_2.id);
 
+    // Immediate feedback — both lenses pulse green so the player knows
+    // they've locked in the correct positions before anything else happens.
+    this._flashLensSuccess();
+
     this._setSwirlePortrait('powered');
     this._setSpeech(SPEECH.win);
 
@@ -623,20 +627,62 @@ export class OpticsMissionScene extends Scene {
     this._showResetButton();
     this._showNextChapterButton();
 
-    // Confetti
-    celebrate('large', {
-      duration: 2500,
-      onComplete: async () => {
-        const progress = await this.storage.get('progress', { completedChapters: [] });
-        if (!progress.completedChapters.includes(CHAPTER_2.id)) {
-          progress.completedChapters.push(CHAPTER_2.id);
-        }
-        await this.storage.set('progress', progress);
-      },
-    });
+    // Short pause so the player can appreciate the glow, then confetti
+    setTimeout(() => {
+      celebrate('large', {
+        duration: 2500,
+        onComplete: async () => {
+          const progress = await this.storage.get('progress', { completedChapters: [] });
+          if (!progress.completedChapters.includes(CHAPTER_2.id)) {
+            progress.completedChapters.push(CHAPTER_2.id);
+          }
+          await this.storage.set('progress', progress);
+        },
+      });
+    }, 700);
 
-    // Outcome summary card after confetti
-    setTimeout(() => this._showSuccessCard(), 3000);
+    // Outcome summary card — after the glow + confetti have played out
+    setTimeout(() => this._showSuccessCard(), 3800);
+  }
+
+  /**
+   * Immediately add a pulsing glow to both placed lens shapes so the player
+   * gets instant confirmation that the lenses are locked in the right spots.
+   *
+   * Two-layer approach for maximum visibility:
+   *  1. CSS drop-shadow class on the existing lens <path> elements.
+   *  2. Teal <ellipse> halos appended last in the SVG (= topmost layer),
+   *     animated via opacity so they pulse visibly over every other layer.
+   */
+  _flashLensSuccess() {
+    const svgEl = this._container?.querySelector('svg');
+    if (!svgEl) return;
+
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const { tube, axisY } = CHAPTER_2.layout;
+    const topY = tube.y1 + 10;
+    const botY = tube.y2 - 10;
+    const cy   = (topY + botY) / 2;
+    const ry   = (botY - topY) / 2 + 10;   // slightly taller than the lens shape
+    const rx   = 20;                         // horizontal half-width of halo
+
+    [0, 1].forEach(idx => {
+      // 1. Drop-shadow on the lens path itself
+      const path = svgEl.querySelector(`path[data-slot-idx="${idx}"]`);
+      if (path) path.classList.add('rl-optics__lens--locked');
+
+      // 2. Teal halo ellipse — appended last so it renders above all SVG layers
+      const lx = this._lensX[idx];
+      if (lx == null) return;
+
+      const halo = document.createElementNS(SVG_NS, 'ellipse');
+      halo.setAttribute('cx', String(lx));
+      halo.setAttribute('cy', String(cy));
+      halo.setAttribute('rx', String(rx));
+      halo.setAttribute('ry', String(ry));
+      halo.classList.add('rl-optics__lens-halo');
+      svgEl.appendChild(halo);
+    });
   }
 
   // ── UI helpers ─────────────────────────────────────────────────────────────
@@ -690,17 +736,18 @@ export class OpticsMissionScene extends Scene {
       actionsEl.appendChild(btn);
     }
 
-    if (nextChapter) {
+    // Only show "Next Chapter" if that chapter has a registered scene.
+    // Chapters 4–10 are future content; no button until their scene exists.
+    const nextRoute = nextChapter ? CHAPTER_SCENES[nextChapter.id] : null;
+    if (nextChapter && nextRoute) {
       const btn = document.createElement('button');
       btn.type      = 'button';
       btn.className = 'rl-btn rl-btn--next-chapter';
       btn.textContent = 'Next Chapter →';
       btn.addEventListener('click', () => {
-        const route = CHAPTER_SCENES[nextChapter.id]
-          ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id };
         const data = { avatarId: this._avatarId };
-        if (route.missionId) data.missionId = route.missionId;
-        this.sceneManager.go(route.scene, data);
+        if (nextRoute.missionId) data.missionId = nextRoute.missionId;
+        this.sceneManager.go(nextRoute.scene, data);
       });
       actionsEl.appendChild(btn);
     }
@@ -855,8 +902,16 @@ export class OpticsMissionScene extends Scene {
     card.querySelector('#rl-card-next')?.addEventListener('click', () => {
       card.classList.add('rl-briefing--hiding');
       setTimeout(() => {
-        const route = { scene: 'hub', data: { avatarId: this._avatarId } };
-        this.sceneManager.go(route.scene, { avatarId: this._avatarId });
+        const route = nextChapter
+          ? (CHAPTER_SCENES[nextChapter.id] ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id })
+          : null;
+        if (route) {
+          const routeData = { avatarId: this._avatarId };
+          if (route.missionId) routeData.missionId = route.missionId;
+          this.sceneManager.go(route.scene, routeData);
+        } else {
+          this.sceneManager.go('hub', { avatarId: this._avatarId });
+        }
       }, 380);
     });
 
@@ -972,11 +1027,25 @@ export class OpticsMissionScene extends Scene {
     return -1;
   }
 
-  _placeLens(slotIndex, lensId, dropX = null) {
+  _placeLens(slotIndex, lensId, _dropX = null) {
     this._slots[slotIndex] = lensId;
-    // Place at the drop x so the player must slide to the target to win
-    const slot = CHAPTER_2.layout.slots[slotIndex];
-    this._lensX[slotIndex] = dropX ?? (slot.minX ?? slot.x);
+    // Always land at a random offset from the target — the player must slide
+    // to find the sweet spot.  Ignore the literal drop x so a lucky drop can
+    // never accidentally trigger the win condition.
+    const slot  = CHAPTER_2.layout.slots[slotIndex];
+    const snapR = CHAPTER_2.layout.snapRadius ?? 15;
+    const minX  = slot.minX ?? (slot.x - 60);
+    const maxX  = slot.maxX ?? (slot.x + 60);
+    const side  = Math.random() < 0.5 ? -1 : 1;
+    const dist  = snapR + 20 + Math.floor(Math.random() * 55); // 35–90 SVG units off-target
+    let landX   = Math.max(minX, Math.min(maxX, slot.x + side * dist));
+    // If clamping pulled us back inside the snap zone, push to the nearest edge
+    if (Math.abs(landX - slot.x) < snapR) {
+      landX = side > 0
+        ? Math.min(maxX, slot.x + snapR + 5)
+        : Math.max(minX, slot.x - snapR - 5);
+    }
+    this._lensX[slotIndex] = landX;
     this._updateOptics();
   }
 

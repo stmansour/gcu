@@ -77,7 +77,8 @@ export class CircuitMissionScene extends Scene {
 
     if (!this._mission) {
       console.warn('[RobotLab] Unknown mission:', missionId);
-      this.sceneManager.go('robot-lab-title');
+      // Always carry the avatarId back to the title so the player identity is preserved.
+      this.sceneManager.go('robot-lab-title', { avatarId: this._avatarId });
       return;
     }
 
@@ -823,7 +824,7 @@ export class CircuitMissionScene extends Scene {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'rl-btn rl-btn--replay';
-    btn.textContent = '▶ Simulate';
+    btn.textContent = '▶ Return to Circuit Simulator';
     btn.addEventListener('click', () => { if (this._replayFn) this._replayFn(); });
     actionsEl.appendChild(btn);
   }
@@ -860,17 +861,18 @@ export class CircuitMissionScene extends Scene {
       actionsEl.appendChild(btn);
     }
 
-    if (nextChapter) {
+    // Only show "Next Chapter" if that chapter has a registered scene.
+    // Chapters 4–10 are future content; no button until their scene exists.
+    const nextRoute = nextChapter ? CHAPTER_SCENES[nextChapter.id] : null;
+    if (nextChapter && nextRoute) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'rl-btn rl-btn--next-chapter';
       btn.textContent = 'Next Chapter →';
       btn.addEventListener('click', () => {
-        const route = CHAPTER_SCENES[nextChapter.id]
-          ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id };
         const routeData = { avatarId: this._avatarId };
-        if (route.missionId) routeData.missionId = route.missionId;
-        this.sceneManager.go(route.scene, routeData);
+        if (nextRoute.missionId) routeData.missionId = nextRoute.missionId;
+        this.sceneManager.go(nextRoute.scene, routeData);
       });
       actionsEl.appendChild(btn);
     }
@@ -1020,12 +1022,15 @@ export class CircuitMissionScene extends Scene {
     const bodyHTML = isSuccess
       ? `
         <div class="rl-success-body">
-          <div class="rl-success-left">
-            <div class="rl-success-swirle-wrap">
+          <div class="rl-success-robot-col">
+            <div class="rl-briefing__portrait">
               <img src="games/robot-lab/assets/images/swirle-powered.png"
-                   alt="SWIRL-E" class="rl-success-swirle-img">
+                   alt="SWIRL-E" class="rl-briefing__portrait-img">
             </div>
-            <p class="rl-swirle-greeting">HELLO, ${kidName.toUpperCase() || 'FRIEND'}. I CAN SEE YOU NOW!</p>
+            <p class="rl-briefing__robot-name">SWIRL-E</p>
+            <p class="rl-swirle-greeting">HELLO, ${kidName.toUpperCase() || 'FRIEND'}.<br>I CAN SEE YOU NOW!</p>
+          </div>
+          <div class="rl-success-results-panel">
             <div class="rl-success-explain">
               ${c.lines.map(l => `<p>${l}</p>`).join('')}
               <div class="rl-math ${c.mathClass}">${c.math}</div>
@@ -1067,7 +1072,7 @@ export class CircuitMissionScene extends Scene {
         </div>
         ${bodyHTML}
         <div class="rl-outcome__btns">
-          <button type="button" class="rl-btn rl-btn--replay" id="rl-oc-replay">▶ Simulate</button>
+          <button type="button" class="rl-btn rl-btn--replay" id="rl-oc-replay">▶ Return to Circuit Simulator</button>
           ${!isSuccess ? '<button type="button" class="rl-btn rl-btn--reset" id="rl-oc-reset">🔄 Try Again</button>' : ''}
           ${isSuccess && nextChapter ? `<button type="button" class="rl-btn rl-btn--next-chapter" id="rl-oc-next">Next Chapter →</button>` : ''}
           <button type="button" class="rl-btn rl-outcome__close-btn" id="rl-oc-close">Close</button>

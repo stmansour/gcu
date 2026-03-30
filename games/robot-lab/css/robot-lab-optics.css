@@ -679,3 +679,49 @@
     letter-spacing: 0.5px;
   }
 }
+
+/* ── Lens lock-in glow (victory feedback) ────────────────────────────────── */
+/*
+ * Two-part victory effect fired the instant _doWin() triggers:
+ *
+ *  1. .rl-optics__lens--locked  — applied to each placed lens <path>.
+ *     drop-shadow filter pulses bright teal on the lens silhouette itself.
+ *
+ *  2. .rl-optics__lens-halo  — SVG <ellipse> appended directly to the SVG
+ *     at each correct lens position.  Animates opacity only (GPU-composited)
+ *     so the teal fill pulses visibly around the lens shape and is guaranteed
+ *     to render above all other SVG layers (appended last = topmost).
+ *
+ * Both run 4 × 0.55 s = 2.2 s then hold a soft persistent glow.
+ * Using filter on the path is intentional — this is a one-time win animation,
+ * not a continuous gameplay effect.
+ */
+
+/* --- lens path drop-shadow --- */
+.rl-optics__lens--locked {
+  animation: rl-lens-lock-pulse 0.55s ease-in-out 4 forwards;
+}
+
+@keyframes rl-lens-lock-pulse {
+  0%   { filter: none; }
+  40%  { filter:
+           drop-shadow(0 0  6px rgba(0, 255, 160, 1.0))
+           drop-shadow(0 0 20px rgba(0, 255, 160, 0.7))
+           drop-shadow(0 0 40px rgba(0, 255, 160, 0.3)); }
+  100% { filter:
+           drop-shadow(0 0  4px rgba(0, 255, 160, 0.9))
+           drop-shadow(0 0 12px rgba(0, 255, 160, 0.5)); }
+}
+
+/* --- halo ellipse opacity pulse --- */
+.rl-optics__lens-halo {
+  fill: rgba(0, 255, 160, 0.55);
+  pointer-events: none;
+  animation: rl-lens-halo-pulse 0.55s ease-in-out 4 forwards;
+}
+
+@keyframes rl-lens-halo-pulse {
+  0%   { opacity: 0; }
+  40%  { opacity: 1; }
+  100% { opacity: 0.28; }
+}

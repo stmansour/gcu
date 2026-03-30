@@ -940,17 +940,18 @@ export class ColorMissionScene extends Scene {
       actionsEl.appendChild(btn);
     }
 
-    if (nextChapter) {
+    // Only show "Next Chapter" if that chapter has a registered scene.
+    // Chapters 4–10 are future content; no button until their scene exists.
+    const nextRoute = nextChapter ? CHAPTER_SCENES[nextChapter.id] : null;
+    if (nextChapter && nextRoute) {
       const btn = document.createElement('button');
       btn.type      = 'button';
       btn.className = 'rl-btn rl-btn--next-chapter';
       btn.textContent = 'Next Chapter →';
       btn.addEventListener('click', () => {
-        const route = CHAPTER_SCENES[nextChapter.id]
-          ?? { scene: 'robot-lab-circuit', missionId: nextChapter.id };
         const data = { avatarId: this._avatarId };
-        if (route.missionId) data.missionId = route.missionId;
-        this.sceneManager.go(route.scene, data);
+        if (nextRoute.missionId) data.missionId = nextRoute.missionId;
+        this.sceneManager.go(nextRoute.scene, data);
       });
       actionsEl.appendChild(btn);
     }
