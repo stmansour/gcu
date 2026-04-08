@@ -1,0 +1,5 @@
+color_sort_correct_01|Right!
+color_sort_correct_02|Lovely!
+color_sort_correct_03|Splendid!
+color_sort_correct_04|Good Show!
+color_sort_correct_05|Perfect!

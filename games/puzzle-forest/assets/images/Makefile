@@ -13,11 +13,13 @@ THISDIR    := games/puzzle-forest/assets/images
 
 export PYTHONPATH
 
-.PHONY: all clean package generate validate prompts help
+.PHONY: all clean package generate validate prompts help _generate_stale
 
-## all: Nothing to build (images are generated on demand with make generate)
-all:
-	@echo "*** $(THISDIR): build done ***"
+PROMPT_FILES := $(sort $(wildcard *.prompt.txt))
+
+## all: Generate any image whose outputs are missing or stale
+all: _generate_stale
+	@echo "*** $(THISDIR): up to date ***"
 
 ## clean: Images are never auto-cleaned — they take hours to regenerate
 clean:
@@ -30,13 +32,42 @@ package:
 	cp *.svg $(DIST)/$(THISDIR)/
 	@echo "*** $(THISDIR): completed package ***"
 
-## generate: Generate all missing images from .prompt.txt files
+## generate: Generate all missing or stale images from .prompt.txt files
 generate:
 ifdef FILE
 	$(PYTHON) $(IMGEN_DIR)/generate_asset.py "$(FILE)"
 else
-	$(PYTHON) $(IMGEN_DIR)/batch_generate.py
+	@$(MAKE) --no-print-directory _generate_stale
 endif
+
+_generate_stale:
+	@set -e; \
+	for prompt in $(PROMPT_FILES); do \
+		target=$$(awk -F': ' '/^TARGET FILE:/ {print $$2; exit}' "$$prompt"); \
+		bg_mode=$$(awk -F': ' '/^BACKGROUND_MODE:/ {print $$2; exit}' "$$prompt"); \
+		if [ -z "$$target" ]; then \
+			echo "skip $$prompt (missing TARGET FILE)"; \
+			continue; \
+		fi; \
+		rebuild=0; \
+		final_target="$$target"; \
+		case "$$bg_mode" in \
+			transparent) final_target="$${target%.png}-transparent.png" ;; \
+		esac; \
+		if [ ! -f "$$target" ]; then \
+			rebuild=1; \
+		elif [ "$$prompt" -nt "$$target" ]; then \
+			rebuild=1; \
+		elif [ "$$bg_mode" = "transparent" ] && { [ ! -f "$$final_target" ] || [ "$$target" -nt "$$final_target" ]; }; then \
+			rebuild=1; \
+		fi; \
+		if [ "$$rebuild" -eq 1 ]; then \
+			echo "build $$prompt"; \
+			$(PYTHON) $(IMGEN_DIR)/generate_asset.py "$$prompt"; \
+		else \
+			echo "ok    $$prompt"; \
+		fi; \
+	done
 
 ## validate: Validate prompt files
 validate:
@@ -60,7 +91,8 @@ endif
 ## help: Show available targets
 help:
 	@echo ""
-	@echo "  make generate            — generate all missing images"
+	@echo "  make                     — generate any image whose outputs are missing or stale"
+	@echo "  make generate            — same as make"
 	@echo "  make generate FILE=x     — generate one prompt file"
 	@echo "  make validate            — validate all prompt files"
 	@echo "  make prompts             — preview prompts without generating"

@@ -5,6 +5,7 @@
   "voicesDir": "~/piper/voices/semaine",
   "manifests": [
     "gameplay-prompts.txt",
+    "color-sort-correct-lines.txt",
     "praise-lines.txt",
     "build-complete-lines.txt",
     "mission-complete-lines.txt",

@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A single dog bone, ivory color, rounded bulbous ends, horizontal orientation, centered, isolated object.
+A single chunky dog bone for a toddler game, creamy ivory color, rounded bulb ends, thick toy-like proportions, simple readable silhouette, centered, isolated object.
 
 
 NOTES:
-Rounded ends, no gritty or realistic texture.
+Keep it soft and harmless looking. No gritty texture, no chew marks, no realism.

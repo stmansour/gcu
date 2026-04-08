@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_toddler
 
 PROMPT:
-A carved wooden board or stump plaque with one large square-shaped cutout in the center, rounded corners on the cutout, moss accents on the wood edges, isolated object.
+A premium enchanted-forest wooden shape-sorter board with one huge square cutout in the center, chunky rounded edges, soft moss accents, obvious toddler toy styling, isolated object.
 
 
 NOTES:
-Square cutout must be very obvious. Drop target, not the draggable piece.
+Square cutout must be extremely obvious and easy to read. Drop target only, not the draggable piece.

@@ -1,0 +1,11 @@
+TARGET FILE: feed-bunny-happy-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly bunny character in the same seated three-quarter view facing slightly left, soft white and pale gray fur, long upright ears, oversized expressive eyes, rounded cheeks, holding a carrot close while happily eating, bright smile, delighted eyes, joyful satisfied expression, isolated object.
+
+
+NOTES:
+Match the idle bunny as closely as possible in angle, scale, and body position. Read clearly as a success state. Keep it cute and simple, not hyperactive.

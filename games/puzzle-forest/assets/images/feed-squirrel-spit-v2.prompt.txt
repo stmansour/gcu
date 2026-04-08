@@ -1,0 +1,11 @@
+TARGET FILE: feed-squirrel-spit-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly squirrel character in the same seated three-quarter view facing slightly left, chestnut brown fur with a cream belly, very large fluffy tail, rounded cheeks, making a very clear disgusted reaction as if it just smelled or tasted something awful, nose wrinkled, eyes clenched hard and closed, mouth open in a grossed-out spit reaction, tongue slightly out, head pulled back, one paw lifted away from the mouth, body recoiling, isolated object.
+
+
+NOTES:
+Match the idle squirrel as closely as possible in angle, scale, and body position. The reaction must read immediately as "yuck" for a toddler. Absolutely no smile, no happy eyes, no cheerful expression, no cute grin. Funny and harmless, but clearly negative.

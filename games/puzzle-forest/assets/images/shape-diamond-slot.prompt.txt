@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_toddler
 
 PROMPT:
-A carved wooden board or stump plaque with one large diamond-shaped cutout in the center, broad proportions, moss accents on the wood edges, isolated object.
+A premium enchanted-forest wooden shape-sorter board with one huge diamond cutout in the center, chunky rounded edges, soft moss accents, obvious toddler toy styling, isolated object.
 
 
 NOTES:
-Diamond cutout must be broad and not jewel-like or sharp. Drop target, not the draggable piece.
+Diamond cutout must be broad and not jewel-like or sharp. Drop target only, not the draggable piece.

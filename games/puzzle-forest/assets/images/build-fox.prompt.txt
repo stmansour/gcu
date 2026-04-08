@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A full-body fox facing right, side profile, bright orange fur, cream-white chest and tail tip, rounded paws, upright alert stance, no scenery, no props, isolated object.
+A friendly premium animated-storybook fox facing right in side profile, big readable silhouette, bright orange fur, cream chest and tail tip, rounded toddler-friendly proportions, isolated object, no scenery, no props, no text.
 
 
 NOTES:
-Center the fox and leave padding. The image must slice cleanly into front, middle, and back thirds.
+Center the fox and leave padding. The body must slice cleanly into three readable sections without losing the face, tail, or feet.

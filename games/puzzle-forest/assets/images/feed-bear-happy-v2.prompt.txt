@@ -1,0 +1,11 @@
+TARGET FILE: feed-bear-happy-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly bear character in the same seated three-quarter view facing slightly left, soft medium-brown fur with lighter muzzle, oversized expressive eyes, rounded ears, holding a honey jar or licking honey happily, bright smile, delighted eyes, joyful satisfied expression, isolated object.
+
+
+NOTES:
+Match the idle bear as closely as possible in angle, scale, and body position. Read clearly as a success state.

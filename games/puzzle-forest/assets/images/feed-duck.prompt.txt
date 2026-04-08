@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A duck facing slightly toward camera, three-quarter view, yellow feathers, orange beak open, rounded body, upright posture, no scenery, no props, isolated object.
+A friendly duck for a toddler game, three-quarter view facing slightly left toward the center of the screen, bright yellow feathers, orange beak slightly open as if ready for a bite, oversized expressive eyes, rounded body, seated or standing upright with a gentle eager expression, isolated object.
 
 
 NOTES:
-Must be readable at small size. Beak must be clearly visible.
+Keep the duck chunky and simple. Beak must be very clear and the whole silhouette easy to read.

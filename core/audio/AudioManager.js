@@ -15,6 +15,7 @@ export class AudioManager {
     this.sounds = new Map();
     this.unlocked = false;
     this.muted = false;
+    this.activeSources = new Set();
   }
 
   /**
@@ -69,9 +70,32 @@ export class AudioManager {
       gain.gain.value = opts.volume ?? 1;
       source.connect(gain);
       gain.connect(this.audioContext.destination);
+      const activeEntry = { source, category: entry.category ?? 'sfx' };
+      this.activeSources.add(activeEntry);
+      source.onended = () => {
+        this.activeSources.delete(activeEntry);
+      };
       source.start(0);
+      return source;
     } catch (e) {
       console.warn('[AudioManager] play failed', name, e);
+    }
+  }
+
+  getDuration(name) {
+    return this.sounds.get(name)?.buffer?.duration ?? 0;
+  }
+
+  stop(category = null) {
+    for (const activeEntry of [...this.activeSources]) {
+      if (category && activeEntry.category !== category) continue;
+      try {
+        activeEntry.source.onended = null;
+        activeEntry.source.stop(0);
+      } catch (_) {
+        // Source may already be ended; ignore.
+      }
+      this.activeSources.delete(activeEntry);
     }
   }
 

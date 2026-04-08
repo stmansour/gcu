@@ -1,0 +1,11 @@
+TARGET FILE: feed-duck-icon-v2.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A very simple duck head icon, front-facing or slight three-quarter view, bright yellow feathers, orange beak, bright friendly eyes, cheerful safe expression, isolated object.
+
+
+NOTES:
+Designed for tiny progress markers. Extremely simple silhouette, no tiny details, no body needed.

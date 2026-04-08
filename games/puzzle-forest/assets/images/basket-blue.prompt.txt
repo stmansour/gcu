@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A woven basket with blue accents, rounded handle, large open top, slight three-quarter angle, centered, isolated object.
+A premium storybook woven basket for toddlers, oversized opening, chunky rounded shape, clear blue rim accents, slight three-quarter angle, centered, isolated object, soft magical forest-toy styling.
 
 
 NOTES:
-Single object only, centered, no text, no collage, no multiple views, no extra objects.
+The blue color must be unmistakable even at small size. Single object only, centered, no text, no collage, no multiple views, no extra objects.

@@ -122,7 +122,23 @@ export class AudioClips {
     }
 
     this.cancel();
-    this._playClip(gameId, key, text, game.clipsBasePath, opts);
+    void this._playClip(gameId, key, text, game.clipsBasePath, opts);
+  }
+
+  async speakWithDuration(gameId, key, opts = {}) {
+    const game = this._games.get(gameId);
+    if (!game) {
+      console.warn(`[AudioClips] Game not loaded: ${gameId}`);
+      return 0;
+    }
+    const text = game.clips.get(key);
+    if (!text) {
+      console.warn(`[AudioClips] Unknown clip key: ${gameId}:${key}`);
+      return 0;
+    }
+
+    this.cancel();
+    return this._playClip(gameId, key, text, game.clipsBasePath, opts);
   }
 
   /**
@@ -164,6 +180,16 @@ export class AudioClips {
     if (!matching.length) return;
     const key = matching[Math.floor(Math.random() * matching.length)];
     this.speak(gameId, key, opts);
+    return key;
+  }
+
+  async speakRandomWithDuration(gameId, prefix, opts = {}) {
+    const game = this._games.get(gameId);
+    if (!game) return 0;
+    const matching = [...game.clips.keys()].filter((k) => k.startsWith(prefix));
+    if (!matching.length) return 0;
+    const key = matching[Math.floor(Math.random() * matching.length)];
+    return this.speakWithDuration(gameId, key, opts);
   }
 
   /**
@@ -171,6 +197,7 @@ export class AudioClips {
    * Call from every scene.exit().
    */
   cancel() {
+    AudioManager.getInstance().stop('speech');
     try {
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (_) { /* ignore */ }
@@ -225,19 +252,19 @@ export class AudioClips {
     // the WAV might work fine once the user has clicked something.
     if (!audio.audioContext) {
       this._fallback(text, opts);
-      return;
+      return this._estimateDurationMs(text, opts);
     }
 
     // Already loaded and confirmed working — play immediately.
     if (this._loaded.has(audioKey)) {
       audio.play(audioKey, { volume: opts.volume ?? 1 });
-      return;
+      return Math.ceil(audio.getDuration(audioKey) * 1000);
     }
 
     // Previously confirmed missing — skip straight to TTS.
     if (this._failed.has(audioKey)) {
       this._fallback(text, opts);
-      return;
+      return this._estimateDurationMs(text, opts);
     }
 
     // First time: attempt to load the WAV.
@@ -248,10 +275,12 @@ export class AudioClips {
       // Loaded successfully.
       this._loaded.add(audioKey);
       audio.play(audioKey, { volume: opts.volume ?? 1 });
+      return Math.ceil(audio.getDuration(audioKey) * 1000);
     } else {
       // Load silently failed (404 or decode error).
       this._failed.add(audioKey);
       this._fallback(text, opts);
+      return this._estimateDurationMs(text, opts);
     }
   }
 
@@ -273,5 +302,13 @@ export class AudioClips {
     } catch (e) {
       console.warn('[AudioClips] TTS fallback failed:', e);
     }
+  }
+
+  _estimateDurationMs(text, opts = {}) {
+    const words = String(text).trim().split(/\s+/).filter(Boolean).length || 1;
+    const rate = Math.max(0.5, opts.rate ?? 0.9);
+    const wordsPerMinute = 155 * rate;
+    const speechMs = (words / wordsPerMinute) * 60_000;
+    return Math.ceil(speechMs + 350);
   }
 }

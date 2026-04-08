@@ -1,0 +1,11 @@
+TARGET FILE: feed-puppy-idle-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A friendly puppy for a toddler game, three-quarter view facing slightly left toward the center of the screen, warm golden-brown fur with cream muzzle, floppy ears, oversized expressive eyes, rounded snout, seated upright, mouth slightly open as if ready for a snack, eager and lovable expression, isolated object.
+
+
+NOTES:
+Keep the body compact and readable with the face large in frame. This is the idle state, so the expression should feel inviting and expectant.

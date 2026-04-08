@@ -1,0 +1,11 @@
+TARGET FILE: prop-bone-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A single chunky dog bone for a toddler game, creamy ivory color, rounded bulb ends, thick toy-like proportions, simple readable silhouette, centered, isolated object.
+
+
+NOTES:
+Keep it soft and harmless looking. No gritty texture, no chew marks, no realism.

@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A bear facing slightly toward camera, three-quarter view, brown fur, rounded muzzle, open or smiling mouth clearly visible, sitting or standing in a relaxed upright posture, no scenery, no props, isolated object.
+A friendly bear for a toddler game, three-quarter view facing slightly left toward the center of the screen, soft medium-brown fur with lighter muzzle, oversized expressive eyes, rounded ears, rounded cheeks, seated upright, mouth slightly open as if ready for a snack, calm and gentle expression, isolated object.
 
 
 NOTES:
-Keep the bear small in apparent scale — rounded, not imposing.
+Keep the bear rounded and safe, never imposing. Large readable face, broad soft silhouette, child-friendly proportions.

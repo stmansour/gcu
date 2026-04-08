@@ -1,0 +1,12 @@
+TARGET FILE: feed-squirrel-scene-v2.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: Enchanted forest clearing at squirrel height, soft golden morning light through leaves, mossy tree roots, one broad tree base on the right side that can visually support a squirrel character placed later, simple grassy ground across the lower foreground, gentle mushrooms and flowers pushed to the edges, calm darker treetops along the top edge for overlay UI, no characters, no food props.
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A warm magical forest clearing designed for a toddler feed-the-animal game. Large readable shapes, a clear open stage in the middle foreground for draggable food, and a clear visual perch area near the right-center for a squirrel to sit. The ground should feel close and inviting, not far away. The scene must feel cozy, playful, and safe.
+
+
+NOTES:
+Keep the center and lower third uncluttered for gameplay. No text, no path signs, no extra animals, no busy detail behind the future squirrel position.

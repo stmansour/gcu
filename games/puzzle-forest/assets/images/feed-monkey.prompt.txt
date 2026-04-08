@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A monkey facing slightly toward camera, three-quarter view, brown fur with cream face and muzzle, large round eyes, open smiling mouth clearly visible, hands relaxed near the chest, upright seated posture, no scenery, no props, isolated object.
+A friendly monkey for a toddler game, three-quarter view facing slightly left toward the center of the screen, warm brown fur with cream face and belly, oversized expressive eyes, rounded cheeks, small hands near the chest, seated upright, mouth slightly open as if ready for a snack, curious and gentle expression, isolated object.
 
 
 NOTES:
-Expression must read as gentle and happy, not mischievous.
+Keep it sweet and inviting, never mischievous or wild. Face must be large and readable.

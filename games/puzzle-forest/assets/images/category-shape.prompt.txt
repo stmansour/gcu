@@ -5,8 +5,8 @@ BACKGROUND: full image, no transparency
 STYLE_NAME: gcu_scene
 
 PROMPT:
-A forest clearing with a tree-stump puzzle board. Chunky toy shapes — circle, square, triangle, star, heart, and diamond — resting near carved matching cutouts in the board. Moss-covered ground, no text, no UI.
+A magical forest toy station with one large wooden shape-sorter stump, big carved cutouts, and a few chunky toddler-safe shapes nearby. Premium animated-feature storybook look, rounded edges, moss accents, warm golden light, simple composition, no text, no UI.
 
 
 NOTES:
-Shapes must feel like chunky toddler-safe puzzle pieces, not abstract icons or classroom flash cards.
+Shapes must feel like chunky toddler-safe puzzle pieces, not classroom symbols or flash cards.

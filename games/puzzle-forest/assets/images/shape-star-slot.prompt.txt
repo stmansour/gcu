@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_toddler
 
 PROMPT:
-A carved wooden board or stump plaque with one large five-pointed star-shaped cutout in the center, rounded points, moss accents on the wood edges, isolated object.
+A premium enchanted-forest wooden shape-sorter board with one huge five-point star cutout in the center, chunky rounded edges, soft moss accents, obvious toddler toy styling, isolated object.
 
 
 NOTES:
-Star cutout points must be rounded, not sharp. Drop target, not the draggable piece.
+Star cutout points must be rounded, not sharp. Drop target only, not the draggable piece.

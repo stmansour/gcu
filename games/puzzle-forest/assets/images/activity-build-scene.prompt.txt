@@ -1,0 +1,12 @@
+TARGET FILE: activity-build-scene.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A cozy forest maker space for a toddler build-the-animal game, wide cinematic landscape composition, warm wood textures, leafy branches above, friendly workshop details around the edges, soft golden sunlight, and a calm open center where one animal puzzle can be assembled. Clear saturated storybook color, crisp contrast, readable center, no haze, no fog, no bloom, no washed-out whites, no centered rectangle, no text, no UI.
+
+
+NOTES:
+This is only the background scene. Keep the center open and simple so the floating animal puzzle reads clearly over it. The result should feel warm and vivid rather than faded.

@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A single carrot, bright orange body tapering to a point, leafy green top, slightly rounded and stylized, centered, no scenery, isolated object.
+A single chunky carrot for a toddler game, bright warm orange body with a rounded taper, leafy green top, thick toy-like proportions, simple readable silhouette, centered, isolated object.
 
 
 NOTES:
-Must be readable at small size. No dirt or rough texture.
+Make it bold and appealing from far away. No dirt, no realism, no rough texture.

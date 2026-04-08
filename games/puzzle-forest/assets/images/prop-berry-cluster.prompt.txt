@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A small cluster of round red berries with tiny green leaves, grouped tightly together, centered, isolated object.
+A single chunky berry cluster for a toddler game, several round bright red berries grouped tightly together with a few small green leaves, simple readable silhouette, centered, isolated object.
 
 
 NOTES:
-Must read as one single draggable item, not a scattered collection.
+Must read as one single draggable item from far away, not a scattered collection of tiny berries.

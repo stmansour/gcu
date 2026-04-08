@@ -1,0 +1,11 @@
+TARGET FILE: feed-monkey-icon-v2.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A very simple monkey head icon, front-facing or slight three-quarter view, warm brown fur, cream muzzle, round ears, bright friendly eyes, cheerful safe expression, isolated object.
+
+
+NOTES:
+Designed for tiny progress markers. Extremely simple silhouette, no tiny details, no body needed.

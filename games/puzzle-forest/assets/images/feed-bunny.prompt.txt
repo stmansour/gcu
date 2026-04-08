@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A bunny facing slightly toward camera, three-quarter view, white or light gray fur, long ears, rounded cheeks, mouth visible and open, upright seated posture, no scenery, no props, isolated object.
+A friendly bunny for a toddler game, three-quarter view facing slightly left toward the center of the screen, soft white and pale gray fur, long upright ears, oversized expressive eyes, rounded cheeks, small front paws close to the chest, seated upright, mouth slightly open as if ready for a snack, eager and gentle expression, isolated object.
 
 
 NOTES:
-This is the feeding target, not the build puzzle. Face must be clearly readable at small size.
+Bold silhouette. Keep the whole bunny large in frame with clean edges. Face must read clearly on iPad from across the room.

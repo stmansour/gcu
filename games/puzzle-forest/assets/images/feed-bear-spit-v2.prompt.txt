@@ -1,0 +1,11 @@
+TARGET FILE: feed-bear-spit-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly bear character in the same seated three-quarter view facing slightly left, soft medium-brown fur with lighter muzzle, rounded cheeks, making a very clear disgusted reaction as if it just smelled or tasted something awful, nose wrinkled, eyes squeezed shut, mouth open in a grossed-out spit reaction, head pulled back, one paw lifted away from the mouth, body recoiling, isolated object.
+
+
+NOTES:
+Match the idle bear as closely as possible in angle, scale, and body position. The reaction must read immediately as "yuck" for a toddler. Absolutely no smile or happy expression.

@@ -1,0 +1,11 @@
+TARGET FILE: shape-scholar-owl-transparent.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A friendly scholarly owl for a toddler forest game, isolated object, front view, perched pose, warm brown feathers, cream face and tummy, big kind eyes looking directly toward the viewer, small round gold glasses, and a tiny navy mortar board cap with tassel. High-quality storybook 3D render, premium finish, centered composition. No branch, no sign, no extra props, no text.
+
+
+NOTES:
+This owl will sit on top of the shape-matching teaching board. Keep the silhouette clean and readable, cute rather than realistic, and preserve bright eyes and face detail.

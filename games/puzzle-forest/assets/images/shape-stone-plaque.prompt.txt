@@ -1,0 +1,11 @@
+TARGET FILE: shape-stone-plaque-transparent.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A single large magical forest stone plaque for a toddler puzzle game, isolated object, smooth rounded river-stone shape, gentle carved edge, a little moss only around the outside edge, simple centered surface, front view, clear silhouette, playful and premium. No hole, no cutout, no shape symbol, no embedded forest scene, no extra objects, no frame.
+
+
+NOTES:
+This is the floating object that will sit over the scene. Keep the middle clean and plain because the real shape hole will be cut by CSS in the game. The object should feel sturdy, friendly, and easy for a 2 to 4 year old to understand.

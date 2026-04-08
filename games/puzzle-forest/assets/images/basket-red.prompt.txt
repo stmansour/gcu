@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A woven basket with red accents, rounded handles, large open top, slight three-quarter angle, centered, isolated object.
+A premium storybook woven basket for toddlers, oversized opening, chunky rounded shape, clear red rim accents, slight three-quarter angle, centered, isolated object, soft magical forest-toy styling.
 
 
 NOTES:
-The red color must be unmistakable. Single object only, no extra objects.
+The red color must be unmistakable even at small size. Single object only, no extra objects.

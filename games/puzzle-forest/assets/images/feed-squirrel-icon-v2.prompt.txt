@@ -1,0 +1,11 @@
+TARGET FILE: feed-squirrel-icon-v2.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A very simple squirrel head icon, front-facing or slight three-quarter view, chestnut brown fur, cream muzzle, tiny rounded ears, bright friendly eyes, big fluffy tail shape visible behind the head, cheerful safe expression, isolated object.
+
+
+NOTES:
+Designed for tiny progress markers. Extremely simple silhouette, no tiny details, no body needed beyond enough tail shape to read as squirrel.

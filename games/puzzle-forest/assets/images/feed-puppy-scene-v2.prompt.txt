@@ -1,0 +1,12 @@
+TARGET FILE: feed-puppy-scene-v2.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: Enchanted forest meadow at puppy height, warm golden light, soft grass, a few flowers pushed to the edges, a sturdy tree base and cozy open patch near the center-right where a puppy character can sit later, simple foreground ground plane for draggable food, calm treetops along the top edge for overlay UI, no characters, no food props.
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A warm magical forest meadow designed for a toddler feed-the-animal game. Large readable shapes, a clear open stage in the middle foreground for draggable food, and a clear sitting area near the center-right for a puppy. The scene should feel playful, sunny, and safe.
+
+
+NOTES:
+Keep the center and lower third uncluttered for gameplay. No text, no extra animals, no busy detail behind the future puppy position.

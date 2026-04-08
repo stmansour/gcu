@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A small neat mound of golden-brown seeds, oval shapes grouped into a compact pile, centered, isolated object.
+A single compact pile of seeds for a toddler game, small golden-brown oval seeds grouped into one chunky readable mound, simple silhouette, centered, isolated object.
 
 
 NOTES:
-Must read as a cohesive single object at small size.
+Must read as one cohesive draggable object, not a loose scatter of tiny pieces.

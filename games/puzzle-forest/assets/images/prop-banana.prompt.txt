@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A single banana, curved shape, bright yellow peel, rounded ends, centered, isolated object.
+A single chunky banana for a toddler game, bright warm yellow peel, smooth curved shape, thick proportions, simple readable silhouette, centered, isolated object.
 
 
 NOTES:
-Simple and iconic, not detailed or realistic.
+Keep it bold and toy-like. No bruises, no realism, no extra fruit pieces.

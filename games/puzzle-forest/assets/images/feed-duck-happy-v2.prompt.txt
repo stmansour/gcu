@@ -1,0 +1,11 @@
+TARGET FILE: feed-duck-happy-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly duck character in the same three-quarter view facing slightly left, bright yellow feathers, orange beak, oversized expressive eyes, happily eating seeds, bright smile in the eyes and beak, joyful satisfied expression, isolated object.
+
+
+NOTES:
+Match the idle duck as closely as possible in angle, scale, and body position. Read clearly as a success state.

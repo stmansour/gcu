@@ -1,0 +1,12 @@
+TARGET FILE: activity-shape-scene.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A bright storybook forest clearing for a toddler shape-matching game, wide cinematic landscape composition, rich green leaves, warm golden sunlight, crisp grass, mossy tree trunks around the sides, and a calm open play space in the center where one floating puzzle object can sit. Clear cheerful color, strong natural contrast, clean readable middle area, empty middle third of the frame, no stump in the center, no rocks or logs in the center, no haze, no fog, no bloom, no white wash, no vignette, no frame, no centered rectangle, no toy board, no hole object, no carved symbols, no shape marks on trees or stumps, no text, no UI.
+
+
+NOTES:
+This is only the background scene. The center must stay open and visually clean because a separate plaque object will be layered on top in code. The image should feel vivid and healthy, not pale or misty.

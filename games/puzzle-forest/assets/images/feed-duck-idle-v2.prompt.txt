@@ -1,0 +1,11 @@
+TARGET FILE: feed-duck-idle-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A friendly duck for a toddler game, three-quarter view facing slightly left toward the center of the screen, bright yellow feathers, orange beak slightly open as if ready for a bite, oversized expressive eyes, rounded body, seated or standing upright with a gentle eager expression, isolated object.
+
+
+NOTES:
+Keep the duck chunky and simple. Beak must be very clear and the whole silhouette easy to read.

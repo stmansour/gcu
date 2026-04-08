@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A full-body squirrel facing right, side profile, chestnut and cream fur, large fluffy tail, small paws, upright alert stance, no scenery, no props, isolated object.
+A friendly premium animated-storybook squirrel facing right in side profile, big readable silhouette, chestnut and cream fur, large fluffy tail, rounded toddler-friendly proportions, isolated object, no scenery, no props, no text.
 
 
 NOTES:
-Keep the squirrel centered and easy to slice into front, middle, and back thirds.
+Keep the squirrel centered and easy to slice into three readable sections without losing the face, tail, or feet.

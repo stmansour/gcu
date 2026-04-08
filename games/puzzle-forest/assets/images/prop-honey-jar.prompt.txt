@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_prop
 
 PROMPT:
-A round jar filled with golden honey, simple lid on top, honey visible through the jar walls, centered, isolated object.
+A single chunky honey jar for a toddler game, round jar filled with glowing golden honey, simple lid on top, thick toy-like proportions, simple readable silhouette, centered, isolated object.
 
 
 NOTES:
-Should not look fragile or glass-heavy. Rounded, compact proportions.
+Should feel sturdy and child-safe, not fragile or glass-heavy. Rounded compact proportions.

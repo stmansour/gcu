@@ -1,5 +1,5 @@
-mission_complete_01|That was so much fun!
-mission_complete_02|You finished this forest game!
-mission_complete_03|Everything is all lit up!
-mission_complete_04|Want to play again?
-mission_complete_05|Let's try another forest game.
+mission_complete_01|You did it! Hooray!
+mission_complete_02|All done! That was fun!
+mission_complete_03|You made it! Yay!
+mission_complete_04|Great job! You finished!
+mission_complete_05|Hooray! You did them all!

@@ -1,0 +1,12 @@
+TARGET FILE: activity-color-scene.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: full image, no transparency
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A bright sunny forest meadow for a toddler color-sorting game, wide cinematic landscape composition, cheerful flowers near the edges, healthy green grass, warm tree trunks, and a calm open center where colorful baskets can sit. Clear saturated storybook color, crisp contrast, readable middle area, no haze, no fog, no bloom, no washed-out whites, no centered frame, no text, no UI.
+
+
+NOTES:
+This is only the scene background. Keep the center broad and uncluttered so basket gameplay reads easily over it. It should feel lively and warm without looking pale or sleepy.

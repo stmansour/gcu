@@ -1,0 +1,12 @@
+TARGET FILE: feed-bunny-scene-v2.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: Enchanted meadow clearing at bunny height, soft golden morning light through leaves, low grass, a small flower patch pushed toward the edges, gentle bushes in the middle distance, one cozy mound or log area near the center-right where a bunny character can sit later, calm treetops along the top edge for overlay UI, no characters, no food props.
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A warm magical meadow clearing designed for a toddler feed-the-animal game. Large readable shapes, a clear open stage in the middle foreground for draggable food, and a clear visual sitting area near the center-right for a bunny to rest. The ground should feel close and inviting. The scene must feel cozy, playful, and safe.
+
+
+NOTES:
+Keep the center and lower third uncluttered for gameplay. No text, no signs, no extra animals, no busy detail behind the future bunny position.

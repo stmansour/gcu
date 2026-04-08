@@ -1,0 +1,11 @@
+TARGET FILE: shape-teaching-board.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A high-quality enchanted forest teaching board for a toddler shape-matching game, isolated object, front view, made from real tree branches with bark forming a simple rectangular frame, only a few tiny twig offshoots and only one or two tiny green leaves total, and one large stretched warm honey-tan leather screen filling almost the entire inner opening from just under the top branch down to just above the bottom branch. The leather must look like real soft natural leather with visible grain, subtle wrinkles, stitched edge detail, gentle hand-pulled tension, and premium storybook 3D rendering. The leather should attach directly to the wooden frame, not hang from straps or ropes. Centered composition. Only the branch frame and leather screen. No owl, no bird, no animal, no face, no character, no perched creature, no feet on the branch, no large leaves, no decorative plants, no extra branches, no straps, no ropes, no hanging cords, no bottom ornaments, no hole, no cutout, no dotted line, no writing, no symbols, no extra props, no separate floating plaque, no shadow plate.
+
+
+NOTES:
+This is the main shape-matching target object. It should feel magical, warm, handcrafted, and polished for ages 2 to 4. The leather screen must extend high enough that there is no empty white gap under the top branch. Keep the center visually clean because the real shape hole will still be drawn in code on top of this image.

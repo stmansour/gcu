@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_toddler
 
 PROMPT:
-A carved wooden board or stump plaque with one large heart-shaped cutout in the center, rounded lobes, moss accents on the wood edges, isolated object.
+A premium enchanted-forest wooden shape-sorter board with one huge heart cutout in the center, chunky rounded edges, soft moss accents, obvious toddler toy styling, isolated object.
 
 
 NOTES:
-Heart cutout must have rounded lobes, not sharp or graphic. Drop target, not the draggable piece.
+Heart cutout must have rounded lobes, not sharp or graphic. Drop target only, not the draggable piece.

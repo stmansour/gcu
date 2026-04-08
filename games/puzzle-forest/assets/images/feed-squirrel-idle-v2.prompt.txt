@@ -1,0 +1,11 @@
+TARGET FILE: feed-squirrel-idle-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A friendly squirrel for a toddler game, three-quarter view facing slightly left toward the center of the screen, chestnut brown fur with a cream belly, very large fluffy tail, oversized expressive eyes, rounded cheeks, small front paws close to the chest, seated upright, mouth slightly open as if ready for a snack, eager but calm expression, isolated object.
+
+
+NOTES:
+Bold silhouette. Keep the whole squirrel large in frame with clean edges. This is the idle state, so the expression should feel inviting and expectant, not excited or extreme.

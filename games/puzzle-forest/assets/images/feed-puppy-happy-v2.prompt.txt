@@ -1,0 +1,11 @@
+TARGET FILE: feed-puppy-happy-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly puppy character in the same seated three-quarter view facing slightly left, warm golden-brown fur with cream muzzle, floppy ears, oversized expressive eyes, rounded snout, holding or eagerly chewing a dog bone, bright smile, delighted eyes, joyful satisfied expression, isolated object.
+
+
+NOTES:
+Match the idle puppy as closely as possible in angle, scale, and body position. Read clearly as a success state.

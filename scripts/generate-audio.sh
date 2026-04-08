@@ -120,8 +120,10 @@ process_game() {
   mkdir -p "$out_dir"
 
   # Read manifest list
-  local manifests
-  mapfile -t manifests < <(python3 -c "
+  local manifests=()
+  while IFS= read -r manifest; do
+    [[ -n "$manifest" ]] && manifests+=("$manifest")
+  done < <(python3 -c "
 import json, sys
 d = json.load(open('$config_file'))
 for m in d.get('manifests', []):

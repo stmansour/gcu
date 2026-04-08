@@ -1,0 +1,11 @@
+TARGET FILE: feed-bear-icon-v2.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A very simple bear head icon, front-facing or slight three-quarter view, soft medium-brown fur, lighter muzzle, rounded ears, bright friendly eyes, cheerful safe expression, isolated object.
+
+
+NOTES:
+Designed for tiny progress markers. Extremely simple silhouette, no tiny details, no body needed.

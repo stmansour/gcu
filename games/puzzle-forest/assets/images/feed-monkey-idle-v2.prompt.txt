@@ -1,0 +1,11 @@
+TARGET FILE: feed-monkey-idle-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+A friendly monkey for a toddler game, three-quarter view facing slightly left toward the center of the screen, warm brown fur with cream face and belly, oversized expressive eyes, rounded cheeks, small hands near the chest, seated upright, mouth slightly open as if ready for a snack, curious and gentle expression, isolated object.
+
+
+NOTES:
+Keep it sweet and inviting, never mischievous or wild. Face must be large and readable.

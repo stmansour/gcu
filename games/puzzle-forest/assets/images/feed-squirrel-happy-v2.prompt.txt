@@ -1,0 +1,11 @@
+TARGET FILE: feed-squirrel-happy-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+
+PROMPT:
+The same friendly squirrel character in the same seated three-quarter view facing slightly left, chestnut brown fur with a cream belly, very large fluffy tail, oversized expressive eyes, rounded cheeks, holding an acorn close while happily eating, bright smile, delighted eyes, joyful satisfied expression, isolated object.
+
+
+NOTES:
+Match the idle squirrel as closely as possible in angle, scale, and body position. Read clearly as a success state. Keep it cute and simple, not hyperactive.

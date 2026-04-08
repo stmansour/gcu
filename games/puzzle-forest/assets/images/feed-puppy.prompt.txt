@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A puppy facing slightly toward camera, three-quarter view, floppy ears, rounded snout, open mouth clearly visible, compact upright posture, no scenery, no props, isolated object.
+A friendly puppy for a toddler game, three-quarter view facing slightly left toward the center of the screen, warm golden-brown fur with cream muzzle, floppy ears, oversized expressive eyes, rounded snout, seated upright, mouth slightly open as if ready for a snack, eager and lovable expression, isolated object.
 
 
 NOTES:
-Body should be front-weighted so the mouth area is prominent and the snack interaction reads clearly.
+Keep the body compact and readable with the face large in frame. This is the feeding target, so the mouth area must read clearly at a glance.

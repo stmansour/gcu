@@ -1,0 +1,11 @@
+TARGET FILE: prop-acorn-v2.png
+SIZE: 1024x1024
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_toddler
+
+PROMPT:
+A single chunky acorn for a toddler game, large rounded nut body, textured warm brown cap, slightly oversized proportions, simple readable silhouette, centered, isolated object.
+
+
+NOTES:
+This is the correct squirrel food. Make it feel especially appealing and easy to recognize from far away.

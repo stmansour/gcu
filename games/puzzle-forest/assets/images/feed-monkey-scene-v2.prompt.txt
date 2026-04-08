@@ -1,0 +1,12 @@
+TARGET FILE: feed-monkey-scene-v2.png
+SIZE: 1536x1024
+BACKGROUND_MODE: scene
+BACKGROUND: Enchanted jungle clearing at monkey height, warm golden light through broad tropical leaves, simple tree roots and soft grass, a thick low branch or stump area near the center-right where a monkey character can sit later, open foreground for draggable food, calm leafy canopy along the top edge for overlay UI, no characters, no food props.
+STYLE_NAME: gcu_scene
+
+PROMPT:
+A warm magical jungle clearing designed for a toddler feed-the-animal game. Large readable shapes, an open middle foreground for draggable food, and a clear perch area near the center-right for a monkey. The scene must feel adventurous, playful, and safe.
+
+
+NOTES:
+Keep the center and lower third uncluttered for gameplay. No text, no extra animals, no busy detail behind the future monkey position.

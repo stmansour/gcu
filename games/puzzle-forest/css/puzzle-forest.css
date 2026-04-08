@@ -47,6 +47,10 @@
   padding: 20px 24px 8px;
 }
 
+.pf-feed-topbar {
+  display: none;
+}
+
 .pf-nav-btn,
 .pf-audio-btn,
 .pf-success__btn {
@@ -271,10 +275,41 @@
   flex-direction: column;
 }
 
+.pf-game--minimal-activity .pf-board--build {
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-areas:
+    'tray prompt'
+    'tray stage';
+  grid-template-rows: auto minmax(360px, 1fr);
+}
+
+.pf-game--minimal-activity .pf-board--build .pf-tray {
+  align-self: stretch;
+}
+
 .pf-progress__track {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+}
+
+.pf-progress__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.pf-progress__audio-btn {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 249, 228, 0.94);
+  color: #2b5b35;
+  font-size: 26px;
+  box-shadow: 0 10px 24px rgba(45, 85, 53, 0.18);
+  backdrop-filter: blur(8px);
 }
 
 .pf-progress__dot {
@@ -290,6 +325,38 @@
   border-color: #e5b93c;
 }
 
+.pf-progress__step {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.pf-progress__animal {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.pf-progress__animal--visible,
+.pf-progress__step--done .pf-progress__animal,
+.pf-progress__step--current .pf-progress__animal {
+  opacity: 1;
+}
+
+.pf-progress__step--current .pf-progress__animal {
+  transform: translateY(-2px);
+}
+
+.pf-progress__animal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .pf-prompt {
   display: flex;
   align-items: center;
@@ -300,6 +367,22 @@
 
 .pf-prompt__icon {
   font-size: 42px;
+}
+
+.pf-prompt--minimal {
+  width: min(100%, 940px);
+  margin: 0 auto;
+  border-radius: 999px;
+  padding: 20px 24px;
+}
+
+.pf-prompt--minimal .pf-prompt__icon {
+  font-size: clamp(40px, 4vw, 54px);
+}
+
+.pf-prompt--minimal .pf-prompt__text {
+  font-size: clamp(24px, 2.8vw, 38px);
+  line-height: 1.05;
 }
 
 .pf-stage {
@@ -316,6 +399,85 @@
   overflow: hidden;
 }
 
+.pf-stage--scene {
+  position: relative;
+  background: transparent;
+}
+
+.pf-stage--scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--pf-stage-scene);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.16) contrast(1.08);
+}
+
+.pf-stage--scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 54%, rgba(255, 248, 225, 0.08), rgba(245, 237, 209, 0.05) 32%, rgba(221, 207, 169, 0.02) 60%, rgba(167, 194, 144, 0.01) 100%);
+}
+
+.pf-stage--scene > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pf-activity-scene {
+  position: relative;
+  height: 100%;
+  min-height: 660px;
+  border-radius: 34px;
+  overflow: hidden;
+  box-shadow: 0 20px 34px rgba(42, 79, 49, 0.08);
+}
+
+.pf-activity-scene::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 38%;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(72, 120, 64, 0.24), transparent 58%),
+    linear-gradient(180deg, rgba(95, 145, 82, 0), rgba(74, 120, 63, 0.26));
+  pointer-events: none;
+}
+
+.pf-activity-scene--color,
+.pf-activity-scene--build {
+  display: grid;
+  place-items: center;
+}
+
+.pf-activity-scene--shape {
+  display: block;
+}
+
+.pf-scene-tray {
+  position: absolute;
+  left: clamp(24px, 3vw, 42px);
+  right: clamp(24px, 3vw, 42px);
+  bottom: clamp(22px, 3vh, 34px);
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(18px, 2.8vw, 34px);
+}
+
+.pf-scene-tray--shape {
+  z-index: 4;
+}
+
+.pf-scene-tray--build {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 20px);
+}
+
 .pf-stage--targets-1 {
   grid-template-columns: minmax(0, 1fr);
 }
@@ -326,12 +488,134 @@
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
+.pf-game--minimal-activity .pf-sidecard,
+.pf-game--minimal-activity .pf-game__title-wrap {
+  display: none;
+}
+
+.pf-game--minimal-activity .pf-game__content {
+  display: block;
+}
+
+.pf-game--minimal-activity .pf-board {
+  height: 100%;
+  padding: 84px 0 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.pf-game--minimal-activity .pf-progress,
+.pf-game--minimal-activity .pf-progress__label {
+  display: none;
+}
+
+.pf-game--minimal-activity .pf-feed-topbar {
+  position: absolute;
+  left: 200px;
+  right: 200px;
+  top: 20px;
+  height: 56px;
+  display: block;
+}
+
+.pf-game--minimal-activity .pf-feed-topbar .pf-progress__audio-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.pf-game--minimal-activity .pf-feed-topbar .pf-progress__track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  gap: clamp(14px, 2vw, 24px);
+  margin-top: 0;
+}
+
+.pf-board--minimal {
+  position: relative;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.pf-board--minimal .pf-prompt,
+.pf-board--minimal .pf-tray {
+  display: none;
+}
+
+.pf-board--minimal .pf-stage {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.pf-board--feed {
+  position: relative;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.pf-board--feed .pf-prompt,
+.pf-game--feed .pf-sidecard,
+.pf-game--feed .pf-game__title-wrap {
+  display: none;
+}
+
+.pf-game--feed .pf-game__content {
+  display: block;
+}
+
+.pf-game--feed .pf-board {
+  height: 100%;
+}
+
+.pf-game--feed .pf-progress {
+  display: none;
+}
+
+.pf-game--feed .pf-progress__label {
+  display: none;
+}
+
+.pf-game--feed .pf-feed-topbar {
+  position: absolute;
+  left: 200px;
+  right: 200px;
+  top: 20px;
+  height: 56px;
+  display: block;
+}
+
+.pf-game--feed .pf-feed-topbar .pf-progress__audio-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.pf-game--feed .pf-feed-topbar .pf-progress__track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  gap: clamp(14px, 2vw, 24px);
+  margin-top: 0;
+}
+
 .pf-stage--build {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 12px;
+  padding: 0;
 }
 
 /* ===== BUILD ASSEMBLY — seamless frame that becomes the animal ===== */
@@ -348,6 +632,7 @@
     0 8px 36px rgba(78, 84, 45, 0.2),
     inset 0 0 0 3px rgba(185, 162, 102, 0.3);
   position: relative;
+  z-index: 1;
   background: rgba(255, 252, 240, 0.25);
 }
 
@@ -797,10 +1082,8 @@
  * Stage: no grid, just a centred flex container so the board can fill it.
  */
 .pf-stage--shape-match {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+  display: block;
+  padding: 0;
   height: 100%;
 }
 
@@ -809,9 +1092,20 @@
  * The slot image (wooden board with cutout) drives the sizing.
  */
 .pf-shape-board {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(60vw, 660px);
+  max-width: calc(100% - 120px);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 18px 36px rgba(45, 67, 33, 0.16));
+  z-index: 3;
+}
+
+.pf-shape-board__plaque {
   position: relative;
-  width: min(100%, 460px);
-  /* Let height follow the image's natural aspect ratio */
+  width: 100%;
+  z-index: 3;
 }
 
 .pf-shape-board__img {
@@ -826,38 +1120,71 @@
 
 /*
  * The drop target is an invisible overlay centred on the hole in the image.
- * Slot images are square with the hole centred; the hole fills roughly 32% of
- * the image area.  We position the hit zone to match.
+ * The board image provides the leather surface; this overlay only paints the
+ * recessed cutout and receives drops.
  *
  * Override all the default .pf-target card styles — we want it transparent.
  */
 .pf-shape-board__hole {
   position: absolute;
-  top: 50%;
+  top: 58.5%;
   left: 50%;
-  width: 36%;
-  height: 36%;
+  width: 28%;
+  height: 28%;
   transform: translate(-50%, -50%);
-  /* Reset card look */
-  background: transparent;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(246, 224, 188, 0.2), rgba(246, 224, 188, 0) 34%),
+    radial-gradient(circle at 50% 72%, rgba(22, 12, 5, 0.36), rgba(22, 12, 5, 0) 56%),
+    linear-gradient(180deg, rgba(79, 49, 25, 0.9) 0%, rgba(58, 33, 15, 0.96) 58%, rgba(36, 19, 8, 0.98) 100%);
   border: none;
-  border-radius: 50%;   /* works for every shape — generous hit area */
+  border-radius: 0;
   min-height: 0;
   padding: 0;
   gap: 0;
-  box-shadow: none;
-  /* Show placed piece inside */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.16s ease, box-shadow 0.16s ease;
+  isolation: isolate;
+  overflow: visible;
+  box-shadow:
+    inset 0 16px 22px rgba(255, 241, 213, 0.12),
+    inset 0 -18px 24px rgba(25, 12, 4, 0.48),
+    0 6px 12px rgba(66, 36, 14, 0.15);
+  transition: background 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease, opacity 0.16s ease;
+  z-index: 4;
+}
+
+.pf-shape-board__hole::before {
+  content: '';
+  position: absolute;
+  inset: -4%;
+  background:
+    linear-gradient(180deg, rgba(255, 231, 189, 0.5), rgba(154, 95, 41, 0.12) 40%, rgba(52, 28, 12, 0.55) 100%);
+  opacity: 0.95;
+  z-index: -2;
+}
+
+.pf-shape-board__hole::after {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(164, 103, 45, 0.3), rgba(164, 103, 45, 0) 42%),
+    linear-gradient(180deg, rgba(40, 20, 7, 0.35), rgba(17, 9, 4, 0.72));
+  opacity: 0.78;
+  filter: blur(6px);
+  z-index: -1;
 }
 
 /* Snap-hover glow — visible without text or border */
 .pf-shape-board__hole.pf-target--snap {
-  background: rgba(255, 255, 180, 0.28);
-  box-shadow: 0 0 0 6px rgba(255, 240, 100, 0.45), 0 0 22px rgba(255, 230, 80, 0.35);
-  transform: translate(-50%, -50%); /* keep centred — no lift */
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 12px rgba(255, 225, 92, 0.48));
+}
+
+.pf-shape-board__hole.pf-target--snap::before {
+  background:
+    linear-gradient(180deg, rgba(255, 244, 180, 0.78), rgba(210, 152, 64, 0.35) 40%, rgba(72, 40, 14, 0.6) 100%);
 }
 
 /* Wrong-drop: wiggle the whole board, not the invisible target */
@@ -870,8 +1197,8 @@
 
 /* The shape piece that snaps into the hole */
 .pf-shape-board__placed-piece {
-  width: 82%;
-  height: 82%;
+  width: 86%;
+  height: 86%;
   object-fit: contain;
   pointer-events: none;
   animation: pf-shape-into-hole 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -900,6 +1227,42 @@
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+}
+
+.pf-shape-board__hole--circle,
+.pf-shape-board__hole--circle::before,
+.pf-shape-board__hole--circle::after {
+  border-radius: 999px;
+}
+
+.pf-shape-board__hole--square,
+.pf-shape-board__hole--square::before,
+.pf-shape-board__hole--square::after {
+  border-radius: 20px;
+}
+
+.pf-shape-board__hole--triangle,
+.pf-shape-board__hole--triangle::before,
+.pf-shape-board__hole--triangle::after {
+  clip-path: polygon(50% 4%, 96% 90%, 4% 90%);
+}
+
+.pf-shape-board__hole--diamond,
+.pf-shape-board__hole--diamond::before,
+.pf-shape-board__hole--diamond::after {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.pf-shape-board__hole--star,
+.pf-shape-board__hole--star::before,
+.pf-shape-board__hole--star::after {
+  clip-path: polygon(50% 2%, 61% 35%, 96% 35%, 68% 55%, 79% 90%, 50% 68%, 21% 90%, 32% 55%, 4% 35%, 39% 35%);
+}
+
+.pf-shape-board__hole--heart,
+.pf-shape-board__hole--heart::before,
+.pf-shape-board__hole--heart::after {
+  clip-path: path('M 50 92 C 16 66 8 46 8 28 C 8 13 20 3 33 3 C 43 3 49 10 50 17 C 51 10 57 3 67 3 C 80 3 92 13 92 28 C 92 46 84 66 50 92 Z');
 }
 
 /*
@@ -949,29 +1312,149 @@
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
 }
 
-/* ===== FEED THE ANIMAL — transparent drag pieces ===== */
+/* ===== FEED THE ANIMAL — scene-first layout ===== */
 
-/*
- * Works both in the tray (inside .pf-tray--color-sort) and as the drag clone
- * (appended to document.body by DragManager).
- */
+.pf-stage--feed {
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
+.pf-feed-scene {
+  height: 100%;
+}
+
+.pf-feed-scene__art {
+  position: relative;
+  height: 100%;
+  min-height: 660px;
+  border-radius: 34px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(255, 245, 187, 0.4), transparent 18%),
+    linear-gradient(180deg, #d9f0bc 0%, #b9df94 34%, #73b56d 76%, #4c8b56 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: inset 0 0 0 4px rgba(255, 246, 221, 0.36), 0 24px 44px rgba(42, 79, 49, 0.18);
+}
+
+.pf-feed-scene__art::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 36%;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(72, 120, 64, 0.42), transparent 58%),
+    linear-gradient(180deg, rgba(95, 145, 82, 0), rgba(74, 120, 63, 0.4));
+  pointer-events: none;
+}
+
+.pf-feed-target {
+  position: absolute;
+  top: 24%;
+  left: 0;
+  right: 0;
+  width: min(52vw, 520px);
+  height: min(58vh, 500px);
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+}
+
+.pf-feed-target::before {
+  content: '';
+  position: absolute;
+  inset: 8% 12% 14%;
+  border-radius: 42%;
+  transition: box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.pf-feed-target.pf-target--snap::before {
+  background: rgba(255, 249, 175, 0.16);
+  box-shadow: 0 0 0 14px rgba(255, 241, 120, 0.24), 0 0 34px rgba(255, 228, 104, 0.28);
+}
+
+.pf-feed-target__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  animation: pf-feed-idle 3.2s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 18px rgba(45, 67, 33, 0.18));
+}
+
+.pf-feed-target--wrong-state .pf-feed-target__img {
+  animation: pf-feed-recoil 0.54s ease;
+}
+
+.pf-feed-target--happy-state .pf-feed-target__img {
+  animation: pf-feed-happy 0.68s ease;
+}
+
+.pf-feed-target__food {
+  position: absolute;
+  left: 46%;
+  top: 52%;
+  width: min(18%, 88px);
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.22));
+  pointer-events: none;
+  animation: pf-feed-food-pop 0.28s ease;
+}
+
+.pf-feed-target__food--wrong {
+  width: min(16%, 78px);
+  animation: pf-feed-food-spit 0.7s ease forwards;
+}
+
+.pf-feed-foods {
+  position: absolute;
+  left: clamp(24px, 3vw, 42px);
+  right: clamp(24px, 3vw, 42px);
+  bottom: clamp(22px, 3vh, 34px);
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(18px, 2.8vw, 34px);
+}
+
+.pf-tray--feed {
+  display: none;
+}
+
 .pf-object--feed-item {
   background: transparent;
   box-shadow: none;
   border: none;
-  min-height: 100px;
-  padding: 6px;
+  min-height: 188px;
+  padding: 4px;
   gap: 0;
+  align-self: end;
 }
 
 .pf-object--feed-item .pf-object__art {
-  min-height: 88px;
+  min-height: 182px;
   padding: 2px;
 }
 
 .pf-object--feed-item .pf-object__img {
-  max-height: 88px;
-  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+  max-height: 188px;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.22));
+  animation: pf-feed-food-idle 4.4s ease-in-out infinite;
 }
 
 .pf-object--feed-item.dragging {
@@ -982,6 +1465,24 @@
 
 .pf-object--feed-item.dragging .pf-object__img {
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+  animation: none;
+}
+
+.pf-feed-foods .pf-object--feed-item:nth-child(2) .pf-object__img {
+  animation-duration: 4.9s;
+  animation-delay: 0.4s;
+}
+
+.pf-feed-foods .pf-object--feed-item:nth-child(3) .pf-object__img {
+  animation-duration: 5.2s;
+  animation-delay: 0.8s;
+}
+
+.pf-target__reaction--feed {
+  top: 20px;
+  right: 24px;
+  font-size: 20px;
+  padding: 10px 14px;
 }
 
 /* ===== BUILD THE ANIMAL — transparent drag pieces ===== */
@@ -1023,13 +1524,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 0;
   height: 100%;
 }
 
 .pf-color-basket {
   position: relative;
   width: min(100%, 400px);
+  filter: drop-shadow(0 18px 36px rgba(45, 67, 33, 0.16));
+  z-index: 1;
 }
 
 .pf-color-basket__img {
@@ -1153,6 +1656,21 @@
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
 }
 
+.pf-scene-tray .pf-object--sort-item,
+.pf-scene-tray .pf-object--shape-item,
+.pf-scene-tray .pf-object--build-item {
+  align-self: end;
+}
+
+.pf-scene-tray .pf-object--sort-item .pf-object__img,
+.pf-scene-tray .pf-object--shape-item .pf-object__img {
+  max-height: 122px;
+}
+
+.pf-scene-tray .pf-object--build-item .pf-object__art {
+  max-height: 138px;
+}
+
 /* ============================= */
 
 @media (max-width: 960px) {
@@ -1194,6 +1712,29 @@
   .pf-build-assembly--horizontal {
     max-height: min(100%, 280px);
   }
+
+  .pf-feed-target {
+    top: 23%;
+    left: 0;
+    right: 0;
+    width: min(56vw, 460px);
+    height: min(42vh, 390px);
+    margin: 0 auto;
+  }
+
+  .pf-game--feed .pf-feed-topbar {
+    left: 176px;
+    right: 176px;
+  }
+
+  .pf-game--minimal-activity .pf-feed-topbar {
+    left: 176px;
+    right: 176px;
+  }
+
+  .pf-feed-foods {
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
@@ -1221,12 +1762,70 @@
     border-radius: 24px;
   }
 
+  .pf-board--feed {
+    padding: 10px;
+  }
+
+  .pf-game--minimal-activity .pf-board {
+    padding-top: 74px;
+  }
+
   .pf-target {
     min-height: 190px;
   }
 
   .pf-tray__items {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pf-feed-scene__art {
+    min-height: 520px;
+    border-radius: 26px;
+  }
+
+  .pf-activity-scene {
+    min-height: 520px;
+    border-radius: 26px;
+  }
+
+  .pf-feed-target {
+    top: 26%;
+    left: 0;
+    right: 0;
+    width: 62vw;
+    height: 30vh;
+    margin: 0 auto;
+  }
+
+  .pf-feed-foods {
+    left: 12px;
+    right: 12px;
+    bottom: 16px;
+    gap: 8px;
+  }
+
+  .pf-scene-tray {
+    left: 12px;
+    right: 12px;
+    bottom: 16px;
+    gap: 8px;
+  }
+
+  .pf-scene-tray--build {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: auto;
+  }
+
+  .pf-object--feed-item {
+    min-height: 132px;
+  }
+
+  .pf-object--feed-item .pf-object__art {
+    min-height: 126px;
+  }
+
+  .pf-object--feed-item .pf-object__img {
+    max-height: 132px;
   }
 
   .pf-build-board {
@@ -1321,6 +1920,26 @@
     padding: 10px;
   }
 
+  .pf-feed-scene__art {
+    min-height: 560px;
+  }
+
+  .pf-game--feed .pf-progress {
+    display: none;
+  }
+
+  .pf-game--feed .pf-feed-topbar {
+    left: 130px;
+    right: 130px;
+    top: 12px;
+  }
+
+  .pf-game--minimal-activity .pf-feed-topbar {
+    left: 130px;
+    right: 130px;
+    top: 12px;
+  }
+
   .pf-tray {
     padding: 12px;
   }
@@ -1388,6 +2007,45 @@
   .pf-build-board__slots--vertical .pf-build-slot__inner {
     min-height: 0;
   }
+}
+
+@keyframes pf-feed-idle {
+  0% { transform: translateY(0) scale(1); }
+  32% { transform: translateY(-8px) scale(1.01); }
+  48% { transform: translateY(-4px) scale(1.005); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes pf-feed-recoil {
+  0% { transform: translateX(0) translateY(0) scale(1); }
+  35% { transform: translateX(12px) translateY(-4px) scale(1.02); }
+  70% { transform: translateX(-6px) translateY(0) scale(0.99); }
+  100% { transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes pf-feed-happy {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-10px) scale(1.04); }
+  70% { transform: translateY(-2px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes pf-feed-food-idle {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-12px) scale(1.025); }
+  70% { transform: translateY(-4px) scale(1.012); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes pf-feed-food-pop {
+  0% { opacity: 0; transform: translate(-50%, -54%) scale(0.5) rotate(-20deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-12deg); }
+}
+
+@keyframes pf-feed-food-spit {
+  0% { opacity: 0; transform: translate(-40%, -46%) scale(0.5) rotate(-8deg); }
+  18% { opacity: 1; transform: translate(-48%, -50%) scale(0.9) rotate(-10deg); }
+  100% { opacity: 0; transform: translate(-4%, -78%) scale(0.82) rotate(20deg); }
 }
 
 @media (max-height: 820px) {

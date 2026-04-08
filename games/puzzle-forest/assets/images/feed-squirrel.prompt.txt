@@ -4,8 +4,8 @@ BACKGROUND_MODE: transparent
 STYLE_NAME: gcu_character
 
 PROMPT:
-A squirrel facing slightly toward camera, three-quarter view, chestnut fur with cream belly, large fluffy tail, small paws close to the chest, open mouth clearly visible, upright seated posture, no scenery, no props, isolated object.
+A friendly squirrel for a toddler game, three-quarter view facing slightly left toward the center of the screen, chestnut brown fur with a cream belly, very large fluffy tail, oversized expressive eyes, rounded cheeks, small front paws close to the chest, seated upright, mouth slightly open as if ready for a snack, eager and gentle expression, isolated object.
 
 
 NOTES:
-Can be simpler than the Nutty guide character. Face must be clearly readable at small size.
+Bold silhouette. Keep the whole squirrel large in frame with clean edges. This is the base feeding target image, so the face must read clearly at a glance.

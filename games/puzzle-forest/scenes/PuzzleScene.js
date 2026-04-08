@@ -39,6 +39,7 @@ export class PuzzleScene extends Scene {
     this._avatarId = null;
     this._missionLength = 6;
     this._advanceTimer = null;
+    this._feedResetTimer = null;
     this._objectOrders = new Map();
     // Cache of image content bounds {x0,y0,x1,y1} keyed by image src
     this._imageBoundsCache = new Map();
@@ -131,10 +132,18 @@ export class PuzzleScene extends Scene {
   _renderShell() {
     this._removeListeners();
     const progress = this.manager.getProgress();
+    const isFeedAnimal = this._category.id === 'feed-the-animal';
+    const isMinimalActivity = this._isMinimalActivity();
+    this._container.classList.toggle('pf-game--feed', isFeedAnimal);
+    this._container.classList.toggle('pf-game--minimal-activity', isMinimalActivity);
     this._container.innerHTML = `
       <div class="pf-game__bg"></div>
       <div class="pf-game__topbar">
         <button type="button" class="pf-nav-btn" id="pf-back-to-picker">← Activities</button>
+        <div class="pf-feed-topbar" id="pf-feed-topbar">
+          <button type="button" class="pf-progress__audio-btn" id="pf-repeat-prompt-inline" aria-label="Hear it again">🔊</button>
+          <div class="pf-progress__track" id="pf-progress-track"></div>
+        </div>
         <div class="pf-game__title-wrap">
           <div class="pf-game__eyebrow">Puzzle Forest</div>
           <h1 class="pf-game__title">${escapeHtml(this._category.name)}</h1>
@@ -152,8 +161,9 @@ export class PuzzleScene extends Scene {
         </aside>
         <main class="pf-board">
           <div class="pf-progress">
-            <div class="pf-progress__label">Mission ${progress.total ? progress.solved + 1 : 0} of ${progress.total}</div>
-            <div class="pf-progress__track" id="pf-progress-track"></div>
+            <div class="pf-progress__row">
+              <div class="pf-progress__label">Mission ${progress.total ? progress.solved + 1 : 0} of ${progress.total}</div>
+            </div>
           </div>
           <div class="pf-prompt" id="pf-prompt"></div>
           <div class="pf-stage" id="pf-stage"></div>
@@ -177,6 +187,7 @@ export class PuzzleScene extends Scene {
     const backBtn = this._container.querySelector('#pf-back-to-picker');
     const homeBtn = this._container.querySelector('#pf-home');
     const promptBtn = this._container.querySelector('#pf-repeat-prompt');
+    const promptInlineBtn = this._container.querySelector('#pf-repeat-prompt-inline');
     const playAgainBtn = this._container.querySelector('#pf-play-again');
     const chooseBtn = this._container.querySelector('#pf-choose-activity');
 
@@ -196,12 +207,14 @@ export class PuzzleScene extends Scene {
     backBtn.addEventListener('click', onBack);
     homeBtn.addEventListener('click', onHome);
     promptBtn.addEventListener('click', onPrompt);
+    promptInlineBtn.addEventListener('click', onPrompt);
     playAgainBtn.addEventListener('click', onPlayAgain);
     chooseBtn.addEventListener('click', onChoose);
 
     this._listeners.push({ el: backBtn, type: 'click', fn: onBack });
     this._listeners.push({ el: homeBtn, type: 'click', fn: onHome });
     this._listeners.push({ el: promptBtn, type: 'click', fn: onPrompt });
+    this._listeners.push({ el: promptInlineBtn, type: 'click', fn: onPrompt });
     this._listeners.push({ el: playAgainBtn, type: 'click', fn: onPlayAgain });
     this._listeners.push({ el: chooseBtn, type: 'click', fn: onChoose });
   }
@@ -222,12 +235,20 @@ export class PuzzleScene extends Scene {
     const isShapeMatch = this._category.id === 'shape-matching';
     const isColorSort = this._category.id === 'color-sorting';
     const isFeedAnimal = this._category.id === 'feed-the-animal';
+    const isMinimalActivity = this._isMinimalActivity();
 
     this._container.classList.toggle('pf-game--build-active', isBuildPuzzle);
+    this._container.classList.toggle('pf-game--feed-active', isFeedAnimal);
+    this._container.classList.toggle('pf-game--minimal-active', isMinimalActivity);
     this._container.querySelector('.pf-board')?.classList.toggle('pf-board--build', isBuildPuzzle);
+    this._container.querySelector('.pf-board')?.classList.toggle('pf-board--feed', isFeedAnimal);
+    this._container.querySelector('.pf-board')?.classList.toggle('pf-board--minimal', isMinimalActivity);
     this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--build', isBuildPuzzle);
     this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--shape-match', isShapeMatch);
     this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--color-sort', isColorSort);
+    this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--feed', isFeedAnimal);
+    this._container.querySelector('.pf-tray')?.classList.toggle('pf-tray--minimal', isMinimalActivity);
+    promptEl.classList.toggle('pf-prompt--minimal', isMinimalActivity);
 
     promptEl.innerHTML = `
       <div class="pf-prompt__icon">${puzzle.promptIcon ?? this._category.icon}</div>
@@ -235,11 +256,7 @@ export class PuzzleScene extends Scene {
     `;
 
     trackEl.innerHTML = '';
-    for (let i = 0; i < progress.total; i++) {
-      const dot = document.createElement('span');
-      dot.className = `pf-progress__dot ${i < progress.solved ? 'pf-progress__dot--done' : ''}`;
-      trackEl.appendChild(dot);
-    }
+    this._renderProgressTrack(trackEl, progress);
 
     if (isBuildPuzzle) {
       this._renderBuildStage(stageEl, puzzle);
@@ -247,16 +264,24 @@ export class PuzzleScene extends Scene {
       this._renderShapeMatchStage(stageEl, puzzle);
     } else if (isColorSort) {
       this._renderColorSortStage(stageEl, puzzle);
+    } else if (isFeedAnimal) {
+      this._renderFeedStage(stageEl, puzzle);
     } else {
       this._renderStandardStage(stageEl, puzzle);
     }
+
+    this._applyStageScene(stageEl);
 
     // Determine build axis/bounds for tray slice rendering
     const buildAxis = isBuildPuzzle
       ? (puzzle.buildAxis === 'horizontal' ? 'horizontal' : 'vertical')
       : null;
 
+    const feedFoodsEl = isFeedAnimal ? stageEl.querySelector('#pf-feed-foods') : null;
+    const sceneTrayEl = !isFeedAnimal ? stageEl.querySelector('#pf-scene-tray') : null;
     trayEl.innerHTML = '';
+    if (feedFoodsEl) feedFoodsEl.innerHTML = '';
+    if (sceneTrayEl) sceneTrayEl.innerHTML = '';
     // No labels for any of these — the children that play this are too young to read
     const hideLabel = isBuildPuzzle || isShapeMatch || isColorSort || isFeedAnimal;
     for (const object of this._getOrderedObjects(puzzle)) {
@@ -292,7 +317,7 @@ export class PuzzleScene extends Scene {
         ${hideLabel ? '' : `<span class="pf-object__label">${escapeHtml(object.label)}</span>`}
       `;
       if (placed) item.disabled = true;
-      trayEl.appendChild(item);
+      (feedFoodsEl ?? sceneTrayEl ?? trayEl).appendChild(item);
     }
 
     this._bindDrag();
@@ -319,10 +344,20 @@ export class PuzzleScene extends Scene {
   _handleDrop(item, target, targets) {
     this.snapManager.clearHighlights(targets);
     const result = this.manager.checkPlacement(item.dataset.objectId, target.dataset.targetId);
+    const puzzle = this.manager.getCurrentPuzzle();
+    const isFeedAnimal = this._isFeedPuzzle(puzzle);
     if (!result.matched) {
       this._playWrongSound();
       item.classList.add('pf-object--wrong');
       target.classList.add('pf-target--wrong');
+      if (isFeedAnimal) {
+        this._showFeedReaction({
+          target,
+          targetData: result.target,
+          state: 'wrong',
+          objectData: result.object,
+        });
+      }
       setTimeout(() => {
         item.classList.remove('pf-object--wrong');
         target.classList.remove('pf-target--wrong');
@@ -332,18 +367,42 @@ export class PuzzleScene extends Scene {
 
     this.snapManager.snapToTarget(target);
     this._playSuccessSound();
-    target.classList.add('pf-target--happy');
+    this._speakPlacementAcknowledgement();
     item.classList.add('pf-object--correct');
-    const reaction = document.createElement('div');
-    reaction.className = 'pf-target__reaction';
-    reaction.textContent = this._getSuccessReactionText();
-    target.appendChild(reaction);
+    if (isFeedAnimal) {
+      this._showFeedReaction({
+        target,
+        targetData: result.target,
+        state: 'happy',
+        objectData: result.object,
+      });
+      item.classList.add('pf-object--placed');
+      item.disabled = true;
+    } else {
+      target.classList.add('pf-target--happy');
+      const reaction = document.createElement('div');
+      reaction.className = 'pf-target__reaction';
+      reaction.textContent = this._getSuccessReactionText();
+      target.appendChild(reaction);
+    }
     celebrate('small', {
       origin: {
         x: target.getBoundingClientRect().left + (target.getBoundingClientRect().width / 2),
         y: Math.max(120, target.getBoundingClientRect().top + 36),
       },
     });
+    if (this.dragManager) {
+      this.dragManager.destroy();
+      this.dragManager = null;
+    }
+    if (isFeedAnimal) {
+      if (result.puzzleComplete) {
+        this._advanceTimer = setTimeout(() => this._advanceMission(), 1250);
+      } else {
+        setTimeout(() => this._renderPuzzle(), 420);
+      }
+      return;
+    }
     setTimeout(() => {
       this._renderPuzzle();
       if (result.puzzleComplete) {
@@ -352,7 +411,7 @@ export class PuzzleScene extends Scene {
           this.dragManager = null;
         }
         if (this._isBuildPuzzle(this.manager.getCurrentPuzzle())) {
-          this._celebrateBuildComplete();
+          void this._celebrateBuildComplete();
         } else {
           this._advanceTimer = setTimeout(() => this._advanceMission(), 780);
         }
@@ -369,6 +428,10 @@ export class PuzzleScene extends Scene {
 
   _advanceMission() {
     this._advanceTimer = null;
+    if (this._feedResetTimer) {
+      clearTimeout(this._feedResetTimer);
+      this._feedResetTimer = null;
+    }
     const hasNext = this.manager.advancePuzzle();
     if (!hasNext) {
       this._showMissionComplete();
@@ -443,10 +506,12 @@ export class PuzzleScene extends Scene {
   exit(container) {
     if (this.dragManager) this.dragManager.destroy();
     if (this._advanceTimer) clearTimeout(this._advanceTimer);
+    if (this._feedResetTimer) clearTimeout(this._feedResetTimer);
     AudioClips.getInstance().cancel();
     this._removeListeners();
     this.dragManager = null;
     this._advanceTimer = null;
+    this._feedResetTimer = null;
     this._container = null;
     container.innerHTML = '';
   }
@@ -474,6 +539,16 @@ export class PuzzleScene extends Scene {
       case 'shape-matching': return 'Pop!';
       case 'build-the-animal': return '⭐';
       default: return 'Yay!';
+    }
+  }
+
+  _speakPlacementAcknowledgement() {
+    switch (this._category?.id) {
+      case 'color-sorting':
+        AudioClips.getInstance().speakRandom('puzzle-forest', 'color_sort_correct_');
+        break;
+      default:
+        break;
     }
   }
 
@@ -513,7 +588,7 @@ export class PuzzleScene extends Scene {
     }
   }
 
-  _celebrateBuildComplete() {
+  async _celebrateBuildComplete() {
     const assembly = this._container?.querySelector('.pf-build-assembly');
     if (assembly) {
       assembly.classList.remove('pf-build-assembly--celebrate');
@@ -542,12 +617,72 @@ export class PuzzleScene extends Scene {
       colors: ['#FFD95E', '#FF8D6B', '#7CCF7B', '#7EC8FF'],
     });
     this._playBuildCompleteRiff();
-    AudioClips.getInstance().speakRandom('puzzle-forest', 'build_complete_');
-    this._advanceTimer = setTimeout(() => this._advanceMission(), 2200);
+    const narrationMs = await AudioClips.getInstance().speakRandomWithDuration('puzzle-forest', 'build_complete_');
+    const delayMs = Math.max(2200, narrationMs + 250);
+    this._advanceTimer = setTimeout(() => this._advanceMission(), delayMs);
   }
 
   _isBuildPuzzle(puzzle) {
     return puzzle?.layout === 'build-animal';
+  }
+
+  _isFeedPuzzle(puzzle) {
+    return this._category?.id === 'feed-the-animal' && puzzle;
+  }
+
+  _isMinimalActivity() {
+    return [
+      'feed-the-animal',
+      'color-sorting',
+      'shape-matching',
+      'build-the-animal',
+    ].includes(this._category?.id);
+  }
+
+  _applyStageScene(stageEl) {
+    const sceneImage = this._category?.sceneImage ?? '';
+    if (!sceneImage || this._category?.id === 'feed-the-animal') {
+      stageEl.classList.remove('pf-stage--scene');
+      stageEl.style.removeProperty('--pf-stage-scene');
+      return;
+    }
+    stageEl.classList.add('pf-stage--scene');
+    const resolvedSceneImage = sceneImage.startsWith('/') ? sceneImage : `/${sceneImage}`;
+    stageEl.style.setProperty('--pf-stage-scene', `url("${resolvedSceneImage}")`);
+  }
+
+  _renderProgressTrack(trackEl, progress) {
+    if (this._category?.id !== 'feed-the-animal') {
+      for (let i = 0; i < progress.total; i++) {
+        const dot = document.createElement('span');
+        dot.className = `pf-progress__dot ${i < progress.solved ? 'pf-progress__dot--done' : ''}`;
+        trackEl.appendChild(dot);
+      }
+      return;
+    }
+
+    const mission = this.manager.mission ?? [];
+    for (let i = 0; i < progress.total; i++) {
+      const missionPuzzle = mission[i];
+      const target = missionPuzzle?.targets?.[0] ?? null;
+      const iconSrc = target?.progressImage ?? '';
+      const iconText = missionPuzzle?.promptIcon ?? this._category.icon;
+      const showIcon = i <= progress.solved;
+      const step = document.createElement('span');
+      const statusClass = i < progress.solved
+        ? 'pf-progress__step--done'
+        : i === progress.solved
+          ? 'pf-progress__step--current'
+          : '';
+      step.className = `pf-progress__step ${statusClass}`.trim();
+      step.innerHTML = `
+        <span class="pf-progress__animal ${showIcon ? 'pf-progress__animal--visible' : ''}">
+          ${showIcon ? (iconSrc ? `<img class="pf-progress__animal-img" src="${iconSrc}" alt="">` : escapeHtml(iconText)) : ''}
+        </span>
+        <span class="pf-progress__dot ${i < progress.solved ? 'pf-progress__dot--done' : ''}"></span>
+      `;
+      trackEl.appendChild(step);
+    }
   }
 
   /**
@@ -562,9 +697,6 @@ export class PuzzleScene extends Scene {
 
     for (const target of puzzle.targets) {
       const placed = this.manager.getPlacedObjectForTarget(target.id);
-      const board = document.createElement('div');
-      board.className = 'pf-color-basket';
-
       const imgHtml = target.image
         ? `<img class="pf-color-basket__img" src="${target.image}" alt="" draggable="false">`
         : '';
@@ -572,15 +704,18 @@ export class PuzzleScene extends Scene {
       const placedHtml = placed && placed.image
         ? `<img class="pf-color-basket__placed-item" src="${placed.image}" alt="">`
         : '';
-
-      board.innerHTML = `
-        ${imgHtml}
-        <div class="pf-target pf-color-basket__opening ${placed ? 'pf-target--filled' : ''}"
-             data-target-id="${target.id}">
-          ${placedHtml}
+      stageEl.innerHTML = `
+        <div class="pf-activity-scene pf-activity-scene--color">
+          <div class="pf-color-basket">
+            ${imgHtml}
+            <div class="pf-target pf-color-basket__opening ${placed ? 'pf-target--filled' : ''}"
+                 data-target-id="${target.id}">
+              ${placedHtml}
+            </div>
+          </div>
+          <div class="pf-scene-tray pf-scene-tray--color" id="pf-scene-tray"></div>
         </div>
       `;
-      stageEl.appendChild(board);
     }
   }
 
@@ -595,27 +730,27 @@ export class PuzzleScene extends Scene {
 
     for (const target of puzzle.targets) {
       const placed = this.manager.getPlacedObjectForTarget(target.id);
-      const board = document.createElement('div');
-      board.className = 'pf-shape-board';
-
-      // The slot image (wooden board with hole) fills the board area
+      const acceptedObjectId = target.accepts?.[0] ?? '';
       const imgHtml = target.image
         ? `<img class="pf-shape-board__img" src="${target.image}" alt="" draggable="false">`
         : '';
-
-      // The placed piece sits inside the hole as an overlay
       const placedHtml = placed && placed.image
         ? `<img class="pf-shape-board__placed-piece" src="${placed.image}" alt="">`
         : '';
-
-      board.innerHTML = `
-        ${imgHtml}
-        <div class="pf-target pf-shape-board__hole ${placed ? 'pf-target--filled' : ''}"
-             data-target-id="${target.id}">
-          ${placedHtml}
+      stageEl.innerHTML = `
+        <div class="pf-activity-scene pf-activity-scene--shape">
+          <div class="pf-shape-board pf-shape-board--${acceptedObjectId}">
+            <div class="pf-shape-board__plaque">
+              ${imgHtml}
+            </div>
+            <div class="pf-target pf-shape-board__hole pf-shape-board__hole--${acceptedObjectId} ${placed ? 'pf-target--filled' : ''}"
+                 data-target-id="${target.id}">
+              ${placedHtml}
+            </div>
+          </div>
+          <div class="pf-scene-tray pf-scene-tray--shape" id="pf-scene-tray"></div>
         </div>
       `;
-      stageEl.appendChild(board);
     }
   }
 
@@ -635,6 +770,74 @@ export class PuzzleScene extends Scene {
         <div class="pf-target__slot">${placed ? this._renderPlacedObject(placed) : `<span class="pf-target__hint">${escapeHtml(target.slotLabel ?? 'Drop here')}</span>`}</div>
       `;
       stageEl.appendChild(targetEl);
+    }
+  }
+
+  _renderFeedStage(stageEl, puzzle) {
+    stageEl.className = 'pf-stage pf-stage--feed';
+    stageEl.innerHTML = '';
+    for (const target of puzzle.targets) {
+      const placed = this.manager.getPlacedObjectForTarget(target.id);
+      const activeImage = placed ? (target.successImage ?? target.image) : target.image;
+      const sceneStyle = puzzle.sceneImage
+        ? `style="background-image:url('${puzzle.sceneImage}');"`
+        : '';
+      const targetEl = document.createElement('div');
+      targetEl.className = 'pf-feed-scene';
+      targetEl.innerHTML = `
+        <div class="pf-feed-scene__art" ${sceneStyle}>
+          <div class="pf-target pf-feed-target ${placed ? 'pf-target--filled pf-target--happy' : ''}" data-target-id="${target.id}">
+            <img class="pf-feed-target__img" src="${activeImage}" alt="${escapeHtml(target.label)}">
+            ${placed && placed.image && !target.successImage ? `<img class="pf-feed-target__food" src="${placed.image}" alt="">` : ''}
+          </div>
+          <div class="pf-feed-foods" id="pf-feed-foods"></div>
+        </div>
+      `;
+      stageEl.appendChild(targetEl);
+    }
+  }
+
+  _showFeedReaction({ target, targetData, state, objectData = null }) {
+    const imgEl = target?.querySelector('.pf-feed-target__img');
+    if (!imgEl || !targetData) return;
+
+    if (this._feedResetTimer) {
+      clearTimeout(this._feedResetTimer);
+      this._feedResetTimer = null;
+    }
+
+    target.classList.remove('pf-feed-target--wrong-state', 'pf-feed-target--happy-state');
+    target.querySelector('.pf-target__reaction')?.remove();
+    target.querySelector('.pf-feed-target__food')?.remove();
+
+    if (state === 'wrong') {
+      imgEl.src = targetData.wrongImage ?? targetData.image;
+      target.classList.add('pf-feed-target--wrong-state');
+      if (objectData?.image) {
+        const food = document.createElement('img');
+        food.className = 'pf-feed-target__food pf-feed-target__food--wrong';
+        food.src = objectData.image;
+        food.alt = '';
+        target.appendChild(food);
+      }
+      this._feedResetTimer = setTimeout(() => {
+        imgEl.src = targetData.image;
+        target.classList.remove('pf-feed-target--wrong-state');
+        target.querySelector('.pf-feed-target__food--wrong')?.remove();
+        this._feedResetTimer = null;
+      }, 950);
+      return;
+    }
+
+    imgEl.src = targetData.successImage ?? targetData.image;
+    target.classList.add('pf-feed-target--happy-state', 'pf-target--happy');
+
+    if (objectData?.image && !targetData.successImage) {
+      const food = document.createElement('img');
+      food.className = 'pf-feed-target__food';
+      food.src = objectData.image;
+      food.alt = '';
+      target.appendChild(food);
     }
   }
 
@@ -659,18 +862,20 @@ export class PuzzleScene extends Scene {
 
     stageEl.className = 'pf-stage pf-stage--build';
     stageEl.innerHTML = `
-      <div class="pf-build-assembly pf-build-assembly--${axis}" style="aspect-ratio:${contentAspect}">
-        ${slots.map((target) => {
-          const placed = this.manager.getPlacedObjectForTarget(target.id);
-          // Ghost uses the target's own sliceImage; placed uses the object's
-          const renderEntry = placed ?? target;
-          const sliceSrc = renderEntry.sliceImage ?? buildSrc;
-          const sliceBounds = this._imageBoundsCache.get(sliceSrc) ?? bounds;
-          return `<div class="pf-target pf-build-slot ${placed ? 'pf-target--filled' : ''}"
-                       data-target-id="${target.id}">
-            ${this._renderSlice(renderEntry, { ghost: !placed, axis, bounds: sliceBounds })}
-          </div>`;
-        }).join('')}
+      <div class="pf-activity-scene pf-activity-scene--build">
+        <div class="pf-build-assembly pf-build-assembly--${axis}" style="aspect-ratio:${contentAspect}">
+          ${slots.map((target) => {
+            const placed = this.manager.getPlacedObjectForTarget(target.id);
+            const renderEntry = placed ?? target;
+            const sliceSrc = renderEntry.sliceImage ?? buildSrc;
+            const sliceBounds = this._imageBoundsCache.get(sliceSrc) ?? bounds;
+            return `<div class="pf-target pf-build-slot ${placed ? 'pf-target--filled' : ''}"
+                         data-target-id="${target.id}">
+              ${this._renderSlice(renderEntry, { ghost: !placed, axis, bounds: sliceBounds })}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="pf-scene-tray pf-scene-tray--build" id="pf-scene-tray"></div>
       </div>
     `;
   }
