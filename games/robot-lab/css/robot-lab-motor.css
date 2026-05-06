@@ -416,3 +416,42 @@
   gap: 8px;
   flex-shrink: 0;
 }
+
+.sh-complete-card {
+  border: 1px solid rgba(255, 214, 102, 0.65);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(24, 34, 54, 0.96), rgba(8, 15, 31, 0.96));
+  box-shadow: 0 0 18px rgba(255, 214, 102, 0.16);
+  color: #eef6ff;
+  padding: 14px 16px;
+}
+
+.sh-complete-card__title {
+  color: #ffd666;
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.sh-complete-card__body {
+  color: #c8d7e8;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.sh-complete-card__body strong {
+  color: #ffffff;
+}
+
+.sh-complete-card__question {
+  color: #72e3ff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.sh-complete-card__actions {
+  margin-top: 10px;
+}

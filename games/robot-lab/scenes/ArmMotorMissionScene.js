@@ -492,16 +492,8 @@ export class ArmMotorMissionScene extends Scene {
       this._solved = true;
       celebrate(this._container, 'medium');
       this._saveProgress();
-
-      const installBtn = document.createElement('button');
-      installBtn.type = 'button';
-      installBtn.className = 'rl-btn rl-btn--start';
-      installBtn.textContent = '✅ Install This Drive!';
-      installBtn.addEventListener('click', () => {
-        this._setSpeech(CHAPTER_4.speech.done);
-        installBtn.remove();
-      });
-      actionsEl.appendChild(installBtn);
+      this._setSpeech(CHAPTER_4.speech.done);
+      actionsEl.appendChild(this._buildCompletionSummary());
     }
 
     const tryBtn = document.createElement('button');
@@ -513,6 +505,48 @@ export class ArmMotorMissionScene extends Scene {
       this._showPhase('workbench');
     });
     actionsEl.appendChild(tryBtn);
+  }
+
+  _buildCompletionSummary() {
+    const job = ARM_JOBS[this._jobId];
+    const gear = GEAR_CARTRIDGES[this._gearId];
+    const volt = VOLTAGE_SETTINGS[this._voltId];
+    const s = this._state;
+    const chapterIdx = ROBOT_LAB_CHAPTERS.findIndex(c => c.id === CHAPTER_4.id);
+    const next = ROBOT_LAB_CHAPTERS[chapterIdx + 1];
+    const nextInfo = next ? CHAPTER_SCENES[next.id] : null;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'sh-complete-card';
+    wrap.innerHTML = `
+      <div class="sh-complete-card__title">SWIRL-E's arms are functional.</div>
+      <div class="sh-complete-card__body">
+        Installed drive: <strong>${gear.ratio}:1 gear</strong> with <strong>${volt.label}</strong> power.<br>
+        Load rating: <strong>${job.targetKg} kg (${job.targetLb} lb)</strong>.<br>
+        Estimated work time before recharge: <strong>${s.runtime} minutes</strong>.
+      </div>
+      <div class="sh-complete-card__question">Continue to the next chapter?</div>
+    `;
+
+    const row = document.createElement('div');
+    row.className = 'sh-complete-card__actions';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'rl-btn rl-btn--next-chapter';
+    nextBtn.textContent = next ? `Continue to Ch ${chapterIdx + 2}: ${next.label}` : 'Next Chapter';
+    if (nextInfo) {
+      nextBtn.addEventListener('click', () => {
+        this.sceneManager.go(nextInfo.scene, { missionId: nextInfo.missionId, avatarId: this._avatarId });
+      });
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.textContent = next ? `Ch ${chapterIdx + 2}: ${next.label} Coming Soon` : 'Next Chapter Coming Soon';
+    }
+    row.appendChild(nextBtn);
+
+    wrap.appendChild(row);
+    return wrap;
   }
 
   async _saveProgress() {

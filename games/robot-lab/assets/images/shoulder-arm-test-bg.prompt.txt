@@ -1,0 +1,11 @@
+TARGET FILE: shoulder-arm-test-bg.png
+SIZE: 1024x700
+BACKGROUND_MODE: scene
+BACKGROUND: cozy sci-fi robot lab final arm test station, warm wood bench, dark navy workshop, soft gold practical lights
+STYLE_NAME: rl_scene
+
+PROMPT:
+Wide close-up view of Grandpa's cozy robot lab arm test station for SWIRL-E. SWIRL-E is partially visible on the left side with his shoulder area ready for an exposed robotic arm to be animated over the image. The center and right side are a clean open testing area with a sturdy metal support frame, a hanging-load clearance zone, soft workshop lights, small tools at the edges, and a few diagnostic monitors in the background. Warm wooden bench foreground, dark navy workshop walls, friendly handcrafted robot-lab atmosphere, cinematic but clear.
+
+NOTES:
+Leave the center 65 percent of the image uncluttered for a canvas-drawn robot arm, hanging weight, and result overlays. Do not include readable text, labels, UI panels, or a complete robot arm in the center. The background should support the final arm-lift test and make it clear this is SWIRL-E's shoulder assembly area. Style must match the cozy Pixar-quality Robot Lab images from earlier chapters.

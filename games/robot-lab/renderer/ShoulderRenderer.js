@@ -206,6 +206,7 @@ export class ShoulderGearRenderer {
     shaftGrad.addColorStop(1, stress.light);
     ctx.fillStyle = shaftGrad;
     ctx.fillRect(layout.shaftStartX - 2, layout.shaftY - shaftH / 2, layout.shaftEndX - layout.shaftStartX + 4, shaftH);
+    this._drawShaftTorque(ctx, layout, shaftH, stress);
     ctx.strokeStyle = stress.stroke;
     ctx.lineWidth = 1.5;
     ctx.strokeRect(layout.shaftStartX - 2, layout.shaftY - shaftH / 2, layout.shaftEndX - layout.shaftStartX + 4, shaftH);
@@ -239,12 +240,49 @@ export class ShoulderGearRenderer {
 
   _torquePalette(stressColor) {
     if (stressColor === 'red' || stressColor === 'stall') {
-      return { light: '#ff8a79', mid: '#d83d32', stroke: '#ff5f4f' };
+      return { light: '#ff8a79', mid: '#d83d32', stroke: '#ff5f4f', twistAlpha: 0.78 };
     }
     if (stressColor === 'yellow') {
-      return { light: '#ffe27a', mid: '#d1a726', stroke: '#ffd34f' };
+      return { light: '#ffe27a', mid: '#d1a726', stroke: '#ffd34f', twistAlpha: 0.55 };
     }
-    return { light: '#88f0a0', mid: '#2ec968', stroke: '#53e483' };
+    return { light: '#88f0a0', mid: '#2ec968', stroke: '#53e483', twistAlpha: 0.32 };
+  }
+
+  _drawShaftTorque(ctx, layout, shaftH, stress) {
+    const x = layout.shaftStartX - 2;
+    const y = layout.shaftY - shaftH / 2;
+    const w = layout.shaftEndX - layout.shaftStartX + 4;
+    const spacing = 28;
+    const slant = 18;
+    const phase = (layout.motorAngle * 18) % spacing;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, w, shaftH);
+    ctx.clip();
+
+    ctx.globalAlpha = stress.twistAlpha;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    for (let stripeX = x - spacing + phase; stripeX < x + w + spacing; stripeX += spacing) {
+      ctx.beginPath();
+      ctx.moveTo(stripeX, y + shaftH + 1);
+      ctx.lineTo(stripeX + slant, y - 1);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = stress.twistAlpha * 0.75;
+    ctx.strokeStyle = stress.stroke;
+    ctx.lineWidth = 1.3;
+    for (let stripeX = x - spacing + phase + spacing / 2; stripeX < x + w + spacing; stripeX += spacing) {
+      ctx.beginPath();
+      ctx.moveTo(stripeX, y + shaftH + 1);
+      ctx.lineTo(stripeX + slant, y - 1);
+      ctx.stroke();
+    }
+
+    ctx.restore();
   }
 
   _drawSideGearToothEdges(ctx, layout, gearY) {
@@ -359,6 +397,7 @@ export class ShoulderGearRenderer {
 
 const ARM_IMAGES = {
   arm:   'swirle-left-arm-exposed-transparent.png',
+  bg:    'shoulder-arm-test-bg.png',
   load7:  'arm-load-7kg.png',
   load10: 'arm-load-10kg.png',
   load15: 'arm-load-15kg.png',
@@ -472,10 +511,16 @@ export class ShoulderArmRenderer {
     const w = this._w, h = this._h;
     ctx.clearRect(0, 0, w, h);
 
-    // Background hint
-    ctx.fillStyle = 'rgba(10,20,50,0.35)';
-    ctx.roundRect(8, 8, w - 16, h - 16, 16);
-    ctx.fill();
+    const bgImg = this._images.bg;
+    if (bgImg) {
+      this._drawCoverImage(ctx, bgImg, 8, 8, w - 16, h - 16, 16);
+      ctx.fillStyle = 'rgba(5,12,28,0.32)';
+      ctx.fillRect(8, 8, w - 16, h - 16);
+    } else {
+      ctx.fillStyle = 'rgba(10,20,50,0.35)';
+      ctx.roundRect(8, 8, w - 16, h - 16, 16);
+      ctx.fill();
+    }
 
     // Stress color overlay for too-hot
     if (this._outcome === 'too-hot' && this._phase !== 'done') {
@@ -552,5 +597,29 @@ export class ShoulderArmRenderer {
         ctx.stroke();
       }
     }
+  }
+
+  _drawCoverImage(ctx, img, x, y, w, h, radius) {
+    const srcRatio = img.naturalWidth / img.naturalHeight;
+    const dstRatio = w / h;
+    let sx = 0;
+    let sy = 0;
+    let sw = img.naturalWidth;
+    let sh = img.naturalHeight;
+
+    if (srcRatio > dstRatio) {
+      sw = img.naturalHeight * dstRatio;
+      sx = (img.naturalWidth - sw) / 2;
+    } else {
+      sh = img.naturalWidth / dstRatio;
+      sy = (img.naturalHeight - sh) / 2;
+    }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, radius);
+    ctx.clip();
+    ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    ctx.restore();
   }
 }
