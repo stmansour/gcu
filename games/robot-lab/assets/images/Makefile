@@ -11,24 +11,68 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
+IMGEN_DIR := $(REPO_ROOT)/core/imgen
 DIST      := $(REPO_ROOT)/dist/gcu
 THISDIR   := games/robot-lab/assets/images
+PYTHON    := python3
 
-.PHONY: all clean package generate
+export PYTHONPATH := $(IMGEN_DIR)
 
-## all: Generate any missing AI images
+PROMPT_FILES := $(sort $(wildcard *.prompt.txt))
+
+.PHONY: all clean package generate validate _generate_stale
+
+## all: Do not auto-generate images during normal source builds
 all:
-	@echo "*** $(THISDIR): build done ***"
+	@echo "*** $(THISDIR): build done (run 'make generate' to create AI images) ***"
 
-## generate: Generate any missing images that have a .prompt.txt file
+## generate: Generate missing or stale images that have a .prompt.txt file
 generate:
-	@for f in *.prompt.txt; do \
-		base=$$(basename "$$f" .prompt.txt); \
-		if [ ! -f "$$base.png" ]; then \
-			echo "$(THISDIR): generating $$base.png ..."; \
-			python3 batch_generate.py "$$f"; \
+ifdef FILE
+	$(PYTHON) $(IMGEN_DIR)/generate_asset.py "$(FILE)"
+else
+	@$(MAKE) --no-print-directory _generate_stale
+endif
+
+_generate_stale:
+	@set -e; \
+	for prompt in $(PROMPT_FILES); do \
+		target=$$(awk -F': ' '/^TARGET FILE:/ {print $$2; exit}' "$$prompt"); \
+		bg_mode=$$(awk -F': ' '/^BACKGROUND_MODE:/ {print $$2; exit}' "$$prompt"); \
+		if [ -z "$$target" ]; then \
+			echo "skip $$prompt (missing TARGET FILE)"; \
+			continue; \
+		fi; \
+		rebuild=0; \
+		final_target="$$target"; \
+		case "$$bg_mode" in \
+			transparent) final_target="$${target%.png}-transparent.png" ;; \
+		esac; \
+		if [ ! -f "$$target" ]; then \
+			rebuild=1; \
+		elif [ "$$prompt" -nt "$$target" ]; then \
+			rebuild=1; \
+		elif [ "$$bg_mode" = "transparent" ] && { [ ! -f "$$final_target" ] || [ "$$target" -nt "$$final_target" ]; }; then \
+			rebuild=1; \
+		fi; \
+		if [ "$$rebuild" -eq 1 ]; then \
+			echo "build $$prompt"; \
+			$(PYTHON) $(IMGEN_DIR)/generate_asset.py "$$prompt"; \
+		else \
+			echo "ok    $$prompt"; \
 		fi; \
 	done
+
+## validate: Validate prompt files
+validate:
+ifdef FILE
+	$(PYTHON) $(IMGEN_DIR)/validate_prompt.py "$(FILE)"
+else
+	@for f in *.prompt.txt; do \
+		echo "validate $$f"; \
+		$(PYTHON) $(IMGEN_DIR)/validate_prompt.py "$$f" || true; \
+	done
+endif
 
 ## clean: Images are never auto-cleaned — they take hours to regenerate
 clean:

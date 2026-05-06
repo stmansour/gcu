@@ -1,0 +1,10 @@
+TARGET FILE: arm-load-15kg.png
+SIZE: 300x240
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A large heavy bag of rice or a small toolbox representing about 15 kilograms. If rice bag: a thick woven sack, rounded and clearly heavy. If toolbox: a sturdy metal box with a latch and handle. Viewed at a friendly slight downward angle. A small paper hang tag reading "15 kg" is tied to the handle or bag knot.
+
+NOTES:
+Transparent background. The object should look clearly heavy and substantial — the most imposing of the three load props. No bench or floor shadows below. Centered composition. Warm friendly lighting, Pixar-quality prop.

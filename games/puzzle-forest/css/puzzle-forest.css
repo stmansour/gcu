@@ -249,7 +249,7 @@
 }
 
 .pf-board--build {
-  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-columns: minmax(170px, 210px) minmax(0, 1fr);
   grid-template-areas:
     'progress prompt'
     'tray stage';
@@ -276,7 +276,7 @@
 }
 
 .pf-game--minimal-activity .pf-board--build {
-  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-columns: minmax(170px, 210px) minmax(0, 1fr);
   grid-template-areas:
     'tray prompt'
     'tray stage';
@@ -453,6 +453,13 @@
   place-items: center;
 }
 
+.pf-activity-scene--build {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px clamp(28px, 3vw, 44px);
+}
+
 .pf-activity-scene--shape {
   display: block;
 }
@@ -474,8 +481,19 @@
 }
 
 .pf-scene-tray--build {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(12px, 1.8vw, 20px);
+  position: static;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  grid-template-columns: 1fr;
+  align-content: center;
+  justify-content: stretch;
+  gap: clamp(14px, 2vh, 18px);
+  z-index: 4;
 }
 
 .pf-stage--targets-1 {
@@ -499,7 +517,7 @@
 
 .pf-game--minimal-activity .pf-board {
   height: 100%;
-  padding: 84px 0 0;
+  padding: 28px 0 0;
   background: transparent;
   box-shadow: none;
 }
@@ -511,8 +529,8 @@
 
 .pf-game--minimal-activity .pf-feed-topbar {
   position: absolute;
-  left: 200px;
-  right: 200px;
+  left: 292px;
+  right: 220px;
   top: 20px;
   height: 56px;
   display: block;
@@ -545,6 +563,10 @@
 .pf-board--minimal .pf-prompt,
 .pf-board--minimal .pf-tray {
   display: none;
+}
+
+.pf-game--minimal-activity .pf-board--build .pf-tray {
+  display: flex;
 }
 
 .pf-board--minimal .pf-stage {
@@ -587,8 +609,8 @@
 
 .pf-game--feed .pf-feed-topbar {
   position: absolute;
-  left: 200px;
-  right: 200px;
+  left: 292px;
+  right: 220px;
   top: 20px;
   height: 56px;
   display: block;
@@ -611,9 +633,7 @@
 }
 
 .pf-stage--build {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   height: 100%;
   padding: 0;
 }
@@ -623,24 +643,28 @@
 .pf-build-assembly {
   display: flex;
   flex-direction: column; /* vertical axis: 3 rows */
-  /* height drives the size; aspect-ratio (set inline from bounds) computes width */
-  height: min(100%, 520px);
-  max-width: 100%;
-  border-radius: 20px;
+  height: min(82%, 720px);
+  width: auto;
+  max-height: calc(100% - 32px);
+  max-width: min(100%, 620px);
+  border-radius: 28px;
   overflow: hidden;
   box-shadow:
-    0 8px 36px rgba(78, 84, 45, 0.2),
-    inset 0 0 0 3px rgba(185, 162, 102, 0.3);
+    0 24px 48px rgba(54, 69, 35, 0.18),
+    inset 0 0 0 3px rgba(245, 231, 182, 0.42);
   position: relative;
   z-index: 1;
-  background: rgba(255, 252, 240, 0.25);
+  background:
+    linear-gradient(180deg, rgba(255, 246, 219, 0.18), rgba(234, 220, 165, 0.12)),
+    rgba(255, 248, 230, 0.08);
+  backdrop-filter: blur(2px);
 }
 
 .pf-build-assembly--horizontal {
   flex-direction: row; /* horizontal axis: 3 columns */
   height: auto;
-  width: min(100%, 680px);
-  max-height: min(100%, 340px);
+  width: min(60vw, 900px);
+  max-height: none;
 }
 
 .pf-build-assembly--celebrate {
@@ -689,7 +713,7 @@
   min-height: 0;
   padding: 0;
   border-radius: 0;
-  background: transparent;
+  background: linear-gradient(180deg, rgba(255, 247, 223, 0.14), rgba(233, 219, 170, 0.08));
   border: none;
   gap: 0;
   box-shadow: none;
@@ -698,11 +722,11 @@
 
 /* Dashed separator between slots */
 .pf-build-assembly--vertical .pf-build-slot + .pf-build-slot {
-  border-top: 2px dashed rgba(185, 162, 102, 0.45);
+  border-top: 3px dashed rgba(226, 201, 131, 0.72);
 }
 
 .pf-build-assembly--horizontal .pf-build-slot + .pf-build-slot {
-  border-left: 2px dashed rgba(185, 162, 102, 0.45);
+  border-left: 3px dashed rgba(226, 201, 131, 0.72);
 }
 
 .pf-build-assembly .pf-build-slot.pf-target--filled {
@@ -760,8 +784,8 @@
 
 /* Ghost: faint silhouette shown in empty slots */
 .pf-slice--ghost .pf-slice__img {
-  opacity: 0.18;
-  filter: grayscale(0.6);
+  opacity: 0.1;
+  filter: grayscale(0.55) saturate(0.85);
 }
 
 .pf-target__art,
@@ -912,10 +936,9 @@
 
 .pf-tray--build .pf-object {
   min-height: 0;
-  padding: 8px 8px 6px;
+  padding: 4px 2px;
   gap: 0;
-  /* Belt-and-suspenders: clip anything that escapes the inner art container */
-  overflow: hidden;
+  overflow: visible;
 }
 
 .pf-tray--build .pf-object--slice {
@@ -928,14 +951,16 @@
    may not give child elements a resolvable 100% height. */
 .pf-tray--build .pf-object__art {
   display: block;
-  width: 100%;
-  max-height: 160px;
+  width: min(100%, 152px);
+  min-height: 0;
+  max-height: none;
   padding: 0;
   overflow: hidden;
   position: relative;
   border-radius: 10px;
   /* aspect-ratio is set inline by JS; height follows width automatically */
   height: auto;
+  justify-self: center;
 }
 
 /* The slice fills the art container exactly */
@@ -1127,7 +1152,7 @@
  */
 .pf-shape-board__hole {
   position: absolute;
-  top: 58.5%;
+  top: 53%;
   left: 50%;
   width: 28%;
   height: 28%;
@@ -1288,6 +1313,19 @@
   min-height: 100px;
   padding: 6px;
   gap: 0;
+  animation: pf-shape-idle-float 2.8s ease-in-out infinite;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.pf-scene-tray--shape .pf-object--shape-item:nth-child(2) {
+  animation-duration: 3.2s;
+  animation-delay: 0.35s;
+}
+
+.pf-scene-tray--shape .pf-object--shape-item:nth-child(3) {
+  animation-duration: 2.6s;
+  animation-delay: 0.7s;
 }
 
 .pf-object--shape-item .pf-object__art {
@@ -1306,10 +1344,19 @@
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  animation: none !important;
 }
 
 .pf-object--shape-item.dragging .pf-object__img {
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32));
+}
+
+@keyframes pf-shape-idle-float {
+  0% { transform: translateY(0) rotate(-2deg) scale(1); }
+  25% { transform: translateY(-8px) rotate(2deg) scale(1.02); }
+  50% { transform: translateY(-3px) rotate(-1deg) scale(1.01); }
+  75% { transform: translateY(-10px) rotate(1deg) scale(1.02); }
+  100% { transform: translateY(0) rotate(-2deg) scale(1); }
 }
 
 /* ===== FEED THE ANIMAL — scene-first layout ===== */
@@ -1510,12 +1557,21 @@
   box-shadow: none !important;
   overflow: visible !important;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.34)) !important;
+  animation: none !important;
 }
 
 /* Art container keeps clipping the slice correctly */
 .pf-object--build-item .pf-object__art {
   overflow: hidden;
   border-radius: 10px;
+}
+
+@keyframes pf-build-piece-idle-float {
+  0% { transform: translateY(0) rotate(-1.5deg) scale(1); }
+  25% { transform: translateY(-10px) rotate(1.5deg) scale(1.02); }
+  50% { transform: translateY(-4px) rotate(-0.75deg) scale(1.01); }
+  75% { transform: translateY(-12px) rotate(1deg) scale(1.025); }
+  100% { transform: translateY(0) rotate(-1.5deg) scale(1); }
 }
 
 /* ===== COLOR SORTING — big basket layout ===== */
@@ -1631,18 +1687,21 @@
   background: transparent;
   box-shadow: none;
   border: none;
-  min-height: 100px;
+  min-height: 112px;
   padding: 6px;
   gap: 0;
+  animation: pf-sort-item-idle-float 3s ease-in-out infinite;
+  transform-origin: center bottom;
+  will-change: transform;
 }
 
 .pf-object--sort-item .pf-object__art {
-  min-height: 88px;
+  min-height: 98px;
   padding: 2px;
 }
 
 .pf-object--sort-item .pf-object__img {
-  max-height: 88px;
+  max-height: 98px;
   filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
 }
 
@@ -1650,6 +1709,7 @@
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  animation: none !important;
 }
 
 .pf-object--sort-item.dragging .pf-object__img {
@@ -1664,11 +1724,59 @@
 
 .pf-scene-tray .pf-object--sort-item .pf-object__img,
 .pf-scene-tray .pf-object--shape-item .pf-object__img {
-  max-height: 122px;
+  max-height: 136px;
+}
+
+.pf-scene-tray .pf-object--sort-item:nth-child(2) {
+  animation-duration: 3.4s;
+  animation-delay: 0.35s;
+}
+
+.pf-scene-tray .pf-object--sort-item:nth-child(3) {
+  animation-duration: 2.7s;
+  animation-delay: 0.7s;
+}
+
+@keyframes pf-sort-item-idle-float {
+  0% { transform: translateY(0) rotate(-1.5deg) scale(1); }
+  25% { transform: translateY(-7px) rotate(1.5deg) scale(1.03); }
+  50% { transform: translateY(-2px) rotate(-0.75deg) scale(1.01); }
+  75% { transform: translateY(-9px) rotate(1deg) scale(1.03); }
+  100% { transform: translateY(0) rotate(-1.5deg) scale(1); }
 }
 
 .pf-scene-tray .pf-object--build-item .pf-object__art {
-  max-height: 138px;
+  max-height: 250px;
+  width: 100%;
+  justify-self: center;
+}
+
+.pf-scene-tray .pf-object--build-item {
+  min-height: 176px;
+  padding: 0;
+  animation: pf-build-piece-idle-float 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.pf-scene-tray .pf-object--build-item:nth-child(2) {
+  animation-duration: 3.7s;
+  animation-delay: 0.3s;
+}
+
+.pf-scene-tray .pf-object--build-item:nth-child(3) {
+  animation-duration: 3s;
+  animation-delay: 0.65s;
+}
+
+.pf-scene-tray .pf-object--build-item:nth-child(4) {
+  animation-duration: 3.5s;
+  animation-delay: 0.95s;
+}
+
+.pf-scene-tray .pf-object--build-item:nth-child(5) {
+  animation-duration: 2.9s;
+  animation-delay: 1.2s;
 }
 
 /* ============================= */
@@ -1723,13 +1831,13 @@
   }
 
   .pf-game--feed .pf-feed-topbar {
-    left: 176px;
-    right: 176px;
+    left: 240px;
+    right: 180px;
   }
 
   .pf-game--minimal-activity .pf-feed-topbar {
-    left: 176px;
-    right: 176px;
+    left: 240px;
+    right: 180px;
   }
 
   .pf-feed-foods {
@@ -1929,15 +2037,19 @@
   }
 
   .pf-game--feed .pf-feed-topbar {
-    left: 130px;
-    right: 130px;
+    left: 182px;
+    right: 120px;
     top: 12px;
   }
 
   .pf-game--minimal-activity .pf-feed-topbar {
-    left: 130px;
-    right: 130px;
+    left: 182px;
+    right: 120px;
     top: 12px;
+  }
+
+  .pf-game--minimal-activity .pf-board {
+    padding-top: 20px;
   }
 
   .pf-tray {

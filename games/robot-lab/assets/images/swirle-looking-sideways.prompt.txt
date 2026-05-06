@@ -1,0 +1,6 @@
+TARGET FILE: swirle-looking-sideways.png
+SIZE: 512x640
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_character
+PROMPT: SWIRL-E the friendly robot, same design as swirle-powered.png, upper body portrait, head turned slightly to the left looking sideways with wide glowing cyan eyes, expression of surprise and mild alarm — he just watched his arm crash into something
+NOTES: Must match SWIRL-E's established design exactly (same colors, same build, same eye style as swirle-powered.png). Transparent background. Head turned but body still mostly facing forward. This is a reaction/surprise expression — NOT powered down. Eyes still glowing cyan. NanoBanana2 recommended for character consistency.

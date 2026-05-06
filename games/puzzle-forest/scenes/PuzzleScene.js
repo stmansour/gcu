@@ -278,7 +278,7 @@ export class PuzzleScene extends Scene {
       : null;
 
     const feedFoodsEl = isFeedAnimal ? stageEl.querySelector('#pf-feed-foods') : null;
-    const sceneTrayEl = !isFeedAnimal ? stageEl.querySelector('#pf-scene-tray') : null;
+    const sceneTrayEl = (!isFeedAnimal && !isBuildPuzzle) ? stageEl.querySelector('#pf-scene-tray') : null;
     trayEl.innerHTML = '';
     if (feedFoodsEl) feedFoodsEl.innerHTML = '';
     if (sceneTrayEl) sceneTrayEl.innerHTML = '';
@@ -546,6 +546,11 @@ export class PuzzleScene extends Scene {
     switch (this._category?.id) {
       case 'color-sorting':
         AudioClips.getInstance().speakRandom('puzzle-forest', 'color_sort_correct_');
+        break;
+      case 'feed-the-animal':
+      case 'shape-matching':
+      case 'build-the-animal':
+        AudioClips.getInstance().speakRandom('puzzle-forest', 'praise_');
         break;
       default:
         break;
@@ -875,7 +880,6 @@ export class PuzzleScene extends Scene {
             </div>`;
           }).join('')}
         </div>
-        <div class="pf-scene-tray pf-scene-tray--build" id="pf-scene-tray"></div>
       </div>
     `;
   }

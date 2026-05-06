@@ -1,0 +1,10 @@
+TARGET FILE: cartridge-1to1.png
+SIZE: 400x280
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A rectangular metal gear cartridge housing viewed at a slight three-quarter angle. The cartridge is a dark gunmetal gray box with a clear rectangular window in the front face, through which two equal-sized gold spur gears are visible side by side, meshing at their teeth. The two gears are exactly the same size. A small embossed label on the housing reads "1:1". The housing has rounded corners, small bolt details at the corners, and a slight metallic sheen.
+
+NOTES:
+Transparent background. This is a physical component that sits on a lab bench. The window must clearly show two equal gears. The housing should look like it could be picked up and installed into a robot. Warm lab lighting, Pixar-quality prop.

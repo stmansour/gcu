@@ -1,8 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# assets/images/portals — AI-generated portal images + hand-crafted SVGs
-#
-# PNGs are AI-generated (one per .prompt.txt file).
-# SVG files are hand-crafted and are never cleaned.
+# assets/images/portals — AI-generated portal images
 #
 # Requires ComfyUI running at http://127.0.0.1:8188.
 # Activate the ComfyUI venv before running make generate:
@@ -33,9 +30,8 @@ generate:
 clean:
 	@echo "*** $(THISDIR): nothing to clean (images are preserved) ***"
 
-## package: Copy all PNGs and SVGs to dist
+## package: Copy all PNGs to dist
 package:
 	mkdir -p $(DIST)/assets/images/portals
 	@if ls *.png >/dev/null 2>&1; then cp *.png $(DIST)/assets/images/portals/; fi
-	@if ls *.svg >/dev/null 2>&1; then cp *.svg $(DIST)/assets/images/portals/; fi
 	@echo "*** $(THISDIR): completed package ***"

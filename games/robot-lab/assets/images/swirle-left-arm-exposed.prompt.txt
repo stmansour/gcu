@@ -1,0 +1,10 @@
+TARGET FILE: swirle-left-arm-exposed.png
+SIZE: 1024x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+Isolated left robot arm for SWIRL-E, outer shell removed to reveal internal gears, motor shaft, small belt, wires, and a shoulder pivot hub. The arm is angled horizontally to the right from the shoulder pivot, with rounded friendly robot forms and teal-blue metal panels. The shoulder pivot is at the far left edge of the object. The upper arm and forearm form one connected assembly suitable for rotation around the left pivot point.
+
+NOTES:
+Transparent background. Single arm only, no torso, no head, no lab bench, no extra props. The pivot point must be visually located at the far left side. The gears must be clearly visible and child-readable, not tiny technical clutter.

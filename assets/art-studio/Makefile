@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# assets/art-studio — shared SVG assets
+# assets/art-studio — shared raster assets
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
@@ -16,5 +16,5 @@ clean:
 
 package:
 	mkdir -p $(DIST)/assets/art-studio
-	cp *.svg $(DIST)/assets/art-studio/
+	cp *.png $(DIST)/assets/art-studio/
 	@echo "*** $(THISDIR): completed package ***"

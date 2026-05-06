@@ -222,28 +222,46 @@ function drawColorCheck(ctx) {
 
 // ── Public API ────────────────────────────────────────────────────────────
 
+function loadImageFromCandidates(img, candidates, onSuccess, onFailure) {
+  if (candidates.length === 0) {
+    onFailure();
+    return;
+  }
+
+  const [current, ...rest] = candidates;
+  img.onload = onSuccess;
+  img.onerror = () => loadImageFromCandidates(img, rest, onSuccess, onFailure);
+  img.src = current;
+}
+
 /**
- * Try to load a pre-generated PNG for a scene, falling back to programmatic drawing.
- * Call this instead of drawScene() when real images may be available.
+ * Try to load a pre-generated scene image, falling back to programmatic drawing.
+ * Source-tree runs keep using PNGs, while packaged builds may optimize them to JPEGs.
  *
  * @param {'fruit'|'garden'|'colorcheck'} sceneId
  * @param {HTMLCanvasElement} canvas
- * @param {string} [basePath] — folder that contains scene-{id}.png files
+ * @param {string} [basePath] — folder that contains scene-{id}.{png,jpg} files
  * @returns {Promise<boolean>} true if an image was loaded, false if canvas-drawn fallback was used
  */
 export function drawSceneAsync(sceneId, canvas, basePath = 'games/robot-lab/assets/images') {
   return new Promise(resolve => {
     const img = new Image();
-    img.onload = () => {
-      drawAvatar(img, canvas);   // reuse the same center-fit + calib-patch logic
-      resolve(true);
-    };
-    img.onerror = () => {
-      // No real image — fall back to procedural canvas drawing
-      drawScene(sceneId, canvas);
-      resolve(false);
-    };
-    img.src = `${basePath}/scene-${sceneId}.png`;
+    const stem = `${basePath}/scene-${sceneId}`;
+    const candidates = [`${stem}.png`, `${stem}.jpg`, `${stem}.jpeg`];
+
+    loadImageFromCandidates(
+      img,
+      candidates,
+      () => {
+        drawAvatar(img, canvas);   // reuse the same center-fit + calib-patch logic
+        resolve(true);
+      },
+      () => {
+        // No real image — fall back to procedural canvas drawing
+        drawScene(sceneId, canvas);
+        resolve(false);
+      },
+    );
   });
 }
 

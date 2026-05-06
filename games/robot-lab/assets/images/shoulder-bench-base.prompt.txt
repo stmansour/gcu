@@ -1,0 +1,11 @@
+TARGET FILE: shoulder-bench-base.png
+SIZE: 1024x700
+BACKGROUND_MODE: scene
+BACKGROUND: cozy sci-fi robot lab workbench, warm wood, dark navy walls, soft gold practical lights
+STYLE_NAME: rl_scene
+
+PROMPT:
+Close-up view of Grandpa's cozy robot lab workbench set up for SWIRL-E's shoulder drive assembly. On the left, SWIRL-E's friendly upper body is partially visible with his left shoulder panel open, revealing an empty circular gear slot and a small electric motor. The center of the bench is clear and spacious — a clean metal mounting area with subtle engraved guide marks, ready for gear cartridges and wiring to be placed. A battery pack and two labeled voltage ports (3V, 6V, 9V) are mounted on a small panel near the right. Warm wood bench foreground, small wrenches and screws at the edges, dark navy workshop background with soft gold ceiling lights.
+
+NOTES:
+Composition must leave the central 50 percent of the image open for runtime UI overlays (gear cartridge cards, step controls, monitors). SWIRL-E should occupy the upper-left corner only, suggesting his shoulder is the destination for the work. Do not include text labels or UI panels in the center. Style must match the cozy Pixar-quality Robot Lab established in earlier chapters.

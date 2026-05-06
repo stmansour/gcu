@@ -46,30 +46,30 @@ sort_white_01|Can you find something white and put it in the basket?
 sort_white_02|Find something white and move it into the basket.
 sort_white_03|Can you put something white in the basket?
 sort_white_04|Find the white one and put it in the basket.
-shape_circle_01|Can you find the circle at the bottom and move it to fill the hole?
-shape_circle_02|Find the circle at the bottom and move it into the hole.
-shape_circle_03|Can you move the circle into the hole?
-shape_circle_04|Find the circle and slide it into the hole.
-shape_square_01|Can you find the square at the bottom and move it to fill the hole?
-shape_square_02|Find the square at the bottom and move it into the hole.
-shape_square_03|Can you move the square into the hole?
-shape_square_04|Find the square and slide it into the hole.
-shape_triangle_01|Can you find the triangle at the bottom and move it to fill the hole?
-shape_triangle_02|Find the triangle at the bottom and move it into the hole.
-shape_triangle_03|Can you move the triangle into the hole?
-shape_triangle_04|Find the triangle and slide it into the hole.
-shape_star_01|Can you find the star at the bottom and move it to fill the hole?
-shape_star_02|Find the star at the bottom and move it into the hole.
-shape_star_03|Can you move the star into the hole?
-shape_star_04|Find the star and slide it into the hole.
-shape_heart_01|Can you find the heart at the bottom and move it to fill the hole?
-shape_heart_02|Find the heart at the bottom and move it into the hole.
-shape_heart_03|Can you move the heart into the hole?
-shape_heart_04|Find the heart and slide it into the hole.
-shape_diamond_01|Can you find the diamond at the bottom and move it to fill the hole?
-shape_diamond_02|Find the diamond at the bottom and move it into the hole.
-shape_diamond_03|Can you move the diamond into the hole?
-shape_diamond_04|Find the diamond and slide it into the hole.
+shape_circle_01|Can you find the circle at the bottom and move it onto the matching shape?
+shape_circle_02|Find the circle at the bottom and move it onto the matching shape.
+shape_circle_03|Can you move the circle onto the matching shape?
+shape_circle_04|Find the circle and slide it onto the matching shape.
+shape_square_01|Can you find the square at the bottom and move it onto the matching shape?
+shape_square_02|Find the square at the bottom and move it onto the matching shape.
+shape_square_03|Can you move the square onto the matching shape?
+shape_square_04|Find the square and slide it onto the matching shape.
+shape_triangle_01|Can you find the triangle at the bottom and move it onto the matching shape?
+shape_triangle_02|Find the triangle at the bottom and move it onto the matching shape.
+shape_triangle_03|Can you move the triangle onto the matching shape?
+shape_triangle_04|Find the triangle and slide it onto the matching shape.
+shape_star_01|Can you find the star at the bottom and move it onto the matching shape?
+shape_star_02|Find the star at the bottom and move it onto the matching shape.
+shape_star_03|Can you move the star onto the matching shape?
+shape_star_04|Find the star and slide it onto the matching shape.
+shape_heart_01|Can you find the heart at the bottom and move it onto the matching shape?
+shape_heart_02|Find the heart at the bottom and move it onto the matching shape.
+shape_heart_03|Can you move the heart onto the matching shape?
+shape_heart_04|Find the heart and slide it onto the matching shape.
+shape_diamond_01|Can you find the diamond at the bottom and move it onto the matching shape?
+shape_diamond_02|Find the diamond at the bottom and move it onto the matching shape.
+shape_diamond_03|Can you move the diamond onto the matching shape?
+shape_diamond_04|Find the diamond and slide it onto the matching shape.
 build_bear_01|Can you find the bear pieces and move them into place?
 build_bear_02|Find the bear pieces and put the bear together.
 build_bear_03|Can you move the bear pieces into the right places?

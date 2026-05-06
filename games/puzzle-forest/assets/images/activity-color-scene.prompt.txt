@@ -5,8 +5,8 @@ BACKGROUND: full image, no transparency
 STYLE_NAME: gcu_scene
 
 PROMPT:
-A bright sunny forest meadow for a toddler color-sorting game, wide cinematic landscape composition, cheerful flowers near the edges, healthy green grass, warm tree trunks, and a calm open center where colorful baskets can sit. Clear saturated storybook color, crisp contrast, readable middle area, no haze, no fog, no bloom, no washed-out whites, no centered frame, no text, no UI.
+A bright sunny forest meadow for a toddler color-sorting game, wide cinematic landscape composition, cheerful flowers near the edges, healthy green grass, warm tree trunks, and a broad calm open center for gameplay. Clear saturated storybook color, crisp contrast, readable middle area, no haze, no fog, no bloom, no washed-out whites, no centered frame, no text, no UI. No basket, no baskets, no container, no bowl, no crate, no bucket, no stump, no bench, no object in the center, no props in the middle ground.
 
 
 NOTES:
-This is only the scene background. Keep the center broad and uncluttered so basket gameplay reads easily over it. It should feel lively and warm without looking pale or sleepy.
+This is only the scene background. Keep the center broad and uncluttered so the real basket gameplay reads easily over it. There must be no basket or basket-like object anywhere in the scene. It should feel lively and warm without looking pale or sleepy.

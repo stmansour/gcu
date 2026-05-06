@@ -1,0 +1,11 @@
+TARGET FILE: motor-gear-bench-base.png
+SIZE: 1000x650
+BACKGROUND_MODE: scene
+BACKGROUND: close-up cozy sci-fi robot lab workbench with warm wood, dark navy workshop walls, soft gold practical lights, and subtle technical equipment
+STYLE_NAME: rl_scene
+
+PROMPT:
+Close-up view of Grandpa's cozy sci-fi robot lab workbench prepared for a shoulder gear experiment. SWIRL-E's friendly head is visible at upper left looking toward a large empty mechanical test area in the center. The center has a clean metal mounting plate, two empty shaft hubs for a motor gear and arm gear, and room for large animated gears to be drawn over it. Warm wooden lab bench across the lower foreground, small tools and parts around the edges only, dark navy workshop background.
+
+NOTES:
+Composition must leave the central 60 percent of the image clear for runtime-drawn gears, counters, arm, and load. Do not include text, UI panels, labels, gears, or motion blur. SWIRL-E should look professional, tactile, cinematic, and consistent with existing Robot Lab assets.

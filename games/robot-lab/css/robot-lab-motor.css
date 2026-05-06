@@ -1,0 +1,418 @@
+/**
+ * Robot Lab — Chapter 4: Shoulder Drive System
+ *
+ * Three phases share the same sidebar (defined in robot-lab.css).
+ * This file adds only the main-area layouts for each phase.
+ */
+
+/* ── Board override ───────────────────────────────────────────────────────── */
+
+.sh-board {
+  background: radial-gradient(ellipse at 60% 40%, #0e2040 0%, #060e22 70%);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Phase 1: Arm Job Picker ─────────────────────────────────────────────── */
+
+.sh-job-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 16px;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sh-job-picker__prompt {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e8f0fe;
+  text-align: center;
+  margin: 0;
+}
+
+.sh-job-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sh-job-card {
+  background: rgba(255,255,255,0.07);
+  border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 18px;
+  padding: 20px 16px;
+  width: 180px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  flex: 0 0 auto;
+}
+
+.sh-job-card:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .sh-job-card:hover {
+    background: rgba(255,255,255,0.13);
+    border-color: rgba(240,200,102,0.6);
+  }
+}
+
+.sh-job-card--selected {
+  border-color: #F0C866;
+  background: rgba(240,200,102,0.15);
+}
+
+.sh-job-card__icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.sh-job-card__name {
+  font-size: 17px;
+  font-weight: 800;
+  color: #e8f0fe;
+  margin-bottom: 6px;
+}
+
+.sh-job-card__weight {
+  font-size: 22px;
+  font-weight: 700;
+  color: #F0C866;
+  margin-bottom: 4px;
+}
+
+.sh-job-card__speed {
+  font-size: 14px;
+  color: #a0b8e0;
+  margin-bottom: 10px;
+}
+
+.sh-job-card__speed strong {
+  color: #80d8ff;
+}
+
+.sh-job-card__tagline {
+  font-size: 12px;
+  color: #7a98c0;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.sh-job-card__examples {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #6080a0;
+  text-align: left;
+}
+.sh-job-card__examples li::before { content: '• '; }
+
+/* ── Phase 2: Workbench ──────────────────────────────────────────────────── */
+
+.sh-workbench {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.sh-job-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(240,200,102,0.12);
+  border-bottom: 1px solid rgba(240,200,102,0.25);
+  flex-shrink: 0;
+}
+
+.sh-job-banner__icon  { font-size: 22px; }
+.sh-job-banner__label { flex: 1; font-size: 14px; font-weight: 700; color: #F0C866; }
+
+.sh-job-banner__change {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 12px;
+  color: #a0b8e0;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sh-workbench__body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left: gear cartridges + animation */
+.sh-gear-panel {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px 12px 14px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  gap: 10px;
+}
+
+/* Right: voltage + monitors + test */
+.sh-power-panel {
+  width: 230px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.sh-panel-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: #80a8d0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* Gear cartridge cards — vertical stack */
+.sh-cartridges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.sh-cartridge-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.sh-cartridge-card:active { opacity: 0.85; }
+
+@media (hover: hover) {
+  .sh-cartridge-card:hover {
+    border-color: rgba(240,200,102,0.5);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.sh-cartridge-card--selected {
+  border-color: #F0C866;
+  background: rgba(240,200,102,0.12);
+}
+
+.sh-cartridge-card__img-wrap {
+  width: 60px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sh-cartridge-card__img {
+  max-width: 60px;
+  max-height: 44px;
+  object-fit: contain;
+}
+
+.sh-cartridge-card__fallback {
+  width: 60px;
+  height: 44px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #F0C866;
+}
+
+.sh-cartridge-card__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f0fe;
+}
+
+.sh-cartridge-card__tagline {
+  font-size: 11px;
+  color: #7090b0;
+  line-height: 1.3;
+}
+
+/* Gear animation canvas */
+.sh-gear-preview {
+  flex: 1 1 0;
+  min-height: 80px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 100%;
+}
+
+/* Voltage buttons */
+.sh-voltage-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sh-volt-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+
+.sh-volt-btn:active { opacity: 0.85; }
+
+@media (hover: hover) {
+  .sh-volt-btn:hover {
+    border-color: rgba(100,180,255,0.5);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.sh-volt-btn--selected {
+  border-color: #60c8ff;
+  background: rgba(100,200,255,0.12);
+}
+
+.sh-volt-btn__label {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e8f0fe;
+}
+
+.sh-volt-btn--selected .sh-volt-btn__label {
+  color: #60c8ff;
+}
+
+.sh-volt-btn__tagline {
+  font-size: 11px;
+  color: #6080a0;
+}
+
+/* Monitors */
+.sh-monitors {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.sh-monitor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.sh-monitor__label {
+  font-size: 11px;
+  color: #6080a0;
+  white-space: nowrap;
+}
+
+.sh-monitor__value {
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #a0b8d0;
+}
+
+.sh-monitor__value--green   { color: #40e880; }
+.sh-monitor__value--yellow  { color: #f0c866; }
+.sh-monitor__value--red     { color: #ff6060; }
+.sh-monitor__value--neutral { color: #80a8c8; }
+
+/* Test button */
+.sh-test-btn {
+  background: linear-gradient(135deg, #1a7a42, #0f5a2e);
+  color: #40e880;
+  box-shadow: 0 4px 16px rgba(40,200,100,0.35);
+  border: 1px solid rgba(64,232,128,0.4);
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.sh-test-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Phase 3: Arm Test ───────────────────────────────────────────────────── */
+
+.sh-test-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px 16px 16px;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.sh-test-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: #a0b8d0;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sh-arm-canvas {
+  flex: 1 1 0;
+  min-height: 200px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 100%;
+}
+
+.sh-test-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}

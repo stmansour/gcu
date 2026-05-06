@@ -1,0 +1,6 @@
+TARGET FILE: load-seed-crate.png
+SIZE: 128x128
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+PROMPT: Wooden garden crate filled with colorful seed packets in paper envelopes, viewed at a slight downward angle, warm lighting, a small handwritten tag reading "3.0 kg" tucked into the crate
+NOTES: Transparent background. Square crop, crate centered and filling most of the frame. Crate looks solid and slightly heavy. Warm workshop palette, Pixar quality prop.

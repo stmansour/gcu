@@ -1,0 +1,10 @@
+TARGET FILE: gear-24t.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A single mechanical spur gear with 24 teeth, viewed straight on from the front, centered in the image. The gear is warm gold and amber colored, polished metal, with a circular hub in the center and a central bore hole. The 24 teeth are evenly spaced, clearly readable, with slight beveled edges. The gear takes up about 80 percent of the image width.
+
+NOTES:
+Transparent background. The exact center of the gear must be at the exact center of the image — critical for canvas rotation animation. No shadows outside the gear. No other objects. Larger than the 8T and 12T gears proportionally. Machined, solid, Robot Lab style.

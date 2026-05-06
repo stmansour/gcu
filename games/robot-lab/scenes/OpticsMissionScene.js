@@ -659,7 +659,7 @@ export class OpticsMissionScene extends Scene {
     if (!svgEl) return;
 
     const SVG_NS = 'http://www.w3.org/2000/svg';
-    const { tube, axisY } = CHAPTER_2.layout;
+    const { tube } = CHAPTER_2.layout;
     const topY = tube.y1 + 10;
     const botY = tube.y2 - 10;
     const cy   = (topY + botY) / 2;

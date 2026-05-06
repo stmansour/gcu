@@ -1,0 +1,10 @@
+TARGET FILE: bench-tool-cup.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+Small lab bench cup holding tiny screwdrivers, screws, and robot repair tools. The cup is upright, warm brown and brass, with a few shiny screws visible near the rim. Three-quarter view, centered isolated prop.
+
+NOTES:
+Transparent background. Single upright prop only. Must read clearly at small size on a lab bench.

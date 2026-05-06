@@ -403,6 +403,7 @@ export class ColorMissionScene extends Scene {
     const g = document.createElementNS(SVG_NS, 'g');
     g.setAttribute('class', 'rl-cs-output-node');
     g.setAttribute('data-output', id);
+    g.style.cursor = 'pointer';
 
     // Terminal circle (drop target)
     const circle = document.createElementNS(SVG_NS, 'circle');
@@ -431,6 +432,14 @@ export class ColorMissionScene extends Scene {
     badge.setAttribute('data-badge', id);
     badge.setAttribute('visibility', 'hidden');
     g.appendChild(badge);
+
+    // Direct binding on the output group is more reliable than depending only
+    // on whole-SVG hit testing, especially once labels and badges sit over the node.
+    g.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this._disconnectOutput(id);
+    });
 
     svg.appendChild(g);
   }
@@ -515,26 +524,18 @@ export class ColorMissionScene extends Scene {
   }
 
   _onPBPointerDown(e) {
-    if (this._solved) return;
     const pt = this._svgPoint(e.clientX, e.clientY);
 
     // Tap/click on a connected OUTPUT terminal → disconnect that wire.
     // This is how the player removes a wrong connection.
     const outputHit = this._nearestOutput(pt.x, pt.y);
     if (outputHit) {
-      if (this._engine.routing[outputHit]) {
-        e.preventDefault();
-        const disconnectedSensor = this._engine.routing[outputHit];
-        this._engine.removeRoute(outputHit);
-        // Reset that sensor's filter sub-label back to undiscovered state
-        const sub = this._pbSvg.querySelector(`[data-sublbl="${disconnectedSensor}"]`);
-        if (sub) { sub.textContent = 'filter: ?'; sub.removeAttribute('style'); }
-        this._redrawWires();
-        this._processAndDisplay();
-        this._checkState();
-      }
+      e.preventDefault();
+      this._disconnectOutput(outputHit);
       return;
     }
+
+    if (this._solved) return;
 
     // Drag begins from a SENSOR terminal → draw a new wire.
     const sensor = this._nearestSensor(pt.x, pt.y);
@@ -576,6 +577,28 @@ export class ColorMissionScene extends Scene {
     }
 
     this._dragFrom = null;
+  }
+
+  _disconnectOutput(outputChannel) {
+    if (!this._engine.routing[outputChannel]) return;
+
+    // If the child disconnects after solving, return to editable mode so
+    // they can redraw wires immediately.
+    this._solved = false;
+
+    const disconnectedSensor = this._engine.routing[outputChannel];
+    this._engine.removeRoute(outputChannel);
+
+    // Reset that sensor's filter sub-label back to undiscovered state
+    const sub = this._pbSvg.querySelector(`[data-sublbl="${disconnectedSensor}"]`);
+    if (sub) {
+      sub.textContent = 'filter: ?';
+      sub.removeAttribute('style');
+    }
+
+    this._redrawWires();
+    this._processAndDisplay();
+    this._checkState();
   }
 
   // ── Wire rendering ────────────────────────────────────────────────────────

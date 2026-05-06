@@ -1,0 +1,10 @@
+TARGET FILE: gear-36t.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A single mechanical spur gear with 36 teeth, viewed straight on from the front, centered in the image. The gear is cool silver and steel blue colored, polished metal, with a circular hub and a central bore hole. The 36 teeth are evenly spaced and clearly readable. The gear is noticeably larger than the gold motor gears and takes up about 80 percent of the image width.
+
+NOTES:
+Transparent background. The exact center of the gear must be at the exact center of the image — critical for canvas rotation animation. No external shadows. No other objects. Silver/steel color differentiates this arm-side gear from the gold motor gears. Robot Lab style.

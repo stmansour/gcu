@@ -1,0 +1,10 @@
+TARGET FILE: bench-tool-cup-spilled.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+The same small lab bench cup knocked onto its side with tiny screws and tools spilled out in a funny but harmless mess. Three-quarter view, centered isolated prop.
+
+NOTES:
+Transparent background. Must look like the aftermath of SWIRL-E's arm accidentally knocking it over. Keep it playful and non-dangerous, with no broken glass and no sharp threatening objects.

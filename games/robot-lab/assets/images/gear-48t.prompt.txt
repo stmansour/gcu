@@ -1,0 +1,10 @@
+TARGET FILE: gear-48t.png
+SIZE: 512x512
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A single large mechanical spur gear with 48 teeth, viewed straight on from the front, centered in the image. The gear is cool silver and steel blue colored, polished metal, with a circular hub with spoke cutouts for weight reduction and a central bore hole. The 48 teeth are evenly spaced and clearly visible around the outer edge. The gear is large and impressive, filling about 85 percent of the image width.
+
+NOTES:
+Transparent background. The exact center of the gear must be at the exact center of the image — critical for canvas rotation animation. No external shadows. No other objects. This is the largest gear in the set — it should look visibly more substantial than the 36T gear. Robot Lab style.

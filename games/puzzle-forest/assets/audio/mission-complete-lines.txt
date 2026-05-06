@@ -1,5 +1,5 @@
-mission_complete_01|You did it! Hooray!
-mission_complete_02|All done! That was fun!
-mission_complete_03|You made it! Yay!
-mission_complete_04|Great job! You finished!
-mission_complete_05|Hooray! You did them all!
+mission_complete_01|You've done a simply splendid job! What fun!
+mission_complete_02|That was simply Jolly good show! Quite admirable! 
+mission_complete_03|Oh, I say—that’s rather impressive!
+mission_complete_04|Lovely! Brilliant work, truly!
+mission_complete_05|You, are so clever! What a tidy little success!

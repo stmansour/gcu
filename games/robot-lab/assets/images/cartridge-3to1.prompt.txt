@@ -1,0 +1,10 @@
+TARGET FILE: cartridge-3to1.png
+SIZE: 400x280
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A rectangular metal gear cartridge housing viewed at a slight three-quarter angle. The cartridge is a dark gunmetal gray box with a clear rectangular window in the front face, through which two meshing spur gears are visible — a small gold gear on the left driving a noticeably larger silver gear on the right. The large gear is about three times the diameter of the small gear. A small embossed label on the housing reads "3:1". The housing has rounded corners, small bolt details, and a metallic sheen.
+
+NOTES:
+Transparent background. The size difference between the two gears must be clearly obvious — the large gear should look significantly bigger than the small one. This is a physical lab component. Warm lighting, Pixar-quality prop.

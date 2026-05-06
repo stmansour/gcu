@@ -3,11 +3,12 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-DIST      := $(REPO_ROOT)/dist/gcu
+DIST_ROOT := $(REPO_ROOT)/dist
+DIST      := $(DIST_ROOT)/gcu
 DIRS      := core hub games assets CharacterSheets
 THISDIR   := gcu
 
-.PHONY: all clean package help
+.PHONY: all clean package release relsman serve cutely help
 
 all:
 	@set -e; \
@@ -25,6 +26,8 @@ clean:
 	@echo "*** $(THISDIR): completed clean ***"
 
 package:
+	@echo "Distribution directory = $(DIST)"
+	rm -rf $(DIST)
 	mkdir -p $(DIST)
 	cp index.html $(DIST)/
 	@set -e; \
@@ -33,16 +36,39 @@ package:
 	done
 	@echo "*** $(THISDIR): optimizing deployment images ***"
 	node scripts/optimize-deployment-images.mjs
-	cd $(REPO_ROOT)/dist && tar czf gcu.tar.gz gcu/
+	rm -f $(DIST_ROOT)/gcu.tar.gz
+	cd $(DIST_ROOT) && tar czf gcu.tar.gz gcu/
 	@echo "*** $(THISDIR): completed package — dist/gcu.tar.gz ready ***"
 
-release:
+release: package
 	rm -rf /Library/WebServer/Documents/gcu
 	cp -R $(DIST) /Library/WebServer/Documents/gcu
+	chown -R "stevemansour:staff" $(DIST_ROOT)
 
-relsman:
+relsman: package
 	rsync -az --delete -e "ssh -i ~/.ssh/id_sman -p 1291" $(DIST)/ sman@stevemansour.com:~/public_html/gcu.new/
 	ssh -i ~/.ssh/id_sman -p 1291 sman@stevemansour.com 'rm -rf ~/public_html/gcu.bak && mv ~/public_html/gcu ~/public_html/gcu.bak && mv ~/public_html/gcu.new ~/public_html/gcu && rm -rf ~/public_html/gcu.bak'
+
+# Local static server for browser dev — http://localhost:3000 (see package.json "start").
+# No Python; run `npm install` once in the repo root if node_modules is missing.
+serve:
+	cd $(REPO_ROOT) && npm start
+
+comfy:
+	@echo ""
+	@echo "ComfyUI image server startup:"
+	@echo ""
+	@echo "  cd ~/Documents/src/ai/ComfyUI"
+	@echo "  source venv/bin/activate"
+	@echo "  python main.py"
+	@echo ""
+	@echo "Then open:"
+	@echo "  http://127.0.0.1:8188"
+	@echo ""
+	@echo "Generate GCU images from an asset directory, for example:"
+	@echo "  cd games/robot-lab/assets/images"
+	@echo "  make generate"
+	@echo ""
 
 help:
 	@echo ""
@@ -53,4 +79,6 @@ help:
 	@echo "  make generate  — (in image dirs) regenerate AI images via ComfyUI"
 	@echo "  make release   — copy dist/gcu into /Library/WebServer/Documents/gcu"
 	@echo "  make relsman   — rsync dist/gcu to stevemansour.com:~/public_html/gcu.new and swap it live"
+	@echo "  make serve     — local dev: npm start (http-server on port 3000, repo root)"
+	@echo "  make comfy     — print the commands to start the local Cutely/ComfyUI image server"
 	@echo ""

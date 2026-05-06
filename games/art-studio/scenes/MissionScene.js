@@ -55,7 +55,7 @@ export class MissionScene extends Scene {
             </div>
           </div>
           <div class="mission-painting" id="art-studio-painting">
-            <img src="assets/art-studio/placeholder-painting-grey.svg" alt="Grandpa's painting (placeholder)" class="mission-painting__img" />
+            <img src="assets/art-studio/placeholder-painting-grey.png" alt="Grandpa's painting (placeholder)" class="mission-painting__img" />
           </div>
           <div class="mission-success" id="art-studio-success" hidden>
             <p class="mission-success__text"></p>

@@ -1,0 +1,6 @@
+TARGET FILE: load-watering-can.png
+SIZE: 128x128
+BACKGROUND_MODE: transparent
+STYLE_NAME: gcu_prop
+PROMPT: Copper or green metal watering can, full of water (you can see the water level through the spout), viewed at a slight angle, warm lighting, a small tag reading "6.0 kg" tied to the handle
+NOTES: Transparent background. Square crop, watering can centered. Should look heavy and full. Warm workshop palette, Pixar quality prop.

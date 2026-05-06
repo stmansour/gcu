@@ -1,0 +1,10 @@
+TARGET FILE: arm-load-7kg.png
+SIZE: 300x240
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A small collection of everyday objects representing about 7 kilograms: a light school backpack with a single water bottle tucked in the side pocket. Viewed at a friendly slight downward angle. A small paper hang tag reading "7 kg" is tied to the backpack strap.
+
+NOTES:
+Transparent background. The objects should feel approachable and familiar to a child. No bench surface, no shadows below the objects. Centered composition. Warm friendly lighting, Pixar-quality prop.

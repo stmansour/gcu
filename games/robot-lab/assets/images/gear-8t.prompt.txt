@@ -1,0 +1,10 @@
+TARGET FILE: gear-8t.png
+SIZE: 256x256
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A single small mechanical spur gear with 8 teeth, viewed straight on from the front, centered in the image. The gear is warm gold and amber colored, polished metal, with a small circular hub in the center and a central bore hole. The 8 teeth are large, evenly spaced, and clearly visible. The gear takes up about 80 percent of the image width.
+
+NOTES:
+Transparent background. The exact center of the gear must be at the exact center of the image — this is critical because the image will be rotated in a canvas animation. No shadows falling outside the gear itself. No other objects. The gear should look machined and solid, consistent with the cozy sci-fi Robot Lab style.

@@ -269,7 +269,7 @@
       "id": "shape-circle",
       "categoryId": "shape-matching",
       "promptIcon": "⚪",
-      "promptText": "Can you find the circle at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the circle at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "circle-hole", "label": "Circle", "icon": "⚪", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Circle goes here", "accepts": ["circle"] }
       ],
@@ -283,7 +283,7 @@
       "id": "shape-square",
       "categoryId": "shape-matching",
       "promptIcon": "🟥",
-      "promptText": "Can you find the square at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the square at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "square-hole", "label": "Square", "icon": "🟥", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Square goes here", "accepts": ["square"] }
       ],
@@ -297,7 +297,7 @@
       "id": "shape-triangle",
       "categoryId": "shape-matching",
       "promptIcon": "🔺",
-      "promptText": "Can you find the triangle at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the triangle at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "triangle-hole", "label": "Triangle", "icon": "🔺", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Triangle goes here", "accepts": ["triangle"] }
       ],
@@ -311,7 +311,7 @@
       "id": "shape-star",
       "categoryId": "shape-matching",
       "promptIcon": "⭐",
-      "promptText": "Can you find the star at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the star at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "star-hole", "label": "Star", "icon": "⭐", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Star goes here", "accepts": ["star"] }
       ],
@@ -325,7 +325,7 @@
       "id": "shape-heart",
       "categoryId": "shape-matching",
       "promptIcon": "❤️",
-      "promptText": "Can you find the heart at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the heart at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "heart-hole", "label": "Heart", "icon": "❤️", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Heart goes here", "accepts": ["heart"] }
       ],
@@ -339,7 +339,7 @@
       "id": "shape-diamond",
       "categoryId": "shape-matching",
       "promptIcon": "🔷",
-      "promptText": "Can you find the diamond at the bottom and move it to fill the hole?",
+      "promptText": "Can you find the diamond at the bottom and move it onto the matching shape?",
       "targets": [
         { "id": "diamond-hole", "label": "Diamond", "icon": "🔷", "image": "games/puzzle-forest/assets/images/shape-teaching-board-transparent.png", "slotLabel": "Diamond goes here", "accepts": ["diamond"] }
       ],

@@ -33,4 +33,5 @@ export const CHAPTER_SCENES = {
   'ch1-power':  { scene: 'robot-lab-circuit', missionId: 'ch1-power' },
   'ch2-optics': { scene: 'robot-lab-optics' },
   'ch3-color':  { scene: 'robot-lab-color'  },
+  'ch4-motors': { scene: 'robot-lab-motor'  },
 };

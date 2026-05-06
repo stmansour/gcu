@@ -1,0 +1,10 @@
+TARGET FILE: arm-load-10kg.png
+SIZE: 300x240
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A loaded school backpack stuffed full with books and supplies, representing about 10 kilograms. Viewed at a friendly slight downward angle. A small paper hang tag reading "10 kg" is attached to the zipper pull.
+
+NOTES:
+Transparent background. The backpack should look noticeably heavier and fuller than the 7 kg version. No bench surface or shadows below. Centered composition. Warm friendly lighting, Pixar-quality prop.

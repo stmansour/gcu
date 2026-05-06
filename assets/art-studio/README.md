@@ -4,8 +4,8 @@
 
 | File | Purpose |
 |------|--------|
-| `placeholder-painting-grey.svg` | Grandpa's painting in greyscale. Replace with layered illustration; mission reveal will colorize sections (night sky, sunset, forest, sky, full). |
-| *(future)* `painting-color.svg` or per-section assets | Color versions for progressive reveal. |
+| `placeholder-painting-grey.png` | Grandpa's painting in greyscale. Replace with layered illustration; mission reveal will colorize sections (night sky, sunset, forest, sky, full). |
+| *(future)* `painting-color.png` or per-section assets | Color versions for progressive reveal. |
 
 ## Optional
 

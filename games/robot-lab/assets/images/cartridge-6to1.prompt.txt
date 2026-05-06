@@ -1,0 +1,10 @@
+TARGET FILE: cartridge-6to1.png
+SIZE: 400x280
+BACKGROUND_MODE: transparent
+STYLE_NAME: rl_prop
+
+PROMPT:
+A rectangular metal gear cartridge housing viewed at a slight three-quarter angle. The cartridge is a dark gunmetal gray box with a clear rectangular window in the front face, through which two meshing spur gears are visible — a very small gold gear on the left driving a very large silver gear that nearly fills the window on the right. The large gear is about six times the diameter of the tiny gear. A small embossed label on the housing reads "6:1". The housing has rounded corners, small bolt details, and a metallic sheen.
+
+NOTES:
+Transparent background. The extreme size difference must be visually dramatic and unmistakable — the tiny gear should look almost like a pinion. This is the "strong" cartridge. Physical lab component. Warm lighting, Pixar-quality prop.

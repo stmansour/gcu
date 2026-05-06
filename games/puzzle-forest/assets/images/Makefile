@@ -25,11 +25,10 @@ all: _generate_stale
 clean:
 	@echo "*** $(THISDIR): nothing to clean (images are preserved) ***"
 
-## package: Copy all PNGs and SVGs to dist
+## package: Copy all PNGs to dist
 package:
 	mkdir -p $(DIST)/$(THISDIR)
 	cp *.png $(DIST)/$(THISDIR)/
-	cp *.svg $(DIST)/$(THISDIR)/
 	@echo "*** $(THISDIR): completed package ***"
 
 ## generate: Generate all missing or stale images from .prompt.txt files
