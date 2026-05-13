@@ -182,7 +182,7 @@ If the player changes voltage, they should see:
 
 ---
 
-# Chapter 4 - Shoulder Motion System
+### Chapter 4 - Shoulder Motion System
 
 ## Redesign Status
 

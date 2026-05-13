@@ -49,6 +49,9 @@ relsman: package
 	rsync -az --delete -e "ssh -i ~/.ssh/id_sman -p 1291" $(DIST)/ sman@stevemansour.com:~/public_html/gcu.new/
 	ssh -i ~/.ssh/id_sman -p 1291 sman@stevemansour.com 'rm -rf ~/public_html/gcu.bak && mv ~/public_html/gcu ~/public_html/gcu.bak && mv ~/public_html/gcu.new ~/public_html/gcu && rm -rf ~/public_html/gcu.bak'
 
+startgame:
+	cd games/robot-lab && npm start
+	
 # Local static server for browser dev — http://localhost:3000 (see package.json "start").
 # No Python; run `npm install` once in the repo root if node_modules is missing.
 serve:
@@ -81,4 +84,5 @@ help:
 	@echo "  make relsman   — rsync dist/gcu to stevemansour.com:~/public_html/gcu.new and swap it live"
 	@echo "  make serve     — local dev: npm start (http-server on port 3000, repo root)"
 	@echo "  make comfy     — print the commands to start the local Cutely/ComfyUI image server"
+	@echo "  make run       — starts the npm server in the repo root"
 	@echo ""

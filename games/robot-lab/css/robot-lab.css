@@ -1117,6 +1117,28 @@
 }
 .rl-hint-panel[hidden] { display: none; }
 
+.rl-hint-panel__dismiss {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 1;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(240, 200, 102, 0.72);
+  background: rgba(8, 16, 32, 0.86);
+  color: #f5d982;
+  font: 900 34px/1 Nunito, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.rl-hint-panel__dismiss:active {
+  transform: scale(0.94);
+}
+
 .rl-hint-panel__inner {
   padding: 20px;
   max-width: min(900px, 92vw);

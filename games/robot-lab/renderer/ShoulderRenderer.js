@@ -5,7 +5,7 @@
  * ShoulderArmRenderer:  arm test animation (rotates arm image, shows load)
  */
 
-import { GEAR_CARTRIDGES } from '../engine/ShoulderEngine.js';
+import { GEAR_CARTRIDGES, VOLTAGE_SETTINGS } from '../engine/ShoulderEngine.js';
 
 function pitchRadiusForModule(teeth, module) {
   return teeth * module / (Math.PI * 2);
@@ -30,6 +30,11 @@ export class ShoulderGearRenderer {
     this._ctx     = canvas.getContext('2d');
     this._gear    = null;   // current GEAR_CARTRIDGES entry
     this._stressColor = 'green';
+    this._stalled = false;
+    this._heat = 'Cool';
+    this._voltageFactor = 1.0;   // motor speed multiplier from voltage selection
+    this._loadKg = null;
+    this._loadLb = null;
     this._motorAngle = 0;
     this._raf     = null;
     this._dpr     = window.devicePixelRatio || 1;
@@ -58,6 +63,28 @@ export class ShoulderGearRenderer {
     this._draw();
   }
 
+  setStalled(stalled) {
+    this._stalled = Boolean(stalled);
+    this._draw();
+  }
+
+  setHeat(heat) {
+    this._heat = heat || 'Cool';
+    this._draw();
+  }
+
+  setLoad(load) {
+    this._loadKg = load?.kg ?? null;
+    this._loadLb = load?.lb ?? null;
+    this._draw();
+  }
+
+  /** Set motor speed multiplier from voltage selection (or null to reset). */
+  setVoltage(voltId) {
+    const v = voltId ? VOLTAGE_SETTINGS[voltId] : null;
+    this._voltageFactor = v ? v.powerFactor : 1.0;
+  }
+
   stop() {
     if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
     this._draw();
@@ -65,7 +92,12 @@ export class ShoulderGearRenderer {
 
   _frame() {
     if (!this._gear) { this._raf = null; return; }
-    this._motorAngle += 0.012;  // slow enough to see the teeth mesh
+    // Voltage scales motor RPM. Stress (heavy load) drags it down a bit.
+    const stressDrag = this._stalled                  ? 0.22
+                     : this._stressColor === 'red'    ? 0.65
+                     : this._stressColor === 'yellow' ? 0.85
+                     :                                  1.0;
+    this._motorAngle += 0.012 * this._voltageFactor * stressDrag;
     this._draw();
     this._raf = requestAnimationFrame(this._frame.bind(this));
   }
@@ -97,7 +129,8 @@ export class ShoulderGearRenderer {
     const shaftStartX = motorBodyX + motorBodyW;
     const shaftMin = w * 0.12;
     const gearLeftMin = shaftStartX + shaftMin;
-    const rightMargin = w * 0.07;
+    const liftZoneW = clamp(w * 0.18, 104, 165);
+    const rightMargin = w * 0.045 + liftZoneW;
     const marginY = h * 0.055;
     const meshGap = 1.5;
     const toothAddFactor = 0.285;
@@ -141,6 +174,7 @@ export class ShoulderGearRenderer {
       sideGearW,
       sideGearH: motorGearTipR * 2,
       stressColor: this._stressColor,
+      heat: this._heat,
       motorAngle: this._motorAngle,
       motorTeeth: gear.motorTeeth,
     });
@@ -169,7 +203,15 @@ export class ShoulderGearRenderer {
     ctx.font = 'bold 13px Orbitron, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(`${gear.ratio}:1`, (motorX + armX) / 2, centerY - Math.max(mR + toothAdd, aR + toothAdd) - 8);
+    ctx.fillText(gear.displayRatio || `${gear.ratio}:1`, (motorX + armX) / 2, centerY - Math.max(mR + toothAdd, aR + toothAdd) - 8);
+
+    this._drawLiftDemo(ctx, {
+      x: w - liftZoneW + 8,
+      y: h * 0.10,
+      w: liftZoneW - 16,
+      h: h * 0.80,
+      ratio,
+    });
   }
 
   _drawMotorAndShaft(ctx, layout) {
@@ -190,6 +232,8 @@ export class ShoulderGearRenderer {
     ctx.strokeStyle = '#667386';
     ctx.lineWidth = 2;
     ctx.stroke();
+
+    this._drawMotorHeat(ctx, layout);
 
     // Motor base
     ctx.fillStyle = '#202838';
@@ -233,7 +277,63 @@ export class ShoulderGearRenderer {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
     ctx.fillText('MOTOR', layout.x + layout.w / 2, layout.y - 8);
-    ctx.fillText('MOTOR SHAFT', (layout.shaftStartX + layout.shaftEndX) / 2, layout.shaftY - 16);
+    ctx.fillText('MAIN SHAFT', (layout.shaftStartX + layout.shaftEndX) / 2, layout.shaftY - 16);
+
+    ctx.restore();
+  }
+
+  _drawMotorHeat(ctx, layout) {
+    const level = layout.heat === 'Hot' ? 3
+      : layout.heat === 'Warm' ? 2
+        : 1;
+    const colors = ['#4fe080', '#ffd257', '#ff5a42'];
+    const x = layout.x + layout.w - 42;
+    const y = layout.y + 14;
+
+    if (layout.heat === 'Warm' || layout.heat === 'Hot') {
+      const pulse = layout.heat === 'Hot'
+        ? 0.65 + 0.35 * Math.sin(layout.motorAngle * 8)
+        : 0.45;
+      const glow = ctx.createRadialGradient(
+        layout.x + layout.w * 0.54, layout.y + layout.h * 0.50, 0,
+        layout.x + layout.w * 0.54, layout.y + layout.h * 0.50, layout.w * 0.65,
+      );
+      glow.addColorStop(0, `rgba(255, 92, 48, ${layout.heat === 'Hot' ? 0.26 * pulse : 0.14})`);
+      glow.addColorStop(1, 'rgba(255, 92, 48, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(layout.x - 18, layout.y - 18, layout.w + 36, layout.h + 36);
+    }
+
+    ctx.save();
+    ctx.font = '800 8px Orbitron, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = 'rgba(220,235,255,0.78)';
+    ctx.fillText('HEAT', x + 18, y - 4);
+
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = i < level ? colors[i] : 'rgba(210,225,245,0.16)';
+      ctx.strokeStyle = 'rgba(220,235,255,0.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(x + i * 13, y, 9, 26 - i * 6, 3);
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    if (layout.heat === 'Hot') {
+      ctx.fillStyle = '#ff6a48';
+      for (let i = 0; i < 3; i++) {
+        const t = (layout.motorAngle * 18 + i * 16) % 48;
+        const puffX = layout.x + layout.w * (0.24 + i * 0.18);
+        const puffY = layout.y - 4 - t * 0.55;
+        const alpha = Math.max(0, 0.38 - t * 0.008);
+        ctx.fillStyle = `rgba(255, 122, 82, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(puffX, puffY, 4 + t * 0.08, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
 
     ctx.restore();
   }
@@ -390,24 +490,154 @@ export class ShoulderGearRenderer {
     ctx.stroke();
     ctx.restore();
   }
+
+  _drawLiftDemo(ctx, layout) {
+    const stalled = this._stalled;
+    const progress = stalled ? 0 : this._liftProgress(layout.ratio);
+    const stress = this._torquePalette(this._stressColor);
+    const railX = layout.x + layout.w * 0.38;
+    const topY = layout.y + 24;
+    const bottomY = layout.y + layout.h - 30;
+    const travel = Math.max(1, bottomY - topY);
+    const shudder = stalled ? Math.sin(this._motorAngle * 90) * 3 : 0;
+    const loadY = bottomY - progress * travel + Math.abs(shudder) * 0.7;
+    const loadH = clamp(layout.h * 0.16, 34, 54);
+    const topW = clamp(layout.w * 0.44, 38, 58);
+    const bottomW = clamp(layout.w * 0.68, 54, 84);
+    const loadX = clamp(layout.x + layout.w * 0.58, railX + bottomW * 0.45, layout.x + layout.w - bottomW * 0.50) + shudder;
+    const shoulderX = layout.x + 14 + shudder;
+    const shoulderY = loadY - loadH * 0.18;
+    const label = this._loadKg == null
+      ? 'LOAD'
+      : `${this._loadKg} kg`;
+
+    ctx.save();
+
+    ctx.strokeStyle = 'rgba(170,205,240,0.30)';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(railX, topY);
+    ctx.lineTo(railX, bottomY);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(240,200,102,0.48)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(railX - 10, topY);
+    ctx.lineTo(railX + 10, topY);
+    ctx.moveTo(railX - 10, bottomY);
+    ctx.lineTo(railX + 10, bottomY);
+    ctx.stroke();
+
+    // A compact arm in the preview makes the load's lift speed visible while
+    // the full-size test animation remains focused on SWIRL-E.
+    ctx.strokeStyle = stress.stroke;
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(shoulderX, shoulderY);
+    ctx.lineTo(railX, shoulderY);
+    ctx.lineTo(loadX, loadY - loadH * 0.38);
+    ctx.stroke();
+
+    ctx.fillStyle = '#182234';
+    ctx.strokeStyle = 'rgba(220,235,255,0.55)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(shoulderX, shoulderY, 9, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(220,235,255,0.82)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(loadX, loadY - loadH * 0.38);
+    ctx.lineTo(loadX, loadY - loadH * 0.05);
+    ctx.stroke();
+
+    const grad = ctx.createLinearGradient(0, loadY - loadH / 2, 0, loadY + loadH / 2);
+    grad.addColorStop(0, '#e7bd5f');
+    grad.addColorStop(1, '#b9872e');
+    ctx.fillStyle = grad;
+    ctx.strokeStyle = '#f3d077';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(loadX - topW / 2, loadY - loadH / 2);
+    ctx.lineTo(loadX + topW / 2, loadY - loadH / 2);
+    ctx.lineTo(loadX + bottomW / 2, loadY + loadH / 2);
+    ctx.lineTo(loadX - bottomW / 2, loadY + loadH / 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.font = '800 12px Nunito, sans-serif';
+    const labelW = ctx.measureText(label).width;
+    if (labelW <= bottomW - 8) {
+      ctx.fillStyle = '#102033';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, loadX, loadY + 1);
+    } else {
+      const tagX = Math.min(layout.x + layout.w - labelW / 2 - 7, loadX + bottomW / 2 + labelW / 2 + 8);
+      ctx.fillStyle = 'rgba(8,18,38,0.86)';
+      ctx.beginPath();
+      ctx.roundRect(tagX - labelW / 2 - 6, loadY - 11, labelW + 12, 22, 7);
+      ctx.fill();
+      ctx.fillStyle = '#f6d979';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, tagX, loadY + 1);
+    }
+
+    ctx.fillStyle = 'rgba(205,225,248,0.70)';
+    ctx.font = '700 10px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(stalled ? 'STALLED' : 'LIFT', railX, layout.y + 2);
+
+    if (stalled) {
+      ctx.fillStyle = 'rgba(255, 74, 58, 0.18)';
+      ctx.strokeStyle = '#ff5a42';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(layout.x + 4, bottomY - loadH - 16, layout.w - 8, loadH + 30, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ff8676';
+      ctx.font = '900 10px Orbitron, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('TOO HEAVY', layout.x + layout.w / 2, bottomY - loadH - 20);
+    }
+
+    ctx.restore();
+  }
+
+  _liftProgress(ratio) {
+    const outputTurns = this._motorAngle / Math.max(0.001, ratio) / (Math.PI * 2);
+    return outputTurns - Math.floor(outputTurns);
+  }
 }
 
 
 /* ── ShoulderArmRenderer ──────────────────────────────────────────────────── */
 
 const ARM_IMAGES = {
-  arm:   'swirle-left-arm-exposed-transparent.png',
-  bg:    'shoulder-arm-test-bg.png',
-  load7:  'arm-load-7kg.png',
-  load10: 'arm-load-10kg.png',
-  load15: 'arm-load-15kg.png',
+  arm:    'swirle-left-arm-exposed-transparent.png',
+  bg:     'shoulder-arm-test-bg.png',
+  load7:  'arm-load-7kg-transparent.png',
+  load10: 'arm-load-10kg-transparent.png',
+  load15: 'arm-load-15kg-transparent.png',
 };
 
-const LOAD_IMAGE_MAP = { fast: 'load7', balanced: 'load10', strong: 'load15' };
+const LOAD_IMAGE_MAP = { fast: 'load7', balanced: 'load10', strong: 'load15', overload: 'load15' };
 
 /**
  * Animates SWIRL-E's arm raising (or failing to raise) a load.
- * Arm rotates around its left edge pivot point.
+ * Arm rotates around the shoulder pivot. The source arm image has the hand on
+ * the left and shoulder on the right, so rendering flips it to match SWIRL-E.
  */
 export class ShoulderArmRenderer {
   constructor(canvas, assetBase) {
@@ -423,6 +653,7 @@ export class ShoulderArmRenderer {
     this._time      = 0;
     this._outcome   = null;
     this._jobId     = null;
+    this._speedFactor = 0.5;
     this._onDone    = null;
     this._resize();
     this._preload();
@@ -450,16 +681,19 @@ export class ShoulderArmRenderer {
   /**
    * Run the arm animation.
    * @param {string} jobId     - 'fast' | 'balanced' | 'strong'
-   * @param {string} outcome   - 'success' | 'stall' | 'too-hot'
+   * @param {string} outcome   - 'success' | 'stall' | 'too-hot' | 'unsafe-load'
+   * @param {number} speedFactor - 0..1 arm output speed from gear, voltage, load
    * @param {Function} onDone  - called when animation finishes
    */
-  run(jobId, outcome, onDone) {
-    this._jobId   = jobId;
-    this._outcome = outcome;
-    this._onDone  = onDone;
-    this._angle   = 0;
-    this._time    = 0;
-    this._phase   = outcome === 'stall' ? 'stall' : 'raising';
+  run(jobId, outcome, speedFactor, onDone) {
+    this.stop();
+    this._jobId       = jobId;
+    this._outcome     = outcome;
+    this._speedFactor = typeof speedFactor === 'number' ? speedFactor : 0.5;
+    this._onDone      = onDone;
+    this._angle       = 0;
+    this._time        = 0;
+    this._phase       = (outcome === 'stall' || outcome === 'unsafe-load') ? 'stall' : 'raising';
     if (!this._raf) this._raf = requestAnimationFrame(this._frame.bind(this));
   }
 
@@ -480,12 +714,22 @@ export class ShoulderArmRenderer {
   }
 
   _tick() {
-    const RAISE_SPEED = this._outcome === 'too-hot' ? 0.04 : 0.025;
     const TARGET_UP   = -Math.PI * 0.45;  // ~80° raised
+    const speedFactor = clamp(this._speedFactor, 0.04, 1);
+    // Inverse mapping: raiseFrames = base / factor, so a factor of 0.1 takes
+    // 10× as long as a factor of 1.0. This amplifies the difference between
+    // 1:1+9V (≈0.5 s) and 6:1+3V (≈6 s) so the gear ratio is obvious.
+    // "Too hot" overrides — the motor runs jerky-fast regardless of factor.
+    const raiseFrames = this._outcome === 'too-hot'
+      ? clamp(Math.round(40 / Math.max(0.5, speedFactor)), 30, 90)
+      : clamp(Math.round(35 / speedFactor), 30, 360);
+    const lowerFrames = Math.max(24, Math.round(raiseFrames * 0.55));
+    const raiseStep = Math.abs(TARGET_UP) / raiseFrames;
+    const lowerStep = Math.abs(TARGET_UP) / lowerFrames;
 
     switch (this._phase) {
       case 'raising':
-        this._angle = Math.max(this._angle + TARGET_UP * RAISE_SPEED, TARGET_UP);
+        this._angle = Math.max(this._angle - raiseStep, TARGET_UP);
         if (Math.abs(this._angle - TARGET_UP) < 0.01) {
           this._phase = 'holding';
           this._time  = 0;
@@ -495,7 +739,7 @@ export class ShoulderArmRenderer {
         if (this._time > 60) { this._phase = 'lowering'; this._time = 0; }
         break;
       case 'lowering':
-        this._angle = Math.min(this._angle + 0.04, 0);
+        this._angle = Math.min(this._angle + lowerStep, 0);
         if (this._angle >= 0) this._phase = 'done';
         break;
       case 'stall':
@@ -522,13 +766,32 @@ export class ShoulderArmRenderer {
       ctx.fill();
     }
 
-    // Stress color overlay for too-hot
+    // Hot motor: red pulsing glow at the shoulder + steam puffs
     if (this._outcome === 'too-hot' && this._phase !== 'done') {
-      const glow = ctx.createRadialGradient(w * 0.3, h * 0.5, 0, w * 0.3, h * 0.5, w * 0.4);
-      glow.addColorStop(0, 'rgba(255,60,0,0.18)');
-      glow.addColorStop(1, 'rgba(255,60,0,0)');
+      const pulse = 0.55 + 0.45 * Math.sin(this._time * 0.18);
+      const glow = ctx.createRadialGradient(w * 0.25, h * 0.55, 0, w * 0.25, h * 0.55, w * 0.45);
+      glow.addColorStop(0, `rgba(255,80,20,${0.30 * pulse})`);
+      glow.addColorStop(0.6, `rgba(255,40,0,${0.10 * pulse})`);
+      glow.addColorStop(1, 'rgba(255,40,0,0)');
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, w, h);
+
+      // Steam puffs rising from the shoulder
+      ctx.save();
+      const baseX = w * 0.25;
+      const baseY = h * 0.45;
+      for (let i = 0; i < 3; i++) {
+        const t = (this._time + i * 25) % 75;
+        const py = baseY - t * 1.4;
+        const px = baseX + Math.sin(t * 0.08 + i) * 12;
+        const r  = 8 + t * 0.32;
+        const a  = Math.max(0, 0.55 - t * 0.007);
+        ctx.fillStyle = `rgba(255,200,180,${a})`;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
     }
 
     const armImg  = this._images.arm;
@@ -545,7 +808,8 @@ export class ShoulderArmRenderer {
       return;
     }
 
-    // Draw arm rotated around its left-edge pivot
+    // Draw arm rotated around the shoulder joint. The arm source image is
+    // backwards for this scene, so flip it so shoulder is on the left.
     const armW   = Math.min(w * 0.55, 280);
     const armH   = armW * (armImg.naturalHeight / armImg.naturalWidth);
     const pivotX = w * 0.25;
@@ -554,23 +818,36 @@ export class ShoulderArmRenderer {
     ctx.save();
     ctx.translate(pivotX, pivotY);
     ctx.rotate(this._angle);
-    ctx.drawImage(armImg, 0, -armH * 0.5, armW, armH);
+    ctx.scale(-1, 1);
+    ctx.drawImage(armImg, -armW, -armH * 0.5, armW, armH);
+    ctx.restore();
+
+    const handX = pivotX + Math.cos(this._angle) * armW;
+    const handY = pivotY + Math.sin(this._angle) * armW;
 
     // Load hangs at end of arm
-    if (loadImg && this._phase !== 'stall') {
+    if (this._jobId === 'ultralight' && this._phase !== 'stall') {
+      this._drawTinyGrabItem(ctx, handX, handY, armW);
+    } else if (loadImg && this._phase !== 'stall') {
       const loadW = armW * 0.28;
       const loadH = loadW * (loadImg.naturalHeight / loadImg.naturalWidth);
-      ctx.drawImage(loadImg, armW - loadW * 0.5, armH * 0.1, loadW, loadH);
+      ctx.strokeStyle = 'rgba(220,235,245,0.82)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(handX, handY);
+      ctx.lineTo(handX, handY + loadH * 0.22);
+      ctx.stroke();
+      ctx.drawImage(loadImg, handX - loadW / 2, handY + loadH * 0.22, loadW, loadH);
     }
-
-    ctx.restore();
 
     // Outcome label
     if (this._phase === 'holding' || this._phase === 'done') {
       const labels = {
-        success:  { text: 'Lifted!',    color: '#40e880' },
-        'too-hot':{ text: 'Too Hot!',   color: '#ff8844' },
-        stall:    { text: 'Stalled!',   color: '#ff4444' },
+        success:  { text: 'Remembered!', color: '#40e880' },
+        'unsafe-load': { text: 'Unsafe Load!', color: '#ff8844' },
+        'too-hot':{ text: 'Too Hot!',    color: '#ff8844' },
+        mismatch: { text: 'Mismatch!',   color: '#ffcc44' },
+        stall:    { text: 'Stalled!',    color: '#ff4444' },
       };
       const lbl = labels[this._outcome];
       if (lbl) {
@@ -597,6 +874,38 @@ export class ShoulderArmRenderer {
         ctx.stroke();
       }
     }
+  }
+
+  _drawTinyGrabItem(ctx, handX, handY, armW) {
+    const len = armW * 0.24;
+    const thick = Math.max(5, armW * 0.025);
+    ctx.save();
+    ctx.translate(handX, handY + thick * 5);
+    ctx.rotate(-0.35);
+
+    const grad = ctx.createLinearGradient(-len / 2, 0, len / 2, 0);
+    grad.addColorStop(0, '#f4c34f');
+    grad.addColorStop(0.75, '#f6d772');
+    grad.addColorStop(1, '#d98f42');
+    ctx.fillStyle = grad;
+    ctx.strokeStyle = 'rgba(65,45,20,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(-len / 2, -thick / 2, len, thick, thick / 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#2d3748';
+    ctx.beginPath();
+    ctx.moveTo(len / 2, -thick / 2);
+    ctx.lineTo(len / 2 + thick * 1.4, 0);
+    ctx.lineTo(len / 2, thick / 2);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = '#f4a3a3';
+    ctx.fillRect(-len / 2 - thick * 1.2, -thick / 2, thick * 1.2, thick);
+    ctx.restore();
   }
 
   _drawCoverImage(ctx, img, x, y, w, h, radius) {
