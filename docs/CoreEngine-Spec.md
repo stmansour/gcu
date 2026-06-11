@@ -162,7 +162,7 @@ await storage.clear();
 grandpa:art-studio:progress
 grandpa:art-studio:settings
 grandpa:robot-lab:progress
-grandpa:robot-lab:circuits
+grandpa:robot-lab:ch4TaskMemory
 grandpa:supermatch3:scores
 grandpa:global:avatar
 grandpa:global:audio-settings

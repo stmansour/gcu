@@ -1,6 +1,6 @@
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
 DIST      := $(REPO_ROOT)/dist/gcu
-DIRS      := animation audio avatar input journal layout progress rewards scene storage utils
+DIRS      := animation audio avatar input journal layout meters progress rewards scene storage utils
 THISDIR   := core
 
 .PHONY: all clean package

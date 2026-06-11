@@ -1,6 +1,6 @@
 /**
  * HubScene — Grandpa's Creative Universe workshop launcher.
- * Shows the wooden sign, game portal cards, and the selected player badge.
+ * Shows game portal cards over the hub illustration and the selected player badge.
  */
 
 import { Scene } from '../../core/scene/index.js';
@@ -48,22 +48,6 @@ export class HubScene extends Scene {
     const layout = document.createElement('div');
     layout.className = 'hub__layout';
     container.appendChild(layout);
-
-    // Wooden sign
-    const sign = document.createElement('div');
-    sign.className = 'hub__sign';
-    const signInner = document.createElement('div');
-    signInner.className = 'hub__sign-inner';
-    const line1 = document.createElement('span');
-    line1.className = 'hub__sign-line1';
-    line1.textContent = "Grandpa's";
-    const line2 = document.createElement('span');
-    line2.className = 'hub__sign-line2';
-    line2.textContent = 'Creative Universe';
-    signInner.appendChild(line1);
-    signInner.appendChild(line2);
-    sign.appendChild(signInner);
-    layout.appendChild(sign);
 
     // Portal cards row
     const portals = document.createElement('div');

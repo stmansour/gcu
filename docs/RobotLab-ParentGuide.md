@@ -84,20 +84,32 @@ This sequencing — *experience first, explanation second* — is how real engin
 ## Chapter 3 — Color Sensing
 ### *SWIRL-E can see shapes, but his colors are wrong. He thinks bananas are blue.*
 
+**The setup:** SWIRL-E's three physical color sensors have been scrambled. Each sensor can see only one channel — red, green, or blue — but the wires from those sensors no longer go to the matching output channels. The child sees a patchbay with Sensor A, Sensor B, and Sensor C on one side and Red, Green, and Blue outputs on the other. They draw wires to reconnect the system.
+
+**What can go wrong — and why it's educational:**
+
+- **Only some channels connected:** SWIRL-E sees a partial image with missing colors. *Lesson: color vision is built from separate signals working together.*
+
+- **All channels routed to the wrong places:** The image has color, but it is obviously wrong — faces may look blue, fruit may shift strangely, and familiar scenes become unnatural. *Lesson: the sensor data exists, but interpretation depends on routing.*
+
+- **Correct routing:** Red goes to red, green to green, and blue to blue. The image snaps back to true color. Gain sliders remain available for exploration, but the default balanced values are already correct; the main discovery is the patchbay routing.
+
 **What they're really learning:**
-Digital cameras and robot eyes do not perceive color the way human eyes do. They use three separate sensor channels — red, green, and blue — and combine the signals to reconstruct color. If any channel is miscalibrated, every color in the image is wrong in a predictable way. The child adjusts individual R, G, and B sensitivity levels until SWIRL-E's view of the world matches reality. This is literally what color calibration means in photography, display engineering, and computer vision.
+Digital cameras and robot eyes do not perceive color as one blended thing. They use separate red, green, and blue channels, then combine those signals to reconstruct color. If the channels are routed incorrectly, every color in the image is wrong in a predictable way. This is literally what channel mapping and color calibration mean in photography, display engineering, and computer vision.
 
 The deeper lesson: *sensing and interpretation are two different things.* The light hitting the sensor is accurate. The problem is in how that signal is being read and weighted. This distinction — between raw data and its interpretation — is one of the most important ideas in both engineering and science.
 
 ---
 
-## Chapter 4 — Motors
-### *SWIRL-E can see, but he can't move his head or raise his arms correctly.*
+## Chapter 4 — Shoulder Drive
+### *SWIRL-E can see, but he needs to learn which gears and power settings fit different arm jobs.*
 
 **What they're really learning:**
-Motors convert electrical energy into mechanical motion. But the relationship is not simple: too little power and the motor stalls; too much and it overshoots, oscillates, or damages the mechanism. The child adjusts motor drive settings and watches SWIRL-E's movements respond — jerky and violent at too high a setting, limp and unable to complete the movement at too low a setting, smooth and controlled at the right value.
+Motors convert electrical energy into mechanical motion, but useful robot movement depends on the whole drive system. The child chooses gears and voltage for real lifting scenarios, then watches SWIRL-E's shoulder test the setup. A quick gear can move light objects fast. A strong gear can lift heavier objects slowly. More voltage can help, but it can also create heat and drain the battery faster.
 
-The concept being internalized: *energy conversion always involves tradeoffs.* You cannot just "give it more power" and expect everything to improve. Engineering is the practice of finding the right amount.
+The chapter also separates two ideas that are easy to mix up: motor heat and arm-shaft torque. A motor might have enough power, but the arm assembly still has a safe torque limit. Some loads should be marked as not safe for SWIRL-E instead of lifted.
+
+The concept being internalized: *engineering is matching a setup to a job.* The child must save several working scenario memories before the next chapter unlocks, so the lesson becomes pattern recognition and judgment rather than guessing one answer.
 
 ---
 

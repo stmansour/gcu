@@ -17,6 +17,7 @@
 import { Scene }       from '../../../core/scene/index.js';
 import { GameStorage } from '../../../core/storage/index.js';
 import { celebrate }   from '../../../core/rewards/index.js';
+import { updateMeter } from '../../../core/meters/index.js';
 import { CHAPTER_4 }   from '../missions/chapter4.js';
 import {
   ARM_JOBS, ARM_TORQUE_SPEC, GEAR_CARTRIDGES, TASKS, VOLTAGE_SETTINGS,
@@ -324,6 +325,7 @@ export class ArmMotorMissionScene extends Scene {
     const job  = ARM_JOBS[this._jobId];
     const task = this._task;
     const solvedCount = this._taskMemory.solvedTaskIds.length;
+    const progress = this._missionProgress();
     this._setSwirleImage('swirle-powered.png');
 
     board.innerHTML = `
@@ -336,7 +338,7 @@ export class ArmMotorMissionScene extends Scene {
             <div class="sh-task-banner__specs">
               Weight: <strong>${job.targetKg} kg / ${job.targetLb} lb</strong>
               &nbsp;·&nbsp; Move: <strong>${task.moveHint}</strong>
-              &nbsp;·&nbsp; Memory: <strong>${solvedCount}/${TASKS.length}</strong>
+              &nbsp;·&nbsp; Solved cases: <strong>${solvedCount}/${TASKS.length}</strong>
             </div>
           </div>
           <div class="sh-task-banner__controls">
@@ -351,70 +353,105 @@ export class ArmMotorMissionScene extends Scene {
               </select>
             </label>
             <button type="button" class="sh-task-banner__change" id="sh-change-task">
-              🎲 Random
+              🎲 Pick Unsolved
             </button>
-            <button type="button" class="sh-task-banner__clear" id="sh-clear-choices" disabled>
-              Clear Current Choices
+            <button type="button" class="rl-btn sh-task-banner__unsafe" id="sh-unsafe-btn">
+              Not safe for SWIRL-E
             </button>
             <button type="button" class="sh-task-banner__reset" id="sh-reset-memory">
-              Reset memory
+              Start Over
             </button>
           </div>
         </div>
 
-        <div class="sh-status-board" id="sh-status-board">
-          <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-heat">
-            <span class="sh-status-tile__label">Motor Heat</span>
-            <strong class="sh-status-tile__value">—</strong>
-            <span class="sh-status-tile__sub">choose gear + power</span>
+        <div class="sh-dashboard">
+          <div class="sh-status-board" id="sh-status-board">
+            <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-heat">
+              <span class="sh-status-tile__label">Motor Heat</span>
+              <strong class="sh-status-tile__value">—</strong>
+              <div class="sh-status-tile__meter" id="sh-meter-heat"></div>
+              <span class="sh-status-tile__sub">choose gear + power</span>
+            </div>
+            <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-weight">
+              <span class="sh-status-tile__label">Load Weight</span>
+              <strong class="sh-status-tile__value">${job.targetKg} kg</strong>
+              <div class="sh-status-tile__meter" id="sh-meter-weight"></div>
+              <span class="sh-status-tile__sub">${job.targetLb} lb from case</span>
+            </div>
+            <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-gears">
+              <span class="sh-status-tile__label">Gears Cap.</span>
+              <strong class="sh-status-tile__value">Pick ratio</strong>
+              <div class="sh-status-tile__meter" id="sh-meter-gears"></div>
+              <span class="sh-status-tile__sub">1:3 · 1:1 · 3:1 · 6:1</span>
+            </div>
+            <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-speed">
+              <span class="sh-status-tile__label">Arm Speed</span>
+              <strong class="sh-status-tile__value">—</strong>
+              <div class="sh-status-tile__meter" id="sh-meter-speed"></div>
+              <span class="sh-status-tile__sub">needs ${job.speedGoal}</span>
+            </div>
+            <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-torque">
+              <span class="sh-status-tile__label">Load Torque</span>
+              <strong class="sh-status-tile__value">—</strong>
+              <div class="sh-status-tile__meter" id="sh-meter-torque"></div>
+              <span class="sh-status-tile__sub">${ARM_TORQUE_SPEC.maxNm} N m max</span>
+            </div>
           </div>
-          <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-weight">
-            <span class="sh-status-tile__label">Weight</span>
-            <strong class="sh-status-tile__value">${job.targetKg} kg</strong>
-            <span class="sh-status-tile__sub">${job.targetLb} lb target</span>
-          </div>
-          <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-gears">
-            <span class="sh-status-tile__label">Gears</span>
-            <strong class="sh-status-tile__value">Pick ratio</strong>
-            <span class="sh-status-tile__sub">1:3 · 1:1 · 3:1 · 6:1</span>
-          </div>
-          <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-speed">
-            <span class="sh-status-tile__label">Speed</span>
-            <strong class="sh-status-tile__value">—</strong>
-            <span class="sh-status-tile__sub">needs ${job.speedGoal}</span>
-          </div>
-          <div class="sh-status-tile sh-status-tile--neutral" id="sh-status-torque">
-            <span class="sh-status-tile__label">Torque</span>
-            <strong class="sh-status-tile__value">—</strong>
-            <span class="sh-status-tile__sub">${ARM_TORQUE_SPEC.maxNm} N m max</span>
-          </div>
+          ${this._missionProgressHTML(progress)}
         </div>
 
         <div class="sh-workbench__body">
 
-          <div class="sh-gear-panel">
-            <h3 class="sh-panel-heading">1. Gear Ratio</h3>
-            <div class="sh-cartridges" id="sh-cartridges"></div>
-            <canvas class="sh-gear-preview" id="sh-gear-preview"></canvas>
-          </div>
+          <div class="sh-controls-column">
+            <div class="sh-setup-panel">
+              <section class="sh-setup-section sh-setup-section--gears">
+                <div class="sh-section-header">
+                  <h3 class="sh-section-title">1. Select Gears</h3>
+                  <span class="sh-section-badge">Teaching Zone</span>
+                </div>
+                <div class="sh-cartridges" id="sh-cartridges"></div>
+              </section>
 
-          <div class="sh-power-panel">
-            <h3 class="sh-panel-heading">2. Power</h3>
-            <div class="sh-voltage-btns" id="sh-voltage-btns"></div>
+              <section class="sh-setup-section sh-setup-section--power">
+                <div class="sh-section-header">
+                  <h3 class="sh-section-title">2. Select Power</h3>
+                  <button type="button" class="sh-setup-clear" id="sh-clear-choices" disabled>
+                    Reset Choices
+                  </button>
+                </div>
+                <div class="sh-power-tray">
+                  <div class="sh-power-tray__label">Power</div>
+                  <div class="sh-voltage-btns" id="sh-voltage-btns"></div>
+                </div>
+              </section>
 
-            <div class="sh-arm-rating">
-              <span class="sh-arm-rating__label">Arm torque rating</span>
-              <strong>${ARM_TORQUE_SPEC.maxNm} N m</strong>
-              <span>${ARM_TORQUE_SPEC.maxFtLb.toFixed(1)} ft lb max · about ${Math.floor(ARM_TORQUE_SPEC.maxSafeKg)} kg at SWIRL-E's arm length</span>
+              <section class="sh-setup-section sh-setup-section--load">
+                <h3 class="sh-section-title">3. Scenario Load</h3>
+                <div class="sh-load-test-row">
+                  <div class="sh-load-panel">
+                    <span class="sh-load-panel__label">Load from this case</span>
+                    <strong>${job.targetKg} kg</strong>
+                    <span>${job.targetLb} lb · ${task.moveHint}</span>
+                  </div>
+
+                  <div class="sh-arm-rating">
+                    <span class="sh-arm-rating__label">Arm torque rating</span>
+                    <strong>${ARM_TORQUE_SPEC.maxNm} N m</strong>
+                    <span>${ARM_TORQUE_SPEC.maxFtLb.toFixed(1)} ft lb max · about ${Math.floor(ARM_TORQUE_SPEC.maxSafeKg)} kg at SWIRL-E's arm length</span>
+                  </div>
+
+                  <button type="button" class="rl-btn sh-test-btn" id="sh-test-btn" disabled>
+                    Test It! ▶
+                  </button>
+                </div>
+              </section>
             </div>
-
-            <button type="button" class="rl-btn sh-test-btn" id="sh-test-btn" disabled>
-              Test It! ▶
-            </button>
-            <button type="button" class="rl-btn sh-unsafe-btn" id="sh-unsafe-btn">
-              Not safe for SWIRL-E
-            </button>
           </div>
+
+          <section class="sh-performance-panel">
+            <h3 class="sh-performance-panel__title">Performance Area</h3>
+            <canvas class="sh-gear-preview" id="sh-gear-preview"></canvas>
+          </section>
 
         </div>
       </div>
@@ -554,6 +591,41 @@ export class ArmMotorMissionScene extends Scene {
     return torqueNm >= ARM_TORQUE_SPEC.maxNm;
   }
 
+  _missionProgress() {
+    const saved = this._taskMemory.solvedTaskIds.length;
+    const required = REQUIRED_CH4_MEMORIES;
+    return {
+      saved,
+      required,
+      remaining: Math.max(0, required - saved),
+      complete: saved >= required,
+    };
+  }
+
+  _missionProgressHTML(progress = this._missionProgress()) {
+    const status = progress.complete
+      ? 'Chapter 5 is unlocked'
+      : `${progress.remaining} more ${progress.remaining === 1 ? 'case' : 'cases'} to unlock Chapter 5`;
+    return `
+      <div class="sh-mission-progress ${progress.complete ? 'sh-mission-progress--complete' : ''}">
+        <div class="sh-mission-progress__label">Chapter 4 mission</div>
+        <div class="sh-mission-progress__meter" aria-label="${progress.saved} of ${progress.required} required cases saved">
+          ${Array.from({ length: progress.required }, (_, idx) => `
+            <span class="sh-mission-progress__pip ${idx < progress.saved ? 'sh-mission-progress__pip--filled' : ''}"></span>
+          `).join('')}
+        </div>
+        <strong class="sh-mission-progress__count">${progress.saved}/${progress.required} memories saved</strong>
+        <span class="sh-mission-progress__status">${status}</span>
+      </div>
+    `;
+  }
+
+  _refreshMissionProgress() {
+    this._container?.querySelectorAll('.sh-mission-progress').forEach(el => {
+      el.outerHTML = this._missionProgressHTML();
+    });
+  }
+
   _selectGear(gearId) {
     this._gearId = gearId;
     this._container.querySelectorAll('.sh-cartridge-card').forEach(c => {
@@ -640,14 +712,16 @@ export class ArmMotorMissionScene extends Scene {
 
     this._setStatusTile('weight', {
       value: `${job.targetKg} kg`,
-      sub: `${job.targetLb} lb target`,
+      sub: `${job.targetLb} lb from case`,
       color: torqueColor,
+      meter: this._weightMeter(torque.ratio),
     });
 
     this._setStatusTile('torque', {
       value: `${torque.nm.toFixed(1)} N m`,
       sub: `${(torque.nm * 0.737562149).toFixed(1)} ft lb · max ${ARM_TORQUE_SPEC.maxNm} N m`,
       color: torqueColor,
+      meter: this._torqueMeter(torque.ratio),
     });
 
     if (!gear) {
@@ -655,12 +729,23 @@ export class ArmMotorMissionScene extends Scene {
         value: 'Pick ratio',
         sub: volt ? `${volt.label} power ready` : '1:3 · 1:1 · 3:1 · 6:1',
         color: volt ? 'partial' : 'neutral',
+        meter: this._gearMeter(0, !volt),
       });
     } else if (!s) {
-      this._setStatusTile('gears', { value: gear.displayRatio, sub: 'choose power', color: 'partial' });
+      this._setStatusTile('gears', {
+        value: gear.displayRatio,
+        sub: 'choose power',
+        color: 'partial',
+        meter: this._gearMeter(this._gearStrengthValue(gear), false),
+      });
     } else {
       const gearColor = s.outcome === 'stall' ? 'red' : this._motorLoadColor(s.stressColor);
-      this._setStatusTile('gears', { value: gear.displayRatio, sub: `can lift ${s.liftKg} kg`, color: gearColor });
+      this._setStatusTile('gears', {
+        value: gear.displayRatio,
+        sub: `can lift ${s.liftKg} kg`,
+        color: gearColor,
+        meter: this._gearMeter(Math.min(1, s.liftKg / Math.max(1, ARM_TORQUE_SPEC.maxSafeKg)), false),
+      });
     }
 
     if (!s) {
@@ -678,31 +763,41 @@ export class ArmMotorMissionScene extends Scene {
         value: waitingValue,
         sub: hasPartialSetup ? partialSub : `needs ${job.speedGoal}`,
         color: hasPartialSetup ? 'partial' : 'neutral',
+        meter: this._speedMeter(null, job.speedGoal),
       });
       this._setStatusTile('heat', {
         value: waitingValue,
         sub: hasPartialSetup ? partialSub : 'choose gear + power',
         color: hasPartialSetup ? 'partial' : 'neutral',
+        meter: this._heatMeter(null),
       });
       return;
     }
 
     const speedText = s.speedDelta === 0 ? s.speed : `${s.speed}`;
     const speedSub = s.speedDelta === 0 ? 'matches job' : `needs ${job.speedGoal}`;
-    this._setStatusTile('speed', { value: speedText, sub: speedSub, color: this._speedColor(s.speedDelta) });
+    this._setStatusTile('speed', {
+      value: speedText,
+      sub: speedSub,
+      color: this._speedColor(s.speedDelta),
+      meter: this._speedMeter(s.speed, job.speedGoal),
+    });
 
     const heat = this._heatStatus(s);
+    heat.meter = this._heatMeter(s.heat, s.outcome);
     this._setStatusTile('heat', heat);
   }
 
-  _setStatusTile(key, { value, sub, color }) {
+  _setStatusTile(key, { value, sub, color, meter }) {
     const el = this._container?.querySelector(`#sh-status-${key}`);
     if (!el) return;
     el.className = `sh-status-tile sh-status-tile--${color || 'neutral'}`;
     const valueEl = el.querySelector('.sh-status-tile__value');
     const subEl = el.querySelector('.sh-status-tile__sub');
+    const meterEl = el.querySelector(`#sh-meter-${key}`);
     if (valueEl) valueEl.textContent = value;
     if (subEl) subEl.textContent = sub;
+    if (meterEl && meter) updateMeter(meterEl, meter);
   }
 
   _loadTorqueForJob(job) {
@@ -727,6 +822,75 @@ export class ArmMotorMissionScene extends Scene {
     if (state.heat === 'Hot') return { value: 'Hot', sub: 'too much heat', color: 'red' };
     if (state.heat === 'Warm') return { value: 'Acceptable', sub: 'watch runtime', color: 'yellow' };
     return { value: 'Low', sub: 'motor cool', color: 'green' };
+  }
+
+  _heatMeter(heat, outcome = null) {
+    const value = outcome === 'stall'
+      ? 0.72
+      : heat === 'Hot'
+        ? 0.92
+        : heat === 'Warm'
+          ? 0.54
+          : heat === 'Cool'
+            ? 0.24
+            : 0.05;
+    return {
+      type: 'segmented',
+      value,
+      segments: 16,
+      leftLabel: 'Acceptable',
+      midLabel: 'Stall',
+      rightLabel: 'Hot',
+    };
+  }
+
+  _weightMeter(torqueRatio) {
+    return {
+      type: 'arc',
+      value: Math.min(1, torqueRatio),
+      leftLabel: 'Light',
+      rightLabel: 'Heavy',
+      ariaLabel: 'load weight compared with SWIRL-E arm rating',
+    };
+  }
+
+  _gearMeter(value, hidden = false) {
+    return {
+      type: 'arc',
+      value,
+      hidden,
+      leftLabel: 'Less',
+      rightLabel: 'More',
+      ariaLabel: 'selected gear lifting capacity',
+    };
+  }
+
+  _speedMeter(speed, targetSpeed) {
+    const values = { Slow: 0.25, Normal: 0.52, Fast: 0.78 };
+    const target = values[targetSpeed] ?? 0.52;
+    return {
+      type: 'segmented',
+      value: speed ? values[speed] ?? target : target,
+      segments: 16,
+      leftLabel: 'Slow',
+      midLabel: 'Normal',
+      rightLabel: 'Fast',
+    };
+  }
+
+  _torqueMeter(torqueRatio) {
+    return {
+      type: 'arc',
+      value: Math.min(1, torqueRatio),
+      leftLabel: 'Load',
+      rightLabel: 'Not safe',
+      ariaLabel: 'load torque compared with SWIRL-E arm rating',
+    };
+  }
+
+  _gearStrengthValue(gear) {
+    if (!gear) return 0;
+    return Math.min(1, Math.max(0.05, gear.ratio / 6));
   }
 
   _setMonitor(key, value, color) {
@@ -800,6 +964,7 @@ export class ArmMotorMissionScene extends Scene {
 
     board.innerHTML = `
       <div class="sh-test-area">
+        ${this._missionProgressHTML()}
         <div class="sh-test-header">
           ${this._task.icon} ${this._task.label}
           &nbsp;·&nbsp; ${this._driveLabel(s)}
@@ -842,6 +1007,7 @@ export class ArmMotorMissionScene extends Scene {
       this._solved = true;
       celebrate(this._container, 'medium');
       this._rememberSolvedTaskLocal();
+      this._refreshMissionProgress();
       this._saveProgress();
       this._setSpeech(outcome === 'unsafe-load' ? CHAPTER_4.speech.unsafeCorrect : CHAPTER_4.speech.done);
       actionsEl.appendChild(this._buildCompletionSummary());

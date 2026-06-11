@@ -112,28 +112,22 @@
   font-family: inherit;
 }
 
-.sh-task-banner__clear {
-  background: rgba(30, 45, 70, 0.72);
-  border: 1px solid rgba(120, 156, 205, 0.42);
+.sh-task-banner__unsafe {
+  background: rgba(255, 98, 82, 0.12);
+  border: 1px solid rgba(255, 132, 112, 0.50);
   border-radius: 12px;
-  color: #c8d8e8;
+  color: #ffb1a3;
   font-size: 12px;
-  padding: 6px 12px;
+  padding: 7px 12px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   white-space: nowrap;
   flex-shrink: 0;
   font-family: inherit;
-  box-shadow: none;
-}
-
-.sh-task-banner__clear:disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
+  box-shadow: 0 4px 12px rgba(255, 80, 60, 0.10);
 }
 
 .sh-arm-rating {
-  margin: 10px 0 12px;
   padding: 10px 12px;
   border: 1px solid rgba(240, 200, 102, 0.32);
   border-radius: 12px;
@@ -141,6 +135,7 @@
   color: #c8d8e8;
   font-size: 12px;
   line-height: 1.35;
+  min-width: 210px;
 }
 
 .sh-arm-rating__label {
@@ -159,17 +154,8 @@
   margin-right: 6px;
 }
 
-.sh-unsafe-btn {
-  width: 100%;
-  margin-top: 10px;
-  background: rgba(255, 98, 82, 0.12);
-  border: 1.5px solid rgba(255, 132, 112, 0.55);
-  color: #ffb1a3;
-  box-shadow: 0 8px 24px rgba(255, 80, 60, 0.12);
-}
-
 .sh-task-banner__change:active,
-.sh-task-banner__clear:active,
+.sh-task-banner__unsafe:active,
 .sh-task-banner__reset:active {
   opacity: 0.7;
 }
@@ -183,9 +169,69 @@
     background: rgba(255, 98, 82, 0.18);
   }
 
-  .sh-task-banner__clear:hover {
-    background: rgba(50, 70, 105, 0.82);
+  .sh-task-banner__unsafe:hover {
+    background: rgba(255, 98, 82, 0.18);
   }
+}
+
+/* ── Required mission progress ───────────────────────────────────────────── */
+
+.sh-mission-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background: rgba(4, 14, 34, 0.74);
+  color: #dce9f7;
+  flex-shrink: 0;
+}
+
+.sh-mission-progress__label {
+  color: #9fb8d8;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sh-mission-progress__meter {
+  display: flex;
+  gap: 5px;
+}
+
+.sh-mission-progress__pip {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(160, 184, 208, 0.46);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.35);
+}
+
+.sh-mission-progress__pip--filled {
+  border-color: rgba(64, 232, 128, 0.78);
+  background: radial-gradient(circle at 35% 30%, #9dffc2, #26c765 72%);
+  box-shadow: 0 0 10px rgba(64, 232, 128, 0.28);
+}
+
+.sh-mission-progress__count {
+  color: #ffffff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sh-mission-progress__status {
+  color: #ffd666;
+  font-size: 12px;
+  font-weight: 800;
+  margin-left: auto;
+  text-align: right;
+}
+
+.sh-mission-progress--complete .sh-mission-progress__status {
+  color: #72ffa8;
 }
 
 @media (max-width: 900px) {
@@ -207,6 +253,17 @@
     flex: 1;
     max-width: none;
   }
+
+  .sh-mission-progress {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .sh-mission-progress__status {
+    flex-basis: 100%;
+    margin-left: 0;
+    text-align: left;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -216,6 +273,18 @@
 
   .sh-cartridges {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sh-setup-panel__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .sh-voltage-btns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sh-arm-rating {
+    min-width: 0;
   }
 }
 
@@ -359,6 +428,7 @@
 
 .sh-workbench__body {
   display: flex;
+  flex-direction: column;
   flex: 1;
   overflow: hidden;
 }
@@ -439,26 +509,67 @@
   min-height: 14px;
 }
 
-/* Left: gear cartridges + animation */
-.sh-gear-panel {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 12px 10px 12px 14px;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  gap: 10px;
-}
-
-/* Right: voltage + monitors + test */
-.sh-power-panel {
-  width: 230px;
-  flex-shrink: 0;
+/* Setup controls */
+.sh-setup-panel {
   display: flex;
   flex-direction: column;
   padding: 12px 14px;
   gap: 10px;
-  overflow-y: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  flex-shrink: 0;
+}
+
+.sh-setup-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sh-setup-panel__controls {
+  display: grid;
+  grid-template-columns: minmax(360px, 2.2fr) minmax(260px, 1.1fr) minmax(220px, 0.8fr) minmax(150px, 0.55fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.sh-setup-section {
+  min-width: 0;
+}
+
+.sh-panel-subheading {
+  color: #9fc5ef;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.sh-setup-clear {
+  background: rgba(30, 45, 70, 0.72);
+  border: 1px solid rgba(120, 156, 205, 0.42);
+  border-radius: 12px;
+  color: #c8d8e8;
+  font-size: 12px;
+  padding: 7px 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+  box-shadow: none;
+}
+
+.sh-setup-clear:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .sh-setup-clear:hover {
+    background: rgba(50, 70, 105, 0.82);
+  }
 }
 
 .sh-panel-heading {
@@ -473,7 +584,7 @@
 /* Gear cartridge cards */
 .sh-cartridges {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   flex: 0 0 auto;
 }
@@ -642,8 +753,8 @@
 
 /* Voltage buttons */
 .sh-voltage-btns {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
 
@@ -736,13 +847,459 @@
   padding: 12px 20px;
   font-size: 16px;
   width: 100%;
-  margin-top: auto;
+  margin: 0;
+  align-self: stretch;
 }
 
 .sh-test-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ── Chapter 4 bench redesign ────────────────────────────────────────────── */
+
+.sh-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 4.4fr) minmax(260px, 1.05fr);
+  gap: 12px;
+  padding: 12px 14px 10px;
+  background: rgba(2, 8, 22, 0.34);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  flex-shrink: 0;
+}
+
+.sh-dashboard .sh-status-board {
+  padding: 0;
+  gap: 10px;
+  background: transparent;
+  border-bottom: 0;
+}
+
+.sh-dashboard > .sh-mission-progress {
+  min-height: 88px;
+  padding: 14px 16px;
+  border: 2px solid rgba(255, 214, 102, 0.72);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 26% 62%, rgba(120, 195, 255, 0.24), transparent 30%),
+    linear-gradient(180deg, rgba(44, 55, 78, 0.92), rgba(18, 27, 48, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    0 0 18px rgba(255, 214, 102, 0.24);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+
+.sh-dashboard .sh-mission-progress__label {
+  flex-basis: 100%;
+  color: #e6edf8;
+  font-size: 17px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.sh-dashboard .sh-mission-progress__count {
+  flex-basis: 100%;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sh-dashboard .sh-mission-progress__meter {
+  order: 4;
+  width: 100%;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.sh-dashboard .sh-mission-progress__pip {
+  width: 25px;
+  height: 25px;
+  border-color: rgba(145, 160, 188, 0.58);
+}
+
+.sh-dashboard .sh-mission-progress__pip--filled {
+  border-color: rgba(195, 232, 255, 0.84);
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #a8d9ff 42%, #4c85d7 78%);
+  box-shadow: 0 0 18px rgba(128, 200, 255, 0.72);
+}
+
+.sh-dashboard .sh-mission-progress__status {
+  display: none;
+}
+
+.sh-dashboard .sh-status-tile {
+  min-height: 88px;
+  position: relative;
+  overflow: hidden;
+  padding: 13px 15px;
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(48, 58, 80, 0.92), rgba(22, 30, 50, 0.96));
+  border-color: rgba(170, 190, 220, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    inset 0 -18px 35px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.22);
+}
+
+.sh-dashboard .sh-status-tile::after {
+  content: none;
+}
+
+.sh-dashboard .sh-status-tile--neutral::after,
+.sh-dashboard .sh-status-tile--partial::after {
+  content: none;
+}
+
+.sh-dashboard .sh-status-tile--green {
+  border-color: rgba(100, 225, 138, 0.64);
+}
+
+.sh-dashboard .sh-status-tile--yellow {
+  border-color: rgba(240, 200, 102, 0.72);
+}
+
+.sh-dashboard .sh-status-tile--red {
+  border-color: rgba(255, 108, 92, 0.76);
+}
+
+.sh-dashboard .sh-status-tile__label {
+  color: rgba(242, 245, 252, 0.82);
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.sh-dashboard .sh-status-tile__value {
+  font-size: 20px;
+  margin-top: 1px;
+}
+
+.sh-dashboard .sh-status-tile__sub {
+  font-size: 11px;
+  min-height: 0;
+}
+
+.sh-status-tile__meter {
+  margin: 6px 0 3px;
+}
+
+.sh-dashboard .sh-status-tile__meter .gcu-meter--arc {
+  margin-top: -4px;
+  margin-bottom: -8px;
+}
+
+.sh-dashboard .sh-status-tile__meter .gcu-meter__arc-svg {
+  height: 58px;
+}
+
+.sh-dashboard .sh-status-tile__meter .gcu-meter__segments {
+  min-height: 24px;
+}
+
+.sh-dashboard .sh-status-tile__meter .gcu-meter__labels {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.sh-workbench__body {
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px 14px 14px;
+  min-height: 0;
+}
+
+.sh-controls-column {
+  flex: 1.06 1 0;
+  min-width: 520px;
+  display: flex;
+  min-height: 0;
+}
+
+.sh-performance-panel {
+  flex: 0.94 1 0;
+  min-width: 420px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(112, 205, 255, 0.70);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 56% 44%, rgba(75, 115, 180, 0.30), transparent 48%),
+    linear-gradient(160deg, rgba(38, 50, 76, 0.92), rgba(6, 13, 29, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.13),
+    0 0 18px rgba(88, 190, 255, 0.22);
+}
+
+.sh-performance-panel__title {
+  position: absolute;
+  z-index: 1;
+  left: 18px;
+  top: 12px;
+  margin: 0;
+  color: rgba(238, 244, 255, 0.82);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.sh-performance-panel .sh-gear-preview {
+  min-height: 0;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.sh-setup-panel {
+  width: 100%;
+  padding: 16px 18px;
+  gap: 18px;
+  border: 2px solid rgba(255, 214, 102, 0.70);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 68% 55%, rgba(120, 160, 220, 0.16), transparent 38%),
+    linear-gradient(180deg, rgba(8, 16, 34, 0.96), rgba(4, 9, 22, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 0 18px rgba(255, 214, 102, 0.16);
+  overflow-y: auto;
+}
+
+.sh-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.sh-section-title {
+  margin: 0;
+  color: #f3f5fb;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.sh-section-badge {
+  border: 1px solid rgba(170, 190, 220, 0.34);
+  border-radius: 11px;
+  color: #b7c4d6;
+  background: rgba(255,255,255,0.05);
+  padding: 7px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sh-setup-section--gears .sh-cartridges {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(235, 235, 230, 0.78), rgba(115, 122, 137, 0.72));
+  border: 1px solid rgba(255,255,255,0.34);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.32),
+    inset 0 -12px 24px rgba(0,0,0,0.25);
+}
+
+.sh-setup-section--gears .sh-cartridge-card {
+  min-height: 122px;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(52, 58, 70, 0.92), rgba(24, 27, 34, 0.96));
+  box-shadow: 0 7px 14px rgba(0,0,0,0.42);
+}
+
+.sh-setup-section--gears .sh-cartridge-card--selected {
+  border-color: #ffd666;
+  background: linear-gradient(180deg, rgba(91, 74, 33, 0.92), rgba(39, 32, 22, 0.98));
+  box-shadow: 0 0 16px rgba(255, 214, 102, 0.34);
+}
+
+.sh-setup-section--gears .sh-cartridge-card__img-wrap {
+  width: 100%;
+  height: 50px;
+}
+
+.sh-setup-section--gears .sh-cartridge-card__img {
+  max-width: 76px;
+  max-height: 52px;
+}
+
+.sh-setup-section--gears .sh-cartridge-card__fallback {
+  width: 72px;
+  height: 48px;
+}
+
+.sh-setup-section--gears .sh-cartridge-card__label {
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.sh-setup-section--gears .sh-cartridge-card__tagline {
+  color: #d8dfeb;
+  font-size: 11px;
+}
+
+.sh-power-tray,
+.sh-load-test-row {
+  display: grid;
+  align-items: center;
+  gap: 14px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(235, 235, 230, 0.78), rgba(116, 124, 140, 0.74));
+  border: 1px solid rgba(255,255,255,0.34);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.32),
+    inset 0 -12px 24px rgba(0,0,0,0.22);
+}
+
+.sh-power-tray {
+  grid-template-columns: 150px minmax(0, 1fr);
+  padding: 12px 18px;
+}
+
+.sh-power-tray__label {
+  color: rgba(0,0,0,0.74);
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.sh-power-tray .sh-voltage-btns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sh-power-tray .sh-volt-btn {
+  min-height: 78px;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(42, 75, 118, 0.95), rgba(27, 48, 80, 0.98));
+  box-shadow: 0 5px 11px rgba(0,0,0,0.36);
+}
+
+.sh-power-tray .sh-volt-btn--selected {
+  border-color: #ffd666;
+  background: linear-gradient(180deg, rgba(75, 63, 32, 0.98), rgba(38, 31, 22, 0.98));
+  box-shadow: 0 0 14px rgba(255, 214, 102, 0.34);
+}
+
+.sh-power-tray .sh-volt-btn--selected .sh-volt-btn__label {
+  color: #ffd666;
+}
+
+.sh-power-tray .sh-volt-btn__label {
+  font-size: 24px;
+}
+
+.sh-load-test-row {
+  grid-template-columns: minmax(190px, 1fr) minmax(220px, 1fr) minmax(170px, 0.75fr);
+  padding: 12px 14px;
+}
+
+.sh-load-panel {
+  border: 1px solid rgba(30, 45, 70, 0.40);
+  border-radius: 10px;
+  background: rgba(10, 18, 36, 0.78);
+  padding: 12px 14px;
+  color: #e8f0fe;
+}
+
+.sh-load-panel__label {
+  display: block;
+  color: #9fb8d8;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.sh-load-panel strong {
+  display: block;
+  color: #ffd666;
+  font-family: Orbitron, monospace;
+  font-size: 22px;
+  margin: 2px 0;
+}
+
+.sh-load-test-row .sh-arm-rating {
+  min-width: 0;
+  background: rgba(10, 18, 36, 0.78);
+  border-color: rgba(30, 45, 70, 0.40);
+}
+
+.sh-load-test-row .sh-test-btn {
+  min-height: 78px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 50% 15%, rgba(255,255,255,0.72), transparent 28%),
+    linear-gradient(180deg, rgba(183, 218, 255, 0.64), rgba(50, 82, 116, 0.90));
+  color: #dff2ff;
+  border: 2px solid rgba(220, 245, 255, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.70),
+    0 0 18px rgba(185, 225, 255, 0.52);
+  font-size: 21px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.70);
+}
+
+@media (max-width: 1100px) {
+  .sh-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sh-dashboard .sh-status-board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sh-workbench__body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sh-controls-column,
+  .sh-performance-panel {
+    min-width: 0;
+    flex: none;
+  }
+
+  .sh-performance-panel {
+    min-height: 360px;
+  }
+
+  .sh-setup-panel__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .sh-setup-section--gears .sh-cartridges {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sh-voltage-btns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sh-arm-rating {
+    min-width: 0;
+  }
+
+  .sh-load-test-row,
+  .sh-power-tray {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Phase 3: Arm Test ───────────────────────────────────────────────────── */

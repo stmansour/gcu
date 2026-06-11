@@ -16,16 +16,11 @@
   flex-direction: column;
 }
 
-/* Starfield + warm lamp-glow background */
+/* Full-bleed hub illustration (logo is baked into the artwork) */
 .hub__bg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 20%, rgba(212, 169, 89, 0.13) 0%, transparent 65%),
-    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(107, 68, 35, 0.35) 0%, transparent 55%),
-    linear-gradient(rgba(8, 18, 36, 0.62), rgba(8, 18, 36, 0.62)),
-    url('../../assets/images/hub/hub-bg.png') center / cover no-repeat,
-    #0D1B2A;
+  background: url('../../assets/images/hub/hub_bg2.png') center / cover no-repeat;
   pointer-events: none;
   z-index: 0;
 }
@@ -41,63 +36,6 @@
   padding: 0 var(--space-xl);
 }
 
-/* ── Wooden Sign ──────────────────────────────────────────────────────────── */
-.hub__sign {
-  flex-shrink: 0;
-  margin-top: clamp(var(--space-md), 2vh, var(--space-lg));
-  background: linear-gradient(175deg, #9B6B35 0%, #7A4F22 55%, #5E3B18 100%);
-  border: 3px solid #4A2C12;
-  border-bottom: 5px solid #3A2010;
-  border-radius: 10px;
-  padding: clamp(6px, 1.2vh, 10px) clamp(var(--space-lg), 5vw, var(--space-xl));
-  box-shadow:
-    0 5px 0 #3A2010,
-    0 8px 24px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  /* Two decorative chain-hang dots */
-  position: relative;
-}
-.hub__sign::before,
-.hub__sign::after {
-  content: '';
-  position: absolute;
-  top: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-.hub__sign::before { left: 10px; }
-.hub__sign::after  { right: 10px; }
-
-.hub__sign-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-
-.hub__sign-line1 {
-  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
-  font-size: clamp(0.9rem, 2.2vw, 1.4rem);
-  font-weight: 700;
-  color: #F0C866;
-  text-shadow: 0 0 18px rgba(240, 200, 102, 0.55), 0 1px 3px rgba(0, 0, 0, 0.6);
-  letter-spacing: 0.06em;
-  line-height: 1;
-}
-
-.hub__sign-line2 {
-  font-family: var(--font-display), 'Trebuchet MS', system-ui, sans-serif;
-  font-size: clamp(1.3rem, 3.5vw, 2.1rem);
-  font-weight: 800;
-  color: #F0C866;
-  text-shadow: 0 0 22px rgba(240, 200, 102, 0.6), 0 1px 3px rgba(0, 0, 0, 0.6);
-  letter-spacing: 0.08em;
-  line-height: 1.1;
-}
-
 /* ── Portal Cards ─────────────────────────────────────────────────────────────
    Images are 400×533 (3:4 portrait). Cards match that ratio.
    vh-based width: auto-fits 4 per row on landscape, wraps to 2×2 on portrait. */
@@ -109,7 +47,8 @@
   gap: clamp(12px, 2vw, 24px);
   justify-content: center;
   align-content: center;
-  padding: var(--space-md) var(--space-lg);
+  /* Leave room for the logo baked into hub_bg2.png */
+  padding: clamp(120px, 34vh, 280px) var(--space-lg) var(--space-md);
   width: 100%;
 }
 

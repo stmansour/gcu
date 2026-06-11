@@ -6,7 +6,7 @@
 **Module:** Robot Lab  
 **Primary audience:** children old enough to follow guided experimentation, roughly 8-12 for the deeper Robot Lab chapters  
 **Product target:** iPad first, iPhone second, standalone app experience  
-**Current implementation status:** Chapters 1-3 are implemented. Chapter 4 needs a redesign before further implementation.
+**Current implementation status:** Chapters 1-4 are implemented. Chapter 4 is the Shoulder Drive mission and now uses scenario memory, gear/power setup choices, live status indicators, and a minimum-completion gate before Chapter 5.
 
 ---
 
@@ -52,7 +52,7 @@ Each chapter should follow the same broad pattern.
 
 ## Interface Rules
 
-These rules are especially important after the Chapter 4 prototype drifted away from the established pattern.
+These rules are especially important for Chapter 4 and later chapters, where the workbench can easily become too abstract or control-heavy.
 
 ### Left Sidebar
 
@@ -174,33 +174,34 @@ If the player changes voltage, they should see:
 
 **Gameplay pattern:**
 
-- player adjusts RGB channel gains
-- the visual scene changes in real time
-- correct tuning restores natural colors
+- player uses a patchbay to route three scrambled physical sensors to the correct RGB output channels
+- each sensor shows a greyscale thumbnail, helping the player infer which color filter it sees
+- the visual scene changes in real time as wires and gain sliders change
+- correct routing, with balanced gains, restores natural colors
 
 **Payoff:** SWIRL-E can identify colors correctly.
 
 ---
 
-### Chapter 4 - Shoulder Motion System
+### Chapter 4 - Shoulder Drive System
 
-## Redesign Status
+**Status:** Implemented.
 
-The existing Chapter 4 prototype should be considered a rough experiment, not the final design.
+**Story:** SWIRL-E can see and identify colors, but his shoulder drive still needs to learn which gear and power settings match real jobs.
 
-The current prototype has several problems:
+**Core idea:** The player is not finding one hidden answer. They are teaching SWIRL-E's memory: for each lifting scenario, what gear ratio and voltage are a good match, and when is a load not safe for his arm at all?
 
-- it feels like an abstract gear puzzle instead of SWIRL-E's shoulder system
-- science controls were placed in the sidebar, unlike Chapters 1-3
-- the mission target was vague
-- "speed 0.70x" style targets are not meaningful to children
-- randomized hidden answers make the task feel arbitrary
-- the gear test rig is not clearly connected to SWIRL-E's actual arm
-- the interface asks the player to find a right answer instead of making an engineering design choice
+**Gameplay pattern:**
 
-The redesigned chapter should be built around this idea:
+- a real-world case is selected, such as carrying rice, lifting a toolbox, watering plants, or picking up light objects
+- the case specifies weight and desired motion style in child-readable words
+- the player chooses a gear ratio and voltage
+- live indicators update as choices are made
+- the animation shows gears, motor heat, shaft torque, arm speed, and a load being lifted
+- successful cases are saved into SWIRL-E's memory
+- the player must save a minimum number of case memories before Chapter 5 unlocks
 
-> "Help choose and install SWIRL-E's shoulder drive so his arm has the strength, speed, and battery life we want."
+**Payoff:** SWIRL-E learns how to choose shoulder-drive setups for different jobs.
 
 ---
 
@@ -208,29 +209,85 @@ The redesigned chapter should be built around this idea:
 
 The player should learn:
 
-- a motor spins fast but may not be strong enough by itself
-- gears trade speed for strength
-- a high gear ratio gives more lifting strength but slower movement
-- a low gear ratio gives faster movement but less lifting strength
-- higher voltage can make a motor faster or stronger, but increases heat/stress and drains the battery faster
-- engineers choose parts based on the job the robot needs to do
-- there may be several working designs, each with tradeoffs
+- a motor can spin but still need gears to do useful work
+- gears trade speed for lifting strength
+- a quick gear can move light loads fast but may stall on heavy loads
+- a strong gear can lift heavier loads but moves more slowly
+- voltage changes motor power, speed, heat, and runtime
+- motor heat and shaft torque are related engineering concerns, but they are not the same thing
+- the arm assembly has its own torque rating, so some jobs are unsafe even if the motor and gears could move the load
+- engineers classify jobs and remember working setups instead of guessing every time
 
-The chapter should avoid presenting gear selection as a hidden answer. Instead, it should let the player choose a design goal and then build toward it.
+The chapter intentionally includes more than one kind of successful reasoning:
+
+- choose a working gear and power pair for a safe case
+- choose a less wasteful voltage when multiple voltages can work
+- reject unsafe cases that exceed SWIRL-E's arm torque rating
 
 ---
 
-## Chapter 4 Story
+## Chapter 4 Physics Model
 
-SWIRL-E can see and identify colors now, but his left arm is not ready.
+The model is qualitative and child-facing, but it must stay internally consistent.
 
-Grandpa explains:
+### Gear Ratios
 
-> "SWIRL-E's shoulder motor spins, but we have to decide what kind of arm he needs. Should he be strong and slow, balanced, or fast and light?"
+Current gear cartridges:
 
-The player is not just tuning a test rig. The player is designing SWIRL-E's shoulder drive.
+| Gear | Child Label | Behavior | Best Use |
+|------|-------------|----------|----------|
+| 1:3 | Quick Gear | Arm turns 3x for every 1 motor turn | very light objects that should move quickly |
+| 1:1 | Fast Gear | motor and arm turn together | light, fast jobs |
+| 3:1 | Balanced Gear | motor turns 3x for every 1 arm turn | everyday jobs |
+| 6:1 | Strong Gear | motor turns 6x for every 1 arm turn | heavy, slow jobs |
 
-The final test should show the result on SWIRL-E's real arm or on a clearly labeled shoulder module that visibly belongs to SWIRL-E.
+Important: the gear ratio changes the motor's ability to lift and the arm's speed. It does **not** change the load torque placed on SWIRL-E's main arm shaft by a given weight. A 7 kg load creates the same arm-shaft load torque regardless of whether the player selected 1:1 or 3:1 gears.
+
+### Voltage Choices
+
+Current voltage choices:
+
+| Voltage | Meaning |
+|---------|---------|
+| 3V | gentle, slower, better runtime |
+| 6V | balanced default |
+| 9V | faster and stronger, drains faster and can create more heat |
+
+Low voltage should tend toward slow movement or stall before it creates confusing "too hot" failures. Heat is shown as a motor condition, while torque is shown as a shaft/load condition.
+
+### Torque Rating
+
+SWIRL-E's arm has a maximum torque rating. The current UI shows:
+
+- maximum arm torque rating: **22 N m**
+- equivalent: about **16.2 ft lb**
+- approximate maximum load at SWIRL-E's arm length: about **20 kg**
+
+If a case exceeds the arm torque rating, the correct answer is to mark the case as **Not safe for SWIRL-E**. The strongest motor/gear setup may still move the load, but the arm assembly should not be asked to carry it.
+
+---
+
+## Chapter 4 Scenario Memory
+
+Chapter 4 is framed as adding entries to SWIRL-E's memory.
+
+The game tracks solved case IDs in local storage under Chapter 4 task memory. Case memory persists across visits until the player chooses **Start Over**.
+
+Current behavior:
+
+- the case picker lists all scenarios and marks solved ones with a check
+- **Pick Unsolved** chooses a random unsolved scenario when possible
+- after all scenarios are solved, random selection may repeat any scenario
+- **Start Over** clears the solved-case memory
+- Chapter 5 is locked until the player has saved the required number of Chapter 4 memories
+- the current required count is **4 saved memories**
+
+The required-progress indicator must be visible on both:
+
+- the shoulder-drive workbench screen
+- the test/result screen
+
+The progress display should say plainly how many memories have been saved and how many are still needed before Chapter 5.
 
 ---
 
@@ -238,541 +295,121 @@ The final test should show the result on SWIRL-E's real arm or on a clearly labe
 
 ### Left Sidebar
 
-Follow Chapters 1-3.
-
-Left sidebar should include:
+The left sidebar follows Chapters 1-3 and remains for chapter support:
 
 - SWIRL-E portrait
-- SWIRL-E speech bubble
-- short mission reminder
+- SWIRL-E speech / mission reminder
+- previous and next chapter actions after unlock
 - Grandpa's Journal
-- Previous Chapter / Next Chapter after success
-- Hub navigation through the normal chapter topbar
 
-Left sidebar should not include:
-
-- strength selection
-- gear selection
-- voltage selection
-- battery/runtime selection
-- test controls
+The left sidebar should not contain gear choices, voltage choices, case controls, or test controls.
 
 ### Main Work Area
 
-The main work area should be the **Shoulder Drive Workbench**.
+The main work area is divided by concept, not by implementation convenience.
 
-It should show:
+#### Case Controls
 
-- SWIRL-E shoulder module or cutaway
-- motor
-- gear cartridge area
-- battery/motor power connector
-- arm or test arm connected to the shoulder
-- load/lift test target
-- monitors around the workbench
+The case row contains controls that affect which job SWIRL-E is learning:
 
-The workbench should feel like the player is building a physical subsystem, not filling out a form.
+- case dropdown
+- **Pick Unsolved**
+- **Not safe for SWIRL-E**
+- **Start Over**
 
----
+The **Not safe for SWIRL-E** action belongs with the case controls because it is the answer for overload cases, not a motor setup button.
 
-## Chapter 4 Proposed Mission Flow
+#### Mission Progress
 
-Chapter 4 should be broken into clear steps. Each step should focus on one decision.
+A constant progress strip appears below the case row:
 
-## Step 1 - Choose The Arm Job
+- filled pips for saved Chapter 4 memories
+- text such as `2/4 memories saved`
+- text such as `2 more cases to unlock Chapter 5`
+- success state once Chapter 5 is unlocked
 
-The player first chooses what kind of arm SWIRL-E should have.
+This must remain visible during both setup and test/result phases.
 
-Prompt:
+#### Status Board
 
-> "What kind of arm should we build for SWIRL-E?"
+The setup screen has a constant status board across the top. It updates immediately as the player chooses gear and power.
 
-Suggested choices:
+Current indicators:
 
-### Strong Arm
+- **Motor Heat**: Low / Acceptable / Stall or Hot
+- **Weight**: the current case's target weight
+- **Gears**: selected ratio and lift capability
+- **Speed**: selected arm speed compared with the case need
+- **Torque**: load torque in N m, compared with the 22 N m arm rating
 
-- Lift target: **15 kg / 33 lb**
-- Speed: slow
-- Use case: carrying heavy things carefully
-- Child-friendly examples:
-  - large bag of rice
-  - heavy toolbox
-  - packed suitcase
-  - small dog-sized weight, if presented carefully and not as something to lift unsafely
+Partial setup states should be explicit:
 
-### Balanced Arm
+- if gear is selected but voltage is not, affected indicators say **Waiting on voltage...**
+- if voltage is selected but gear is not, affected indicators say **Waiting on gears...**
+- partial states should be visually noticeable, using the yellow warning language
 
-- Lift target: **10 kg / 22 lb**
-- Speed: normal
-- Use case: useful everyday lifting
-- Child-friendly examples:
-  - loaded school backpack
-  - grocery bag with several bottles
-  - stack of books
+#### Setup Controls
 
-### Fast Arm
+Gear ratio and voltage are peer decisions and should be presented as one setup panel:
 
-- Lift target: **7 kg / 15 lb**
-- Speed: fast
-- Use case: quick movements with lighter objects
-- Child-friendly examples:
-  - light backpack
-  - several full water bottles
-  - small box of toys
+- **1. Gear Ratio**
+- **2. Power**
+- **Clear Current Choices**
+- arm torque rating
+- **Test It**
 
-Important: this is not a quiz. The player is choosing a design personality for SWIRL-E's arm.
+Gear choices should not appear as a wide mostly blank list. Voltage choices should not be isolated in a disconnected right sidebar. Both are part of building SWIRL-E's shoulder setup.
 
-The interface should make the tradeoff obvious:
+#### Animation Area
 
-- Strong means more lifting power, slower movement.
-- Fast means quicker movement, less lifting power.
-- Balanced is in the middle.
+The motor animation should carry the lesson visually. It should show:
 
-### Step 1 UI
+- motor body and heat indicator
+- main shaft
+- selected gear pair
+- gear rotation relationship
+- color-coded shaft torque
+- lift rail / arm output
+- visible load being raised
+- load weight label on or near the load
 
-Use three large cards in the main work area.
-
-Each card should show:
-
-- name
-- weight target in kg and lb
-- speed word: Slow / Normal / Fast
-- simple illustrated object comparison
-- small icon or meter showing strength vs speed
-
-Do not use abstract units like "0.70x" here.
+When the load reaches the top of its travel, the animation loops from the bottom.
 
 ---
 
-## Step 2 - Choose The Gear Cartridge
+## Chapter 4 Outcomes
 
-After the arm job is selected, the player chooses a gear cartridge for the shoulder.
+Chapter 4 supports these outcomes:
 
-This is where the gear teaching happens.
+- **Success:** setup lifts the load with acceptable heat, torque, and speed for the case
+- **Stall:** motor cannot lift the load with the selected setup
+- **Too Hot:** motor heat is outside the safe/acceptable range
+- **Mismatch:** setup moves, but speed does not match the case need
+- **Unsafe Load:** case exceeds SWIRL-E's arm torque rating, so the correct response is to refuse the lift
 
-The player should see gear sets as physical cartridges or bench-mounted gear pairs, not just buttons.
+Failure feedback should be visible and recoverable. The player should be able to run the test again or return to the setup panel and choose different parts.
 
-Suggested gear sets:
+Success creates a memory card showing:
 
-### 1:1 Fast Gear
-
-- Teeth: 24T motor gear -> 24T arm gear
-- Ratio: 1:1
-- Behavior: motor and arm gear turn at the same speed
-- Strength: lowest
-- Speed: highest
-- Best for: light load and fast movement
-
-### 3:1 Balanced Gear
-
-- Teeth: 12T motor gear -> 36T arm gear
-- Ratio: 3:1
-- Behavior: motor turns 3 times for 1 arm turn
-- Strength: medium
-- Speed: medium
-- Best for: normal load and everyday use
-
-### 6:1 Strong Gear
-
-- Teeth: 8T motor gear -> 48T arm gear
-- Ratio: 6:1
-- Behavior: motor turns 6 times for 1 arm turn
-- Strength: highest
-- Speed: lowest
-- Best for: heavy load and low stress
-
-### Gear Rating Labels
-
-The gear cards should show child-readable labels first, and engineering labels second.
-
-Example:
-
-- "Strongest, slowest"
-- "6 motor turns = 1 arm turn"
-- "Best for heavy lifting"
-
-If a torque rating is displayed, it should be explained or visually paired with a load rating. Avoid unexplained labels like "7.5 N*m max" unless Grandpa's Journal or a tooltip explains what it means.
-
-### Gear Motion Display
-
-Each gear card should show:
-
-- the two gears meshing correctly
-- actual tooth count or visibly proportional teeth
-- a red or high-contrast clock hand on each gear
-- slow idle rotation on the selected gear set
-
-The point of the clock hands is to show:
-
-- in 1:1, both gears turn the same amount
-- in 3:1, the motor gear turns 3 times for 1 arm turn
-- in 6:1, the motor gear turns 6 times for 1 arm turn
-
-### Step 2 Feedback Monitors
-
-When the player selects a gear, the workbench monitors should update:
-
-- Lift capacity
-- Arm speed
-- Motor stress
-- Battery runtime estimate
-- Gear ratio
-
-Use words and simple values:
-
-- "Lift capacity: 15 kg"
-- "Arm speed: Slow"
-- "Motor stress: Green"
-- "Battery: 35 minutes"
-- "Gear ratio: 6:1"
-
-Avoid "0.17x" unless it is secondary information inside a detailed readout.
+- task
+- selected drive, or no safe drive for overload cases
+- result
+- why the setup worked or why the load was unsafe
+- progress toward the Chapter 5 unlock
 
 ---
 
-## Step 3 - Choose Voltage / Runtime Tradeoff
+## Chapter 4 Completion Rule
 
-After the gear is selected, the player chooses how to power the shoulder motor.
+Chapter 4 is mission-complete only after the player saves the required number of scenario memories.
 
-The player should understand:
+Current rule:
 
-- lower voltage usually means slower motion and longer battery life
-- higher voltage can mean faster motion but more heat/stress and shorter battery life
-- some combinations cannot lift the chosen load
+- save **4** Chapter 4 memories to unlock Chapter 5
 
-Suggested voltage choices:
+Doing one scenario is intentionally not enough. The child needs repeated practice across different case types so the lesson becomes classification and engineering judgment, not a one-answer puzzle.
 
-### Low Power
-
-- 3V
-- slower
-- longest runtime
-- may stall on heavy jobs
-
-### Normal Power
-
-- 6V
-- normal speed
-- balanced runtime
-- good default
-
-### High Power
-
-- 9V
-- faster
-- shortest runtime
-- may overheat or slam the arm if the gear is too fast
-
-### Battery And Runtime Model
-
-Keep the model simple and qualitative. It only needs to be mechanically honest enough for learning.
-
-Suggested inputs:
-
-- selected load target
-- selected gear ratio
-- selected voltage
-- motor stress
-- estimated runtime
-
-Suggested outputs:
-
-- Can lift? Yes / Barely / No
-- Stress: Green / Yellow / Red
-- Lift time: seconds
-- Runtime: minutes before recharge
-- Motor heat: Cool / Warm / Hot
-
-Example monitor text:
-
-- "Lift: Yes"
-- "Lift time: 5 sec"
-- "Runtime: 28 min"
-- "Motor stress: Green"
-- "Motor heat: Warm"
-
-Do not require exact real-world motor engineering. The important lesson is the tradeoff.
-
----
-
-## Step 4 - Install The Shoulder Drive
-
-Once the player has chosen the arm job, gear cartridge, and voltage, the chapter becomes a physical assembly task.
-
-The player should:
-
-- drag the selected gear cartridge into SWIRL-E's shoulder
-- connect the motor power wire to the chosen voltage port
-- connect the battery or arm power plug
-- press a test button
-
-This makes the chapter feel like building SWIRL-E, not merely selecting options.
-
-### Required Visual Assets
-
-This step will likely need new generated images.
-
-Needed asset concepts:
-
-- SWIRL-E with exposed left shoulder module
-- close-up shoulder motor bay
-- empty gear cartridge slot
-- gear cartridges on the bench
-- battery pack / arm power pack
-- voltage connector ports
-- test load hanging from SWIRL-E's hand or test hook
-- successful arm lift pose
-- funny failure poses if needed
-
-The existing generated-image workflow should be used: each image should have an associated prompt file, similar to Puzzle Forest.
-
----
-
-## Step 5 - Run The Arm Test
-
-The final test should visibly connect to SWIRL-E.
-
-Preferred version:
-
-- SWIRL-E's left arm is visible
-- shoulder shell is open
-- selected gear cartridge is installed
-- wires run from battery/power panel to shoulder
-- load hangs from SWIRL-E's hand or test hook
-- arm raises the selected load
-
-Fallback version:
-
-- a clearly labeled "SWIRL-E Shoulder Module" test rig is visible
-- the module is visually connected to SWIRL-E by cable or placement
-- the test arm is explicitly his shoulder actuator, not an unrelated abstract arm
-
-### Test Outcomes
-
-There should not be one hidden correct answer. Instead, outcomes should reflect the design.
-
-Possible outcomes:
-
-- **Success:** arm lifts the selected load with acceptable stress and runtime.
-- **Stall:** too little torque; arm hums but does not lift.
-- **Too Hot:** it lifts but motor stress/heat is red.
-- **Too Slow:** it lifts, but movement is too slow for the chosen arm job.
-- **Too Fast:** arm lifts too quickly and wobbles or bumps the stop.
-- **Short Runtime:** works, but battery drains quickly.
-
-The player should be able to revise choices after seeing the outcome.
-
----
-
-## Feedback Monitors
-
-Chapter 4 needs visible monitors integrated into the workbench, not a separate adult-looking dashboard.
-
-Recommended monitors:
-
-### Gear Ratio Monitor
-
-Shows:
-
-- selected ratio
-- motor turns per arm turn
-- simple animated diagram
-
-Example:
-
-> "3 motor turns = 1 arm turn"
-
-### Lift Capacity Monitor
-
-Shows:
-
-- target load
-- selected setup capacity
-- green/yellow/red status
-
-Example:
-
-> "Target: 10 kg"
-> "Setup: 12 kg capacity"
-
-### Motor Stress Monitor
-
-Shows:
-
-- green/yellow/red
-- stress color on the physical motor/gear/arm area
-
-Do not only show stress in a side box. The stressed part should glow or tint.
-
-### Speed Monitor
-
-Use human-readable speed:
-
-- Slow
-- Normal
-- Fast
-
-Optionally include lift time:
-
-- "Lift time: 6 sec"
-
-### Runtime Monitor
-
-Shows estimated battery life:
-
-- "Runtime: 28 min"
-
-This makes voltage and gear choices meaningful.
-
-### Heat Monitor
-
-Shows:
-
-- Cool
-- Warm
-- Hot
-
-Heat can be visually represented with:
-
-- blue/green glow for cool/OK
-- yellow glow for warm
-- red glow and small heat shimmer for hot
-
----
-
-## Stress Visualization
-
-Stress means:
-
-> how hard the motor and gear train are working compared with what they can safely provide.
-
-Stress should appear on the physical system:
-
-- motor casing
-- motor gear
-- gear teeth contact area
-- arm joint
-- shoulder bracket
-- power wire or heat indicator
-
-Suggested color language:
-
-- **Green:** OK, comfortable
-- **Yellow:** working hard, acceptable for short use
-- **Red:** overloaded, too hot, likely stall or damage
-
-Stress should appear during:
-
-- manual dragging
-- motor test
-- final arm lift
-
-Stress should not only be text.
-
----
-
-## SWIRL-E Connection
-
-This chapter must visibly answer:
-
-> "How does this help SWIRL-E?"
-
-Ways to make that clear:
-
-- show SWIRL-E's open shoulder, not just an abstract bench
-- label the work area "SWIRL-E Left Shoulder Drive"
-- show the selected gear cartridge being installed into his shoulder
-- show wires running from the power panel into the shoulder
-- after a successful test, show SWIRL-E using the arm
-- use SWIRL-E speech to connect the task to his body
-
-Example SWIRL-E lines:
-
-- "That gear will make my arm stronger, but slower."
-- "My motor is getting warm with that setup."
-- "This one feels fast, but I cannot lift much."
-- "That feels right for my shoulder."
-
----
-
-## Chapter 4 Proposed Screen Sequence
-
-### Screen A - Mission Briefing
-
-SWIRL-E:
-
-> "My shoulder motor spins, but I need the right gears so my arm can do useful work."
-
-Grandpa:
-
-> "First choose what kind of arm SWIRL-E needs. Then install the gears and power setting to match."
-
-### Screen B - Choose Arm Job
-
-Main area shows three large choice cards:
-
-- Strong Arm: 15 kg / 33 lb, slow
-- Balanced Arm: 10 kg / 22 lb, normal
-- Fast Arm: 7 kg / 15 lb, fast
-
-### Screen C - Gear Bench
-
-Main area shows:
-
-- selected arm job summary
-- three gear cartridges
-- animated gear relationship
-- monitors updating live
-
-### Screen D - Power And Runtime
-
-Main area shows:
-
-- voltage ports or battery settings
-- runtime monitor
-- heat/stress monitor
-- lift time estimate
-
-### Screen E - Assembly
-
-Player drags:
-
-- gear cartridge into shoulder slot
-- wire to selected voltage port
-- battery/arm connector into place
-
-### Screen F - Run Test
-
-SWIRL-E or shoulder module raises the test load.
-
-Outcome is visual and explanatory.
-
-### Screen G - Success Summary
-
-Show:
-
-- chosen arm job
-- chosen gear ratio
-- chosen voltage
-- lift capacity
-- lift speed
-- runtime estimate
-
-Then unlock next chapter.
-
----
-
-## Open Design Questions
-
-These should be agreed before implementation.
-
-1. Should Step 1 be a permanent choice for SWIRL-E's arm personality, or just a mission challenge that can be changed freely?
-2. Should the player be required to install the exact matching gear, or should several designs pass with different tradeoffs?
-3. Should voltage selection happen before or after gear installation?
-4. Should runtime be required for success, or just a tradeoff shown to the player?
-5. Should the final lift happen on SWIRL-E's full visible body, or in a close-up shoulder module?
-6. What level of numeric detail is right for the target age: kg/lb only, or kg/lb plus torque and runtime?
-7. Should the chapter include one final mission, or three mini-missions for Fast/Balanced/Strong arms?
+When the requirement is not met, the final result card should encourage teaching another job instead of enabling Chapter 5. Once the requirement is met, Chapter 5 navigation becomes available.
 
 ---
 

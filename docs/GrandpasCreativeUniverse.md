@@ -1,8 +1,8 @@
 # Grandpa’s Creative Universe
 ### Vision & Design Blueprint (v1.1 – Personal Draft)
 
-**Last updated:** March 2026
-**Status:** Robot Lab Chapter 1 is fully built and playable. All other modules are planned.
+**Last updated:** May 2026
+**Status:** Robot Lab Chapters 1-4 are built and playable. Puzzle Forest and Art Studio are in active development.
 
 ---
 ## Introduction
@@ -255,7 +255,7 @@ Videos are:
 
 ---
 
-## 8. Robot Lab (Engineering Track) ✅ Chapter 1 Complete
+## 8. Robot Lab (Engineering Track) ✅ Chapters 1-4 Implemented
 
 Theme: Build the robot brain — specifically, bring **SWIRL-E** to life.
 
@@ -278,16 +278,38 @@ The child wires a 9V battery to SWIRL-E's eye module through a mystery passive c
 
 The schematic is a real circuit diagram (SVG). Current flows as animated particles — kids can toggle between electron flow and conventional current direction. Grandpa's Journal hints at Ohm's Law without lecturing.
 
+### Chapter 2 — Optics ✅ BUILT
+
+SWIRL-E has power, but his vision is blurry. The child drags four possible lenses into two eye-tube slots, then slides placed lenses along horizontal tracks until the focus lands on the target marks. The correct solution is a Weak Convex lens in Slot 1 and a Strong Convex lens in Slot 2.
+
+The ray diagram and "What SWIRL-E Sees" panel update continuously. One correctly aligned convex lens creates a partial, upside-down image; the second convex lens re-focuses and flips the view right-side up. Focus is learned by seeing blur, inversion, and lens position change together.
+
+### Chapter 3 — Color Sensing ✅ BUILT
+
+SWIRL-E can see shapes, but his colors are scrambled. The child works with a sensor patchbay: Sensor A, Sensor B, and Sensor C each capture a greyscale view through one physical color filter, and the player routes them to Red, Green, and Blue outputs.
+
+The source image can switch between the child's avatar, fruit, a garden scene, and a color test chart. The processed image updates live as wires and gain sliders change. The main completion gate is correct sensor-to-channel routing; gain sliders remain available for exploration and white-balance intuition.
+
+### Chapter 4 — Shoulder Drive ✅ BUILT
+
+SWIRL-E's shoulder drive needs to learn which gear and power settings match real jobs. The child chooses a story task, then selects a gear cartridge and voltage while live meters show lift capacity, load torque, arm speed, motor heat, and runtime.
+
+Chapter 4 is framed as SWIRL-E's scenario memory, not a one-answer puzzle. Successful safe setups, and correct "Not safe for SWIRL-E" calls on overload tasks, save case memories. Four saved memories complete the chapter and unlock the Chapter 5 placeholder.
+
 ### Learning Arc
 
 | Ch | Title | Status |
 |----|-------|--------|
-| 1 | Power (closed loop, Ohm's Law, component selection) | ✅ Built |
-| 2 | Control (switches, open/closed state) | Planned |
-| 3 | Motion (motors, energy conversion) | Planned |
-| 4 | Branching (parallel paths) | Planned |
-| 5 | Logic (AND/OR conditions) | Planned |
-| 6 | Sensing (light, sound, timer) | Planned |
+| 1 | Power / Electricity | ✅ Built |
+| 2 | Optics | ✅ Built |
+| 3 | Color Sensing | ✅ Built |
+| 4 | Shoulder Drive | ✅ Built |
+| 5 | Control Systems | Planned |
+| 6 | Sound | Planned |
+| 7 | Logic | Planned |
+| 8 | Navigation | Planned |
+| 9 | Power Management | Planned |
+| 10 | System Integration | Planned |
 
 Concepts are learned implicitly. No formulas. No lectures. Only visible behavior — except when Grandpa's Journal reveals the math after the child has already discovered it through play.
 

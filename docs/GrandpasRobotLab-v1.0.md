@@ -1,9 +1,9 @@
 # Grandpa's Robot Lab
-### Vision & Build Specification (v1.0 — Chapter 1 Complete)
+### Vision & Build Specification (v1.0 — Chapters 1-4 Implemented)
 
-**Status:** Chapter 1 — Power is fully built and playable.
+**Status:** Chapters 1-4 are built and playable. Chapter 4 is the Shoulder Drive mission.
 **Supersedes:** v0.1, v0.2, v0.3 (kept as historical artifacts).
-**Last updated:** March 2026
+**Last updated:** May 2026
 
 ---
 
@@ -65,10 +65,14 @@ The robot is named **SWIRL-E**. Children discover SWIRL-E in Grandpa's workshop 
 ## 5. Scene Flow
 
 ```
-Hub → TitleScene → [Mission Briefing Overlay] → MissionScene → [Outcome Summary] → MissionScene
-                                                                                 ↓
-                                                                     Hub (via ← Hub button)
+Hub → TitleScene → ChapterPicker when progress exists → dedicated chapter scene
+                                                      ↓
+      CircuitMissionScene / OpticsMissionScene / ColorMissionScene / ArmMotorMissionScene
+                                                      ↓
+                                        Hub or next unlocked chapter
 ```
+
+Canonical chapter order and routing live in `games/robot-lab/data/chapters.js`. The currently registered scene IDs are `robot-lab-circuit`, `robot-lab-optics`, `robot-lab-color`, and `robot-lab-motor`.
 
 ---
 
@@ -84,16 +88,16 @@ The landing page for Robot Lab. Accessed from the GCU Hub.
 - **Chapter badge:** "CHAPTER 1" — Orbitron, blue pill badge
 - **Subtitle:** "Power" — Orbitron, light blue
 - **Tagline:** "SWIRL-E's head is almost finished. His eye module just needs to be powered. Can you finish the circuit to power his eye module?"
-- **Button:** "Let's Build!" → navigates to `robot-lab-mission` with `{ missionId: 'ch1-power', avatarId }`
+- **Button:** "Let's Build!" → first-time players navigate directly to `robot-lab-circuit` with `{ missionId: 'ch1-power', avatarId }`; returning players open the shared `ChapterPicker`
 - **Back button:** "← Hub" → returns to Hub
 
-Note: `avatarId` is received from the Hub and forwarded to MissionScene so the player's name and photo can appear in mission screens.
+Note: `avatarId` is received from the Hub and forwarded to the selected chapter scene so the player's name and photo can appear in mission screens.
 
 ---
 
 ## 7. Mission Briefing Overlay
 
-Displayed immediately when the Mission Scene loads — a full-screen modal that introduces the chapter before the player touches any wires.
+Displayed when a chapter scene loads — a full-screen modal that introduces the chapter before the player starts the mission interaction.
 
 ### Visual
 - Dark navy card with gold border + tech-grid texture
@@ -110,9 +114,9 @@ The briefing establishes a recurring design pattern used throughout Robot Lab:
 
 ---
 
-## 8. Mission Scene (`MissionScene.js`)
+## 8. Chapter 1 Circuit Scene (`CircuitMissionScene.js`)
 
-The core gameplay screen.
+The Chapter 1 core gameplay screen.
 
 ### Layout
 ```
@@ -370,14 +374,14 @@ These labels are intentional and should not be confused:
 
 ## 18. Learning Arc — All Chapters
 
-Chapter 1 is complete. Chapters 2–10 are planned. Full curriculum detail is in `docs/RobotLabMissions.md`.
+Chapters 1–4 are implemented. Full curriculum detail is in `docs/RobotLabMissions.md`.
 
 | Chapter | Focus | Core Concept | SWIRL-E Moment |
 |---------|-------|-------------|----------------|
 | **1** ✅ | **Electricity** | Closed loops, Ohm's Law, component selection | Eyes light up — SWIRL-E can see |
-| 2 | Optics | Light focus, lens position, alignment | SWIRL-E can see clearly |
-| 3 | Color Sensing | RGB channels, sensor calibration | SWIRL-E correctly identifies colors |
-| 4 | Motors | Electricity → motion, torque, speed | SWIRL-E gains physical movement |
+| **2** ✅ | **Optics** | Light focus, lens position, alignment | SWIRL-E can see clearly |
+| **3** ✅ | **Color Sensing** | RGB channel routing, sensor calibration | SWIRL-E correctly identifies colors |
+| **4** ✅ | **Shoulder Drive** | Gear ratios, voltage, motor heat, shaft torque, job matching | SWIRL-E learns which drive setups fit different arm jobs |
 | 5 | Control Systems | Feedback loops, stability, oscillation | SWIRL-E becomes steady |
 | 6 | Sound | Microphones, amplification, gain | SWIRL-E can hear |
 | 7 | Logic | Rules, conditions, decision-making | SWIRL-E begins to act intelligently |
@@ -410,7 +414,7 @@ Rather than a separate hint UI, SWIRL-E itself is the age-scaled debugger:
 
 This preserves the "I fixed it" moment across all ages while preventing frustration-induced quitting. The robot IS the hint system. No separate debug UI needed.
 
-Currently implemented: the particle system shows current flow direction, and outcomes explain exactly what went wrong (with math). SWIRL-E's reactive behaviors are planned for future chapters.
+Currently implemented: Chapter 1 particle flow shows current direction and outcomes explain exactly what went wrong; Chapter 2 blur, inversion, and target alignment show focus errors; Chapter 3 patchbay wiring shows channel-routing mistakes in the processed image; Chapter 4 live meters show motor heat, load torque, gear capacity, and speed mismatch before and during testing. More age-scaled SWIRL-E reactions can still be added in future chapters.
 
 ---
 
@@ -439,19 +443,33 @@ Currently implemented: the particle system shows current flow direction, and out
 ```
 games/robot-lab/
 ├── index.js                    # Entry point — registers scenes
+├── data/
+│   └── chapters.js             # Canonical chapter list and scene routing
 ├── scenes/
-│   ├── TitleScene.js           # Landing page
-│   └── MissionScene.js         # Core gameplay (circuit board)
+│   ├── TitleScene.js           # Landing page / chapter picker entry
+│   ├── CircuitMissionScene.js  # Ch 1: circuit wiring
+│   ├── OpticsMissionScene.js   # Ch 2: lens placement and focus
+│   ├── ColorMissionScene.js    # Ch 3: RGB sensor patchbay
+│   └── ArmMotorMissionScene.js # Ch 4: shoulder drive setup memory
 ├── renderer/
-│   └── SchematicRenderer.js    # SVG schematic builder + state updater
+│   ├── SchematicRenderer.js    # Ch 1 SVG schematic builder + state updater
+│   ├── OpticsRenderer.js       # Ch 2 ray diagram and lens rendering
+│   └── ShoulderRenderer.js     # Ch 4 gear and arm canvas renderers
 ├── engine/
-│   └── CircuitEngine.js        # Graph-based circuit evaluation
+│   ├── CircuitEngine.js        # Ch 1 graph-based circuit evaluation
+│   ├── OpticsEngine.js         # Ch 2 thin-lens calculations
+│   ├── ColorSensorEngine.js    # Ch 3 channel routing and image processing
+│   └── ShoulderEngine.js       # Ch 4 gear/voltage/task outcome model
 ├── animation/
 │   └── ParticleSystem.js       # Electron / conventional current particles
 ├── audio/
-│   └── ExplosionSFX.js         # Procedural Web Audio explosion
+│   ├── ExplosionSFX.js         # Procedural Web Audio explosion
+│   └── MotorSFX.js             # Ch 4 motor audio feedback
 ├── missions/
-│   └── chapter1.js             # Chapter 1 layout, components, text
+│   ├── chapter1.js             # Ch 1 layout, components, text
+│   ├── chapter2.js             # Ch 2 lenses and optics layout
+│   ├── chapter3.js             # Ch 3 color mission text and sources
+│   └── chapter4.js             # Ch 4 shoulder-drive mission text
 ├── assets/
 │   └── images/
 │       ├── swirle-unpowered.png
@@ -460,7 +478,10 @@ games/robot-lab/
 │       ├── swirle-vpa.png
 │       └── journal-blank-page.png
 └── css/
-    └── robot-lab.css           # All Robot Lab styles
+    ├── robot-lab.css           # Chapter 1 and shared Robot Lab styles
+    ├── robot-lab-optics.css    # Chapter 2 styles
+    ├── robot-lab-color.css     # Chapter 3 styles
+    └── robot-lab-motor.css     # Chapter 4 styles
 ```
 
 ---
@@ -486,4 +507,4 @@ Google Fonts import (top of `robot-lab.css`):
 
 ---
 
-*v1.0 — Chapter 1 complete as of March 2026.*
+*v1.0 — Chapters 1-4 implemented as of June 2026.*

@@ -1,8 +1,8 @@
 # Robot Lab — Chapter 2: Optics
-### Design & Build Specification (v0.1 — Design Complete, Not Yet Built)
+### Design & Build Specification (v1.0 — Implemented)
 
-**Status:** Specification only. Chapter 1 must be complete and stable before building Chapter 2.
-**Last updated:** March 2026
+**Status:** Built and playable. Registered as `robot-lab-optics` using `OpticsMissionScene`.
+**Last updated:** June 2026
 
 ---
 
@@ -21,16 +21,16 @@
 ## 2. The Puzzle
 
 ### Setup
-SWIRL-E's eye tube has two empty lens slots. On the workbench below the tube are four spare lenses. The player drags lenses into the slots. The ray diagram and video feed update in real time as lenses are placed.
+SWIRL-E's eye tube has two empty lens slots. On the workbench below the tube are four spare lenses. The player drags lenses into the slots, then slides each placed lens horizontally along its track to find the exact focus target. The ray diagram and video feed update in real time as lenses are placed or moved.
 
 ### The Two-Beat Solve
 The mission is designed to produce two distinct "aha" moments:
 
 **Beat 1 — Progress, but not quite right:**
-When the player places the correct first lens (Weak Converging) in Slot 1, the video screen shows the blur reducing noticeably AND the image flipping upside-down. SWIRL-E reacts: *"I can see something! But... why are you upside down?"* This teaches that a single converging lens creates an inverted image.
+When the player places the correct first lens (Weak Converging) in Slot 1 and slides it onto its target mark, the video screen shows the blur reducing noticeably AND the image flipping upside-down. SWIRL-E reacts: *"I can see something! But... why are you upside down?"* This teaches that a single converging lens creates an inverted image.
 
 **Beat 2 — Full solve:**
-When the player then places the correct second lens (Strong Converging) in Slot 2, the image sharpens fully AND flips right-side up. Mission complete.
+When the player then places the correct second lens (Strong Converging) in Slot 2 and slides both lenses onto the target marks, the image sharpens fully AND flips right-side up. Mission complete.
 
 ### Correct Solution
 | Slot | Lens |
@@ -55,6 +55,9 @@ The player sees these as draggable lens icons in a tray below the eye tube. Each
 
 **Interaction — Swap on Drop:**
 If a lens is already in a slot when the player drops a new one, the existing lens is returned to the tray and the new one takes its place.
+
+**Interaction — Slide to Focus:**
+Placed lenses intentionally land away from the target x-position, even if the drop was accurate. The child must slide each lens along its track and release near the target mark. The scene snaps within a small radius, prevents the two lenses from overlapping, and uses SWIRL-E's "almost" dialogue when the correct lenses are chosen but not aligned.
 
 ---
 
@@ -198,7 +201,7 @@ This is not the final success state — it is a visual teaching moment that rein
 
 ## 9. Success Condition
 
-Triggered when: Slot 1 = Weak Converging (f=200) AND Slot 2 = Strong Converging (f=40)
+Triggered when: Slot 1 = Weak Converging (f=200), Slot 2 = Strong Converging (f=40), and both lenses are snapped to their target x positions.
 
 - Blur transitions to 0px over 0.8 seconds (smooth CSS transition)
 - `scaleY(-1)` transitions to `scaleY(1)` (image flips right-side up)
@@ -261,34 +264,35 @@ Combined power: 1/f = 1/f₁ + 1/f₂
 
 ---
 
-## 13. Files to Create
+## 13. Implemented Files
 
 | File | Purpose |
 |------|---------|
 | `games/robot-lab/missions/chapter2.js` | Mission definition (layout, lens pool, correct solution) |
-| `games/robot-lab/scenes/OpticsMissionScene.js` | Scene controller (or extend MissionScene) |
+| `games/robot-lab/scenes/OpticsMissionScene.js` | Scene controller for tray drag, slot swapping, lens sliding, success state, progress, and navigation |
 | `games/robot-lab/renderer/OpticsRenderer.js` | SVG rendering: tube, lens shapes, ray diagram, intermediate image marker |
 | `games/robot-lab/engine/OpticsEngine.js` | Thin lens math: computes image positions, defocus, inversion state |
 | `games/robot-lab/css/robot-lab-optics.css` | Styles specific to Chapter 2 |
 
-### Assets Needed
+### Assets Used
 | Asset | Description |
 |-------|-------------|
-| Lens silhouettes (SVG paths or canvas draw) | Could be rendered procedurally — no image file needed |
+| Lens silhouettes | Rendered procedurally from SVG paths — no image file needed |
 | Avatar image (already exists) | Kid's selected avatar from Chapter 1 avatar selection |
-| `swirle-confused.png` | New SWIRL-E portrait — surprised/upside-down-confused expression |
+| `swirle-eye-cutaway.png` | Cutaway image underneath the optics SVG |
+| `swirle-unpowered.png`, `swirle-powered.png` | Reused SWIRL-E portraits for waiting and success states |
 
 ---
 
-## 14. Open Questions (To Answer During Build)
+## 14. Implemented Decisions
 
-1. **Blur scale factor** — needs visual tuning. Start with: `blur_px = defocus / 20`, max 14px.
-2. **Ray colors** — teal (`#40e8d0`) to match the existing glow palette? Or pure white for readability?
-3. **Intermediate image icon size** — should be small enough to not obscure the ray diagram but large enough to be recognizable as the avatar.
-4. **Beat 1 trigger** — only on "correct first lens, no second lens"? Or on any single-inversion state (including wrong combos that happen to produce an inverted image)?
-5. **Does the lens tray show all 4 lenses always, or does a placed lens disappear from the tray?** (Recommend: placed lens is highlighted/dimmed in tray but not removed — player can always see all 4 options.)
-6. **`swirle-confused.png`** — need to create or can we repurpose `swirle-unpowered.png` with a CSS tilt/effect?
+1. **Blur scale:** Defocus is mapped to a capped CSS blur on the "What SWIRL-E Sees" image.
+2. **Ray colors:** The renderer uses the Robot Lab teal/cyan visual language so the optical path feels connected to Chapter 1's powered-state glow.
+3. **Beat 1 trigger:** The first-lens teaching beat requires the Weak Convex lens in Slot 1 and snapped to its target, with Slot 2 still empty.
+4. **Correct lenses but wrong alignment:** This is an explicit "almost" state: SWIRL-E tells the player to slide the lenses onto the target marks.
+5. **Lens tray:** All four lenses remain visible. Placed lenses are visually marked/dimmed instead of disappearing.
+6. **Portraits:** Chapter 2 reuses existing SWIRL-E portraits rather than requiring a separate confused asset.
 
 ---
 
-*This spec will be updated as Chapter 2 is built and iterated.*
+*v1.0 — Chapter 2 implemented as of June 2026.*

@@ -1,0 +1,106 @@
+.gcu-meter {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gcu-meter--empty {
+  min-height: 38px;
+}
+
+.gcu-meter__segments {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--gcu-meter-segments, 16), minmax(0, 1fr));
+  gap: 4px;
+  min-height: 26px;
+  align-items: stretch;
+  padding: 4px;
+  border: 1px solid rgba(110, 220, 180, 0.36);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(9, 25, 35, 0.80), rgba(8, 15, 25, 0.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 0 10px rgba(90, 220, 170, 0.10);
+}
+
+.gcu-meter__segment {
+  border-radius: 4px;
+  opacity: 0.26;
+  background: rgba(210, 225, 238, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+.gcu-meter__segment--green { background: #57d889; }
+.gcu-meter__segment--yellow { background: #f2d368; }
+.gcu-meter__segment--red { background: #ef624e; }
+.gcu-meter__segment--active {
+  opacity: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.38),
+    0 0 8px currentColor;
+}
+
+.gcu-meter__linear-pointer {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 3px;
+  border-radius: 3px;
+  transform: translateX(-50%);
+  background: rgba(245, 250, 255, 0.96);
+  box-shadow: 0 0 8px rgba(210, 240, 255, 0.72);
+}
+
+.gcu-meter__labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 5px;
+  color: rgba(226, 238, 252, 0.74);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.gcu-meter__labels span:nth-child(2) { text-align: center; }
+.gcu-meter__labels span:nth-child(3) { text-align: right; }
+
+.gcu-meter--arc {
+  min-height: 74px;
+}
+
+.gcu-meter__arc-svg {
+  display: block;
+  width: 100%;
+  height: 78px;
+  overflow: visible;
+}
+
+.gcu-meter__arc-zone {
+  fill: none;
+  stroke-width: 16;
+  stroke-linecap: butt;
+  opacity: 0.92;
+}
+
+.gcu-meter__arc-zone--green { stroke: #4fc878; }
+.gcu-meter__arc-zone--yellow { stroke: #f2d45f; }
+.gcu-meter__arc-zone--red { stroke: #d63f37; }
+.gcu-meter__arc-zone--blue { stroke: #74d4ff; }
+.gcu-meter__arc-zone--purple { stroke: #d483d9; }
+.gcu-meter__arc-zone--orange { stroke: #ff9d56; }
+
+.gcu-meter__arc-needle {
+  stroke: rgba(250, 253, 255, 0.96);
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgba(190, 225, 255, 0.62));
+}
+
+.gcu-meter__arc-hub {
+  fill: #e8eef7;
+  stroke: rgba(255,255,255,0.75);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45));
+}

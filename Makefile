@@ -84,5 +84,5 @@ help:
 	@echo "  make relsman   — rsync dist/gcu to stevemansour.com:~/public_html/gcu.new and swap it live"
 	@echo "  make serve     — local dev: npm start (http-server on port 3000, repo root)"
 	@echo "  make comfy     — print the commands to start the local Cutely/ComfyUI image server"
-	@echo "  make run       — starts the npm server in the repo root"
+	@echo "  make startgame — starts the npm server in the game root"
 	@echo ""
