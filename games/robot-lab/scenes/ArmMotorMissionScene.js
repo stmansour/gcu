@@ -268,7 +268,8 @@ export class ArmMotorMissionScene extends Scene {
   // ── Sidebar helpers ───────────────────────────────────────────────────────
 
   _setSpeech(text) {
-    const el = this._container.querySelector('#rl-problem');
+    const el = this._container?.querySelector('#rl-problem');
+    if (!el) return;
     el.innerHTML = '';
     const p = document.createElement('p');
     p.textContent = text;
@@ -560,6 +561,15 @@ export class ArmMotorMissionScene extends Scene {
   async _resetTaskMemory() {
     this._taskMemory = { solvedTaskIds: [] };
     await this.storage.set(TASK_MEMORY_KEY, this._taskMemory);
+
+    const p = await this.storage.get('progress', { completedChapters: [] });
+    const idx = p.completedChapters.indexOf(CHAPTER_4.id);
+    if (idx >= 0) p.completedChapters.splice(idx, 1);
+    await this.storage.set('progress', p);
+    this._completedChapters.delete(CHAPTER_4.id);
+    this._solved = false;
+    this._refreshNavButtons();
+
     this._setSpeech("Memory cleared. Let's teach these jobs again from the beginning.");
     this._showPhase('workbench');
   }
@@ -998,17 +1008,16 @@ export class ArmMotorMissionScene extends Scene {
     this._armRenderer?.run(this._jobId, s.outcome, s.armSpeedFactor, () => this._onTestDone(s.outcome));
   }
 
-  _onTestDone(outcome) {
+  async _onTestDone(outcome) {
     const actionsEl = this._container.querySelector('#sh-test-actions');
     if (!actionsEl) return;
     actionsEl.innerHTML = '';
 
     if (outcome === 'success' || outcome === 'unsafe-load') {
-      this._solved = true;
-      celebrate(this._container, 'medium');
+      celebrate('medium');
       this._rememberSolvedTaskLocal();
       this._refreshMissionProgress();
-      this._saveProgress();
+      await this._saveProgress();
       this._setSpeech(outcome === 'unsafe-load' ? CHAPTER_4.speech.unsafeCorrect : CHAPTER_4.speech.done);
       actionsEl.appendChild(this._buildCompletionSummary());
       return;
@@ -1174,10 +1183,7 @@ export class ArmMotorMissionScene extends Scene {
 
   async _saveProgress() {
     const p = await this.storage.get('progress', { completedChapters: [] });
-    const memory = this._normalizeTaskMemory(await this.storage.get(TASK_MEMORY_KEY, { solvedTaskIds: [] }));
-    if (this._task?.id && !memory.solvedTaskIds.includes(this._task.id)) {
-      memory.solvedTaskIds.push(this._task.id);
-    }
+    const memory = this._normalizeTaskMemory(this._taskMemory);
     await this.storage.set(TASK_MEMORY_KEY, memory);
     this._taskMemory = memory;
 
@@ -1187,6 +1193,7 @@ export class ArmMotorMissionScene extends Scene {
     await this.storage.set('progress', p);
     if (p.completedChapters.includes(CHAPTER_4.id)) {
       this._completedChapters.add(CHAPTER_4.id);
+      this._solved = true;
     }
 
     this._refreshNavButtons();

@@ -1,0 +1,231 @@
+/* =============================================================================
+   GCU Arcade — neon cabinet picker
+   Prefix: arcade-
+   ============================================================================= */
+
+.arcade {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #e8f0ff;
+  font-family: var(--font-body, 'Nunito', system-ui, sans-serif);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Deep space + cabinet glow */
+.arcade__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 60, 180, 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 10% 100%, rgba(60, 220, 255, 0.14), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 95% 80%, rgba(255, 210, 80, 0.10), transparent 45%),
+    linear-gradient(165deg, #0a0618 0%, #12082a 38%, #0c1428 100%);
+  pointer-events: none;
+}
+
+.arcade__scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.45) 2px,
+    rgba(0, 0, 0, 0.45) 4px
+  );
+}
+
+.arcade__topbar {
+  position: relative;
+  z-index: 2;
+  padding: max(16px, env(safe-area-inset-top)) 20px 8px;
+}
+
+.arcade__nav-btn {
+  min-width: 120px;
+  min-height: 56px;
+  padding: 12px 22px;
+  border: 2px solid rgba(255, 120, 200, 0.55);
+  border-radius: 999px;
+  background: rgba(20, 10, 40, 0.75);
+  color: #ffb8e8;
+  font: 800 15px var(--font-body, 'Nunito', sans-serif);
+  cursor: pointer;
+  box-shadow:
+    0 0 20px rgba(255, 80, 180, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.arcade__nav-btn:active {
+  transform: scale(0.96);
+  background: rgba(40, 16, 64, 0.9);
+}
+
+@media (hover: hover) {
+  .arcade__nav-btn:hover {
+    border-color: rgba(255, 140, 220, 0.85);
+    box-shadow: 0 0 28px rgba(255, 80, 180, 0.4);
+  }
+}
+
+.arcade__main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 20px max(24px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Marquee title */
+.arcade__marquee-wrap {
+  text-align: center;
+  margin-bottom: clamp(20px, 4vh, 36px);
+}
+
+.arcade__marquee {
+  display: inline-block;
+  padding: 14px 28px;
+  border: 3px solid rgba(255, 220, 100, 0.75);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #2a1050 0%, #180830 100%);
+  box-shadow:
+    0 0 0 2px rgba(255, 180, 60, 0.25),
+    0 0 40px rgba(255, 100, 200, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12);
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(1.1rem, 3.2vw, 1.75rem);
+  letter-spacing: 0.12em;
+  color: #ffe066;
+  text-shadow:
+    0 0 12px rgba(255, 220, 100, 0.8),
+    0 0 24px rgba(255, 100, 180, 0.5);
+}
+
+.arcade__marquee-star {
+  color: #ff6ec7;
+  margin: 0 0.35em;
+  animation: arcade-star-pulse 2s ease-in-out infinite;
+}
+
+@keyframes arcade-star-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+.arcade__tagline {
+  margin: 14px 0 0;
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  font-weight: 700;
+  color: rgba(180, 220, 255, 0.82);
+}
+
+/* Game grid — portrait cards match 3×4 splash art */
+.arcade__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 280px));
+  justify-content: center;
+  gap: clamp(16px, 3vw, 28px);
+  width: 100%;
+  max-width: 640px;
+}
+
+.arcade-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(12, 8, 28, 0.85);
+  border: 2px solid rgba(100, 220, 255, 0.35);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(80, 180, 255, 0.12);
+  transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.arcade-card:active {
+  transform: scale(0.97);
+  border-color: rgba(255, 200, 100, 0.75);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 36px rgba(255, 120, 200, 0.35);
+}
+
+@media (hover: hover) {
+  .arcade-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 180, 100, 0.65);
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.6),
+      0 0 40px rgba(255, 100, 200, 0.28);
+  }
+}
+
+.arcade-card__frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #0a0818;
+}
+
+.arcade-card__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.arcade-card__info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-top: 1px solid rgba(100, 180, 255, 0.2);
+}
+
+.arcade-card__icon {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.arcade-card__title {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #aef7ff;
+}
+
+.arcade-card__tagline {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(180, 200, 230, 0.78);
+  line-height: 1.35;
+}
+
+.arcade__footnote {
+  margin: clamp(20px, 4vh, 32px) 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(140, 170, 210, 0.55);
+  text-align: center;
+}

@@ -12,6 +12,7 @@ import { HubScene } from './scenes/HubScene.js';
 import { initArtStudio } from '../games/art-studio/index.js';
 import { initRobotLab }  from '../games/robot-lab/index.js';
 import { initPuzzleForest } from '../games/puzzle-forest/index.js';
+import { initArcade } from '../games/arcade/index.js';
 
 const app = document.getElementById('app');
 if (!app) throw new Error('[GCU] #app element not found');
@@ -26,7 +27,7 @@ LayoutManager.getInstance();
  * - previewImage     → path to portal card background image (null = show icon placeholder)
  *                      See gcu/assets/images/portals/*.prompt.txt for generation prompts.
  *
- * Order matches concept art: Robot Lab | Art Studio | Gym Arena | Puzzle Forest
+ * Order: Robot Lab | Art Studio | Gym Arena | Puzzle Forest | Arcade
  */
 const games = [
   {
@@ -61,6 +62,14 @@ const games = [
     sceneId: 'puzzle-forest-title',
     previewImage: 'assets/images/portals/portal-puzzle-forest.png',
   },
+  {
+    id: 'arcade',
+    name: 'Arcade',
+    icon: '🕹️',
+    available: true,
+    sceneId: 'arcade-title',
+    previewImage: 'assets/images/portals/portal-arcade.png',
+  },
 ];
 
 // Register hub scenes
@@ -71,6 +80,7 @@ sceneManager.register('hub', new HubScene({ sceneManager, games }));
 await initArtStudio(sceneManager);
 initRobotLab(sceneManager);
 await initPuzzleForest(sceneManager);
+initArcade(sceneManager);
 
 // Start: skip avatar select if a player is already saved
 const storage = new GameStorage('global');

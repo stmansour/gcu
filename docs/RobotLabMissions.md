@@ -6,7 +6,7 @@
 **Module:** Robot Lab  
 **Primary audience:** children old enough to follow guided experimentation, roughly 8-12 for the deeper Robot Lab chapters  
 **Product target:** iPad first, iPhone second, standalone app experience  
-**Current implementation status:** Chapters 1-4 are implemented. Chapter 4 is the Shoulder Drive mission and now uses scenario memory, gear/power setup choices, live status indicators, and a minimum-completion gate before Chapter 5.
+**Current implementation status:** Chapters 1-5 are implemented. Chapter 4 is the Shoulder Drive mission with scenario memory and a minimum-completion gate. Chapter 5 is the Control Systems mission: the player tunes SWIRL-E's feedback controller and completes three lemonade-delivery courses of increasing bumpiness.
 
 ---
 
@@ -202,6 +202,28 @@ If the player changes voltage, they should see:
 - the player must save a minimum number of case memories before Chapter 5 unlocks
 
 **Payoff:** SWIRL-E learns how to choose shoulder-drive setups for different jobs.
+
+---
+
+### Chapter 5 - Control Systems
+
+**Status:** Implemented.
+
+**Story:** SWIRL-E has strong motors now, but strength is not the same as balance. Grandma asks him to deliver a tray of lemonade across the house and yard. Every bump tilts the tray, and the lemonade sloshes. SWIRL-E needs a feedback controller — and the player has to tune it.
+
+**Core idea:** The player tunes two knobs of a real PD feedback controller — Correction Power (how hard SWIRL-E pushes back against tilt) and Steady Brake (how much he resists swinging) — and discovers all four classic failure modes of feedback control by living through them.
+
+**Gameplay pattern:**
+
+- a delivery course is selected (kitchen, garden path, bumpy backyard)
+- the player adjusts the two tuning sliders
+- a live practice bench shows the tray balancing in real time with a scrolling tilt graph; the player can poke the tray to test their settings
+- live status tiles update as the sliders move: reaction, wobble, recovery, spill risk
+- the test run animates SWIRL-E rolling across the course, hitting bumps, with the lemonade sloshing and spilling realistically
+- each course passed is saved as a completed delivery
+- all three deliveries must succeed to finish the chapter
+
+**Payoff:** SWIRL-E learns to balance — and the player learns why robots (and rockets, and segways) need feedback control that is tuned *just right*.
 
 ---
 
@@ -413,30 +435,93 @@ When the requirement is not met, the final result card should encourage teaching
 
 ---
 
-# Later Chapter Concepts
+## Chapter 5 Learning Goals
 
-The following chapter concepts remain high-level and can be refined after Chapter 4 is stable.
+The player should learn:
 
-## Chapter 5 - Control Systems
+- a robot can *sense* its own tilt and *push back* — that is feedback
+- more Correction Power means faster reaction, but too much causes violent shaking
+- the Steady Brake (damping) calms the swing, but too much makes the robot sluggish
+- sensors are never instant — SWIRL-E reacts to where the tray *was* a moment ago, and that delay is exactly why too much power becomes shaking
+- "tuned just right" is a *region*, not a single magic number — and the bumpier the course, the smaller that region gets
 
-**Purpose:** Teach that movement and stability often require feedback and adjustment.
-
-**Story:** SWIRL-E can move, but he is clumsy. He overcorrects, wobbles, or falls over.
-
-**Core ideas:**
-
-- sensors can detect motion and position
-- feedback can correct movement
-- too much correction causes oscillation
-- too little correction causes drift
-
-**Possible missions:**
-
-- tune head stabilization
-- keep SWIRL-E standing
-- steady a camera while he moves
+These are the real lessons of PID control, presented without the vocabulary.
 
 ---
+
+## Chapter 5 Physics Model
+
+The simulation is a real feedback control loop, not a lookup table.
+
+### Tray balance
+
+The tray behaves like an inverted pendulum:
+
+- gravity makes any tilt grow on its own (unstable by default)
+- the controller applies torque based on the *delayed* tilt reading: classic PD control `u = −Kp·θ(t−τ) − Kd·θ'(t−τ)`
+- sensor delay `τ = 0.1 s` is explicitly modeled — this is what makes very high Correction Power genuinely unstable, just like a real robot
+- the balance motor saturates: it cannot push harder than its torque limit no matter what the controller asks for, so maxing both sliders is not a cheat code — real servos clip exactly the same way
+
+### Knobs
+
+- **Correction Power (Kp):** slider 0-10, mapped to proportional gain. Too low and gravity wins (SWIRL-E falls). Too high, combined with sensor delay, and the corrections chase stale data into runaway shaking.
+- **Steady Brake (Kd):** slider 0-10, mapped to derivative gain. Too low and the tray overshoots and wobbles. Too high and SWIRL-E recovers so slowly that lemonade pours out before he levels off.
+
+### Bumps
+
+A wheel hitting a bump does two real things at once: it kicks the tray's angular velocity (the jolt) and it tilts the chassis directly (the wheel is suddenly higher or lower). The direct tilt is what punishes over-braked tunings — heavy damping soaks up the jolt but then levels out slowly, so the tray sits tilted and pours.
+
+### Lemonade slosh
+
+The lemonade is a damped oscillator driven by tray motion. Bumps kick it; tray tilt feeds it. When the slosh plus tilt exceed the cup rim, lemonade spills at a rate proportional to how far over the rim it is — so spills are gradual and visible, not binary.
+
+### Why this matters
+
+Every outcome the child sees is a real phenomenon with the same cause it has in real engineering: static instability, underdamping, overdamping, and delay-induced oscillation.
+
+---
+
+## Chapter 5 Courses
+
+Three deliveries — each with a different pace lesson:
+
+| Course | Pace lesson | What max/max does |
+|---|---|---|
+| Grandma's Mopped Kitchen | Slow walk — gentle hands | Overcorrects on tile seams → wobble/spill |
+| Stepping Stone Path | Steady rhythm — don't dawdle | Heavy brake → still tilted at next stone → spill |
+| Downhill to the Treehouse | Speed builds as he rolls | Same brute-force settings shake and spill |
+
+Sweet spot is roughly Power 5–6, Brake 4–5 — different for each route. All three must succeed to finish the chapter.
+
+---
+
+## Chapter 5 Outcomes
+
+Chapter 5 supports these outcomes:
+
+- **fall** — Correction Power too low; gravity wins and SWIRL-E tips over. Lemonade everywhere, SWIRL-E narrates cheerfully.
+- **sluggish** — too much Steady Brake; he recovers so slowly the lemonade pours out before he levels off.
+- **wobble** — power without enough brake; the tray swings back and forth like a lawn sprinkler, splashing on every swing.
+- **shake** — Correction Power so high that, with sensor delay, every correction overshoots; the shaking grows until the cup abandons ship.
+- **success** — smooth recovery from every bump, tray level at the table, lemonade delivered.
+
+Each failure is loud, silly, and visually funny — and each result card explains in one sentence *why* it happened and which knob to think about. Failures never reveal the exact answer; debugging is the lesson.
+
+---
+
+## Chapter 5 Completion Rule
+
+Chapter 5 is mission-complete only after all **3** delivery courses succeed.
+
+Completed deliveries persist in local storage until the player chooses **Start Over**. The mission progress strip shows filled pips for completed deliveries and plain text for how many remain.
+
+A tuning that passes the kitchen may fail the backyard — re-tuning between courses is intended, because that is what real control engineers do.
+
+---
+
+# Later Chapter Concepts
+
+The following chapter concepts remain high-level and can be refined as earlier chapters stabilize.
 
 ## Chapter 6 - Sound
 

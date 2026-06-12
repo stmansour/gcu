@@ -30,8 +30,9 @@ export const ROBOT_LAB_CHAPTERS = [
  * back to the robot-lab-circuit scene using the chapter id as missionId.
  */
 export const CHAPTER_SCENES = {
-  'ch1-power':  { scene: 'robot-lab-circuit', missionId: 'ch1-power' },
-  'ch2-optics': { scene: 'robot-lab-optics' },
-  'ch3-color':  { scene: 'robot-lab-color'  },
-  'ch4-motors': { scene: 'robot-lab-motor'  },
+  'ch1-power':   { scene: 'robot-lab-circuit', missionId: 'ch1-power' },
+  'ch2-optics':  { scene: 'robot-lab-optics'  },
+  'ch3-color':   { scene: 'robot-lab-color'   },
+  'ch4-motors':  { scene: 'robot-lab-motor'   },
+  'ch5-control': { scene: 'robot-lab-control' },
 };

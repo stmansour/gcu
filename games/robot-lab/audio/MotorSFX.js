@@ -104,6 +104,13 @@ export function playMotorOutcome(outcome) {
     return;
   }
 
+  if (outcome === 'success') {
+    tone(220, now, 0.18, 0.10, 'sine');
+    tone(330, now + 0.14, 0.22, 0.11, 'sine');
+    tone(440, now + 0.32, 0.35, 0.09, 'sine');
+    return;
+  }
+
   tone(180, now, 0.55, 0.10, 'triangle');
   tone(220, now + 0.50, 0.55, 0.09, 'triangle');
   tone(300, now + 1.02, 0.30, 0.08, 'sine');

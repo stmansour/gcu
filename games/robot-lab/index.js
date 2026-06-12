@@ -7,6 +7,7 @@
  *   robot-lab-circuit  — Ch 1: Electricity (circuit wiring)
  *   robot-lab-optics   — Ch 2: Optics (lens placement)
  *   robot-lab-motor    — Ch 4: Motors (arm motor tuning)
+ *   robot-lab-control  — Ch 5: Control Systems (feedback tuning)
  *   (future chapters follow the same pattern)
  */
 
@@ -15,6 +16,7 @@ import { CircuitMissionScene }  from './scenes/CircuitMissionScene.js';
 import { OpticsMissionScene }   from './scenes/OpticsMissionScene.js';
 import { ColorMissionScene }    from './scenes/ColorMissionScene.js';
 import { ArmMotorMissionScene } from './scenes/ArmMotorMissionScene.js';
+import { ControlMissionScene }  from './scenes/ControlMissionScene.js';
 
 /**
  * @param {import('../../core/scene/SceneManager.js').SceneManager} sceneManager
@@ -25,4 +27,5 @@ export function initRobotLab(sceneManager) {
   sceneManager.register('robot-lab-optics',  new OpticsMissionScene({ sceneManager }));
   sceneManager.register('robot-lab-color',   new ColorMissionScene({ sceneManager }));
   sceneManager.register('robot-lab-motor',   new ArmMotorMissionScene({ sceneManager }));
+  sceneManager.register('robot-lab-control', new ControlMissionScene({ sceneManager }));
 }

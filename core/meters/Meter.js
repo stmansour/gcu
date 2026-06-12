@@ -89,6 +89,7 @@ function renderArcMeter(root, options) {
     role: 'img',
     'aria-label': options.ariaLabel || 'meter',
   });
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
   zones.forEach(zone => {
     const zoneStart = startAngle + sweep * previousStop;
