@@ -382,7 +382,7 @@ Chapters 1–4 are implemented. Full curriculum detail is in `docs/RobotLabMissi
 | **2** ✅ | **Optics** | Light focus, lens position, alignment | SWIRL-E can see clearly |
 | **3** ✅ | **Color Sensing** | RGB channel routing, sensor calibration | SWIRL-E correctly identifies colors |
 | **4** ✅ | **Shoulder Drive** | Gear ratios, voltage, motor heat, shaft torque, job matching | SWIRL-E learns which drive setups fit different arm jobs |
-| 5 | Control Systems | Feedback loops, stability, oscillation | SWIRL-E becomes steady |
+| 5 | Wrist Balance | Tilt sensor, wrist servo, shock; wiring; feedback | SWIRL-E carries water without spilling |
 | 6 | Sound | Microphones, amplification, gain | SWIRL-E can hear |
 | 7 | Logic | Rules, conditions, decision-making | SWIRL-E begins to act intelligently |
 | 8 | Navigation | Path planning, obstacle avoidance | SWIRL-E can get where he needs to go |

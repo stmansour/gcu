@@ -16,7 +16,7 @@ export const ROBOT_LAB_CHAPTERS = [
   { id: 'ch2-optics',       label: 'Optics'          },
   { id: 'ch3-color',        label: 'Color Sensing'   },
   { id: 'ch4-motors',       label: 'Motors'          },
-  { id: 'ch5-control',      label: 'Control'         },
+  { id: 'ch5-control',      label: 'Wrist Balance'   },
   { id: 'ch6-sound',        label: 'Sound'           },
   { id: 'ch7-logic',        label: 'Logic'           },
   { id: 'ch8-navigation',   label: 'Navigation'      },
@@ -34,5 +34,5 @@ export const CHAPTER_SCENES = {
   'ch2-optics':  { scene: 'robot-lab-optics'  },
   'ch3-color':   { scene: 'robot-lab-color'   },
   'ch4-motors':  { scene: 'robot-lab-motor'   },
-  'ch5-control': { scene: 'robot-lab-control' },
+  'ch5-control': { scene: 'robot-lab-balance' },
 };

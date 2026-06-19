@@ -1,0 +1,373 @@
+/* Chapter 5 — Wrist Balance workbench (prefix: bl-) */
+
+.bl-board {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
+.bl-workbench {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 12px;
+  padding: 12px;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.bl-progress {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bl-progress__step {
+  font: 700 11px Nunito, sans-serif;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e4eaf0;
+  color: #2c4058;
+  border: 1px solid #b8c8d8;
+}
+
+.bl-progress__step--done {
+  background: #d4f0dc;
+  color: #1a5c2e;
+  border-color: #7bc995;
+}
+
+.bl-hero-wrap {
+  grid-column: 1;
+  background: rgba(6, 14, 30, 0.55);
+  border: 1px solid rgba(95, 220, 255, 0.25);
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.bl-hero-canvas {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+}
+
+.bl-magnified {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  background: rgba(8, 18, 36, 0.92);
+  border: 2px solid rgba(212, 169, 89, 0.55);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 240px;
+}
+
+.bl-magnified__title {
+  font: 800 11px Orbitron, monospace;
+  color: rgba(240, 200, 102, 0.95);
+  text-align: center;
+}
+
+.bl-module-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+/* SVG module styles (no prefix needed — scoped to SVG) */
+.bl-mod-ring {
+  fill: rgba(12, 28, 52, 0.9);
+  stroke: rgba(95, 220, 255, 0.45);
+  stroke-width: 2;
+}
+
+.bl-mod-ring--inner {
+  fill: none;
+  stroke: rgba(212, 169, 89, 0.35);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.bl-mod-slot__outline {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(140, 180, 220, 0.35);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.bl-mod-slot--filled .bl-mod-slot__outline {
+  stroke: rgba(95, 220, 255, 0.2);
+  fill: none;
+}
+
+.bl-mod-slot__label {
+  fill: rgba(160, 190, 220, 0.55);
+  font: 700 9px Nunito, sans-serif;
+  pointer-events: none;
+}
+
+.bl-mod-slot--filled .bl-mod-slot__label {
+  fill: rgba(95, 220, 255, 0.35);
+  font-size: 8px;
+}
+
+.bl-mod-slot {
+  cursor: pointer;
+}
+
+.bl-mod-chip {
+  fill: #1a1a2e;
+  stroke: #8899aa;
+  stroke-width: 0.5;
+}
+
+.bl-mod-pin {
+  fill: #c0c0c0;
+}
+
+.bl-mod-part__tag {
+  fill: rgba(220, 235, 255, 0.75);
+  font: 800 7px Orbitron, monospace;
+  pointer-events: none;
+}
+
+.bl-mod-servo-body {
+  fill: #e07030;
+  stroke: #a85020;
+  stroke-width: 1;
+}
+
+.bl-mod-servo-hub {
+  fill: #ccc;
+  stroke: #888;
+  stroke-width: 1;
+}
+
+.bl-mod-servo-horn {
+  fill: #ffd666;
+  stroke: #c49a42;
+  stroke-width: 0.5;
+}
+
+.bl-mod-shock-top,
+.bl-mod-shock-bot {
+  fill: #888;
+  stroke: #555;
+  stroke-width: 0.5;
+}
+
+.bl-mod-shock-coil {
+  stroke: #c49a42;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.bl-mod-term__dot {
+  stroke: #fff;
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.bl-mod-term__label {
+  fill: rgba(255, 220, 140, 0.9);
+  font: 800 8px Orbitron, monospace;
+  pointer-events: none;
+}
+
+.bl-mod-hint {
+  fill: rgba(240, 200, 102, 0.85);
+  font: 800 9px Orbitron, monospace;
+}
+
+.bl-mod-signal {
+  fill: rgba(180, 220, 255, 0.9);
+  font: 700 8px Nunito, sans-serif;
+}
+
+.bl-mod-wire {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bl-mod-wire--preview {
+  stroke: rgba(255, 220, 100, 0.85);
+  stroke-dasharray: 6 4;
+}
+
+.bl-mod-wire--player {
+  stroke: #72ffa8;
+}
+
+.bl-mod-wire--live {
+  stroke: #ffd666;
+  filter: drop-shadow(0 0 4px rgba(255, 214, 102, 0.6));
+}
+
+.bl-servo-dial__label {
+  font: 700 10px Nunito, sans-serif;
+  color: rgba(220, 235, 255, 0.85);
+}
+
+.bl-servo-dial__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.bl-servo-level {
+  min-height: 40px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(170, 190, 220, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  color: #dce9f7;
+  font: 700 10px Nunito, sans-serif;
+}
+
+.bl-servo-level--active {
+  border-color: #ffd666;
+  color: #ffd666;
+}
+
+/* ── Light workbench controls (high contrast on vanilla board) ─────────── */
+
+.bl-parts-tray {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.bl-parts-tray__title {
+  font: 800 10px Orbitron, monospace;
+  color: #1a4a7a;
+  margin-right: 4px;
+}
+
+.bl-part {
+  min-height: 48px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid #1a6b9c;
+  background: #c8e8f8;
+  color: #0d3d5c;
+  font: 800 12px Nunito, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bl-part:active {
+  background: #a8d4ec;
+  transform: scale(0.97);
+}
+
+.bl-controls {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bl-mode-btn {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid #2c5282;
+  background: #e8edf2;
+  color: #1a2840;
+  font: 800 12px Nunito, sans-serif;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.bl-mode-btn--active {
+  border-color: #1a4a7a;
+  background: #1a4a7a;
+  color: #ffffff;
+}
+
+.bl-mode-btn--locked {
+  opacity: 0.45;
+  color: #5a6a7a;
+}
+
+.bl-forces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bl-force {
+  min-height: 48px;
+  min-width: 72px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 2px solid #b8860b;
+  background: #fff0c2;
+  color: #4a3200;
+  font: 800 11px Nunito, sans-serif;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bl-force:active {
+  background: #ffe08a;
+  transform: scale(0.97);
+}
+
+.bl-force-dial {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 12px Nunito, sans-serif;
+  color: #2c4058;
+}
+
+.bl-force-dial input[type="range"] {
+  accent-color: #1a6b9c;
+}
+
+.bl-reset.rl-btn--reset {
+  min-height: 48px;
+  width: auto;
+  margin-top: 0;
+  padding: 10px 22px;
+  font-size: 14px;
+}
+
+.bl-monitors {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px;
+}
+
+.bl-monitor {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .bl-workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .bl-magnified {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}

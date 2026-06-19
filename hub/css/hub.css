@@ -40,6 +40,7 @@
    Images are 400×533 (3:4 portrait). Cards match that ratio.
    vh-based width: auto-fits 4 per row on landscape, wraps to 2×2 on portrait. */
 .hub__portals {
+  --hub-portal-w: clamp(170px, 27vh, 310px);
   flex: 1;
   min-height: 0;
   display: flex;
@@ -47,6 +48,8 @@
   gap: clamp(12px, 2vw, 24px);
   justify-content: center;
   align-content: center;
+  /* Nudge down ~25% of card height to align with hub_bg2 shelf */
+  transform: translateY(calc(var(--hub-portal-w) * 4 / 3 * 0.25));
   /* Leave room for the logo baked into hub_bg2.png */
   padding: clamp(120px, 34vh, 280px) var(--space-lg) var(--space-md);
   width: 100%;
@@ -55,7 +58,7 @@
 .hub-portal {
   /* Width is tied to viewport height so cards always fit vertically in 1-2 rows */
   flex: 0 0 auto;
-  width: clamp(170px, 27vh, 310px);
+  width: var(--hub-portal-w);
   aspect-ratio: 3 / 4;
   display: flex;
   flex-direction: column;
@@ -240,8 +243,8 @@
 
 /* ── Phone portrait: smaller cards, still portrait ratio ─────────────────── */
 @media (max-width: 600px) {
-  .hub-portal {
-    width: clamp(140px, 42vw, 200px);
+  .hub__portals {
+    --hub-portal-w: clamp(140px, 42vw, 200px);
   }
 }
 

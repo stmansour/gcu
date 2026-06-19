@@ -294,7 +294,13 @@ The source image can switch between the child's avatar, fruit, a garden scene, a
 
 SWIRL-E's shoulder drive needs to learn which gear and power settings match real jobs. The child chooses a story task, then selects a gear cartridge and voltage while live meters show lift capacity, load torque, arm speed, motor heat, and runtime.
 
-Chapter 4 is framed as SWIRL-E's scenario memory, not a one-answer puzzle. Successful safe setups, and correct "Not safe for SWIRL-E" calls on overload tasks, save case memories. Four saved memories complete the chapter and unlock the Chapter 5 placeholder.
+Chapter 4 is framed as SWIRL-E's scenario memory, not a one-answer puzzle. Successful safe setups, and correct "Not safe for SWIRL-E" calls on overload tasks, save case memories. Four saved memories complete the chapter and unlock Chapter 5.
+
+### Chapter 5 — Wrist Balance (spec — rebuild planned)
+
+SWIRL-E's hand must carry a tray with a glass of water without spilling. The child installs three physical parts on a magnified wrist workbench — **tilt sensor**, **wrist servo**, and **shock absorber** — and wires the sensor to the servo, Chapter 1 style.
+
+Simple rolling monitors show bump, tilt, and pushback; the tray animation is the main lesson. Mode A applies left/right/forward/back pushes with a FORCE dial; Mode B is a walk test capstone. Legacy slider-tuning code remains in the repo but is not wired up.
 
 ### Learning Arc
 
@@ -304,7 +310,7 @@ Chapter 4 is framed as SWIRL-E's scenario memory, not a one-answer puzzle. Succe
 | 2 | Optics | ✅ Built |
 | 3 | Color Sensing | ✅ Built |
 | 4 | Shoulder Drive | ✅ Built |
-| 5 | Control Systems | Planned |
+| 5 | Wrist Balance | ✅ v1 built |
 | 6 | Sound | Planned |
 | 7 | Logic | Planned |
 | 8 | Navigation | Planned |

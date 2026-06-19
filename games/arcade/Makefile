@@ -1,7 +1,7 @@
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
 DIST      := $(REPO_ROOT)/dist/gcu
-DIRS      := art-studio robot-lab puzzle-forest arcade
-THISDIR   := games
+DIRS      := assets css data scenes
+THISDIR   := games/arcade
 
 .PHONY: all clean package
 
@@ -20,6 +20,8 @@ clean:
 	@echo "*** $(THISDIR): completed clean ***"
 
 package:
+	mkdir -p $(DIST)/games/arcade
+	cp index.js $(DIST)/games/arcade/
 	@set -e; \
 	for dir in $(DIRS); do \
 		$(MAKE) -C $$dir package; \

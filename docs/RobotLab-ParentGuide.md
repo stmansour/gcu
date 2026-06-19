@@ -113,13 +113,27 @@ The concept being internalized: *engineering is matching a setup to a job.* The 
 
 ---
 
-## Chapter 5 — Control Systems
-### *SWIRL-E can move, but he overcorrects and wobbles.*
+## Chapter 5 — Wrist Balance (Control Systems)
+### *SWIRL-E can lift things, but can he hold a tray level while moving?*
 
 **What they're really learning:**
-This is the chapter that introduces *feedback* — one of the most important ideas in all of engineering. A control system does not just apply force; it measures the result of that force and adjusts accordingly. Too much correction causes oscillation (the robot wobbles back and forth, overshooting every time). Too little and the robot drifts, never reaching a stable position.
+This chapter introduces **feedback** through **physical parts the child installs** — the same teaching pattern as Chapter 1's circuit bench.
 
-The child adjusts the "feedback gain" — how aggressively the system corrects itself — and watches SWIRL-E stabilize or wobble in real time. This is, in simplified form, exactly how autopilots, thermostats, cruise control, and drone stabilization work. The mathematical version of this is called a PID controller. The child will not learn that term here, but they will understand the idea it describes.
+SWIRL-E's hand holds a tray with a glass of water. The child builds a **wrist balance module** from three real components:
+
+1. **Tilt sensor** — measures pitch and roll (like a WitMotion inclinometer / accelerometer module you can buy for robotics). By itself it only *reports* tilt; it does not fix anything.
+2. **Wrist servo** — the same kind of motor family as Chapter 4, but this one tilts the hand to push the tray back toward level. It only works if wired to the sensor.
+3. **Shock absorber** — a mechanical damper at the wrist (think car suspension shock, not a power-off holding brake). It slows wobble so the tray does not overshoot.
+
+The workbench shows a **magnified exploded view of the wrist** with empty slots. Parts drag in from a tray; parts can be removed. The child wires **sensor output → servo input** and watches simple rolling **ticker-tape monitors** for the current bump, tray tilt, and servo pushback. The monitors support the lesson; the main feedback is the hand, tray, glass, and water visibly reacting.
+
+**Mode A — Force bench:** Four push buttons (left/right/forward/back) plus a FORCE dial apply known bumps. A reset button restores the glass after spills. Vertical jolts can be added later as an advanced slosh behavior, but the first lesson is pitch and roll.
+
+**Mode B — Walk test:** SWIRL-E walks a path with bumps — capstone after the parts are understood.
+
+The lesson sequence is deliberate: bare wrist (everything spills) → add sensor (it knows but cannot act) → add wired servo (pushback, maybe wobble) → add shock (settling improves). Remove the sensor and the servo goes blind again.
+
+The concept being internalized: *a control system is sensor + actuator + damping, connected together.* This is how gimbals, drone stabilizers, and segways work — without the child hearing "PID" until Grandpa's Journal optionally names it.
 
 ---
 
@@ -183,7 +197,7 @@ By the time a child completes all ten chapters of Robot Lab, they will have genu
 - How lenses focus light, and why cameras and eyes work the way they do
 - How color is measured and reconstructed digitally
 - How motors convert electricity to motion
-- What feedback control means and why it is everywhere
+- What feedback control means — built from a tilt sensor, wrist servo, and shock absorber, not abstract knobs
 - How sound is captured, amplified, and filtered
 - How logical rules create behavior
 - What navigation and path planning require
