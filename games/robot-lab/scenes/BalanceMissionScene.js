@@ -48,6 +48,7 @@ export class BalanceMissionScene extends Scene {
   enter(container, data = {}) {
     this._avatarId = data.avatarId ?? null;
     this._container = container;
+
     this._sim.reset();
     this._stableTimer = 0;
     container.className = 'rl-mission';
@@ -149,7 +150,7 @@ export class BalanceMissionScene extends Scene {
         </div>
         <div class="bl-controls">
           <div class="bl-mode">
-            <button type="button" class="bl-mode-btn bl-mode-btn--active" data-mode="bench">Force bench</button>
+            <button type="button" class="bl-mode-btn bl-mode-btn--active" data-mode="bench">Stop Moving</button>
             <button type="button" class="bl-mode-btn ${walkLocked ? 'bl-mode-btn--locked' : ''}" data-mode="walk" ${walkLocked ? 'disabled' : ''}>Walk test</button>
           </div>
           <div class="bl-forces" id="bl-forces">
