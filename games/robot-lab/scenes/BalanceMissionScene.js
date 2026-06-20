@@ -158,7 +158,7 @@ export class BalanceMissionScene extends Scene {
             <button type="button" class="bl-force" data-dir="forward">↑ Forward</button>
             <button type="button" class="bl-force" data-dir="back">↓ Back</button>
           </div>
-          <label class="bl-force-dial">Force
+          <label class="bl-force-dial" id="bl-dial-container">Force&nbsp;
             <input type="range" id="bl-force-dial" min="0" max="100" value="45">
           </label>
           <button type="button" class="rl-btn rl-btn--reset bl-reset" id="bl-reset">Reset tray</button>
@@ -235,10 +235,14 @@ export class BalanceMissionScene extends Scene {
       this._hero?.clearDroplets();
       this._stableTimer = 0;
       this._sim.stopWalk();
+
       board.querySelectorAll('.bl-mode-btn').forEach(b => {
         b.classList.toggle('bl-mode-btn--active', b.dataset.mode === 'bench');
       });
       board.querySelector('#bl-forces').hidden = false;
+      const label = board.querySelector('#bl-dial-container');
+      if (label) label.firstChild.textContent = 'Force ';
+
       this._setSpeech(CHAPTER_5.speech.resetTray);
     });
 
@@ -256,18 +260,22 @@ export class BalanceMissionScene extends Scene {
       add(btn, 'click', () => {
         if (btn.disabled) return;
         const mode = btn.dataset.mode;
+        const label = board.querySelector('#bl-dial-container');
+
         if (mode === 'walk') {
           this._sim.startWalk();
           board.querySelectorAll('.bl-mode-btn').forEach(b => {
             b.classList.toggle('bl-mode-btn--active', b.dataset.mode === 'walk');
           });
           board.querySelector('#bl-forces').hidden = true;
+          if (label) label.firstChild.textContent = 'Speed / Throttle ';
         } else {
           this._sim.stopWalk();
           board.querySelectorAll('.bl-mode-btn').forEach(b => {
             b.classList.toggle('bl-mode-btn--active', b.dataset.mode === 'bench');
           });
           board.querySelector('#bl-forces').hidden = false;
+          if (label) label.firstChild.textContent = 'Force ';
         }
       });
     }
@@ -410,7 +418,7 @@ export class BalanceMissionScene extends Scene {
       if (this._sim.isStable()) {
         this._stableTimer += dt;
         if (this._sim.hasShock && this._sim.hasSensor && this._sim.hasServo && this._sim.wired
-            && this._stableTimer > 0.8 && !this._progress.shockSuccess) {
+          && this._stableTimer > 0.8 && !this._progress.shockSuccess) {
           this._progress.shockSuccess = true;
           this._saveProgress();
           this._setSpeech(CHAPTER_5.speech.shockOk);
@@ -428,6 +436,8 @@ export class BalanceMissionScene extends Scene {
             b.classList.toggle('bl-mode-btn--active', b.dataset.mode === 'bench');
           });
           board.querySelector('#bl-forces').hidden = false;
+          const label = board.querySelector('#bl-dial-container');
+          if (label) label.firstChild.textContent = 'Force ';
         }
         this._progress.walkDone = true;
         this._completeChapter();
